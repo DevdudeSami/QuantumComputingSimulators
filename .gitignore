@@ -1,3 +1,7 @@
 .vscode
 __pychache__
 *.pyc
+
+target
+Cargo.lock
+*.rs.bk
