@@ -1,12 +1,18 @@
 extern crate num_complex;
 #[macro_use] extern crate itertools;
 extern crate rand;
+extern crate nalgebra;
 
 use num_complex::Complex;
 use rand::distributions::{Weighted, WeightedChoice, IndependentSample};
+use nalgebra::{DVector, Unit, DMatrix};
 
 fn c(real: f64, imag: f64) -> Complex<f64> {
     return Complex::new(real, imag);
+}
+
+fn vec(v: Vec<Complex<f64>>) -> DVector<Complex<f64>> {
+    return DVector::from_iterator(v.len(), v);
 }
 
 fn qubit_states_combinations(n: u32) -> Vec<String> {
@@ -27,7 +33,11 @@ fn qubit_states_combinations(n: u32) -> Vec<String> {
 fn main() {
     println!("Hello, world!");
 
-    let state_vector = StateVector::new(vec![c(1.0/2.0,0.0), c(1.0/2.0,0.0), c(1.0/2.0,0.0), c(1.0/2.0,0.0)], vec![0,1]);
+    let H = DMatrix::from_iterator(2,2,vec![c(1.0,0.0),c(1.0,0.0),c(1.0,0.0),c(-1.0,0.0)]);
+
+    let mut state_vector = StateVector::new(vec(vec![c(1.0,0.0), c(0.0,0.0)]), vec![0]);
+
+    state_vector.applyGate(H);
     println!("{}", state_vector.measure().1);
 
     qubit_states_combinations(4);
@@ -35,12 +45,12 @@ fn main() {
 
 struct StateVector {
     n: u32,
-    amplitudes: Vec<Complex<f64>>,
+    amplitudes: DVector<Complex<f64>>,
     register_indices: Vec<u32>
 }
 
 impl StateVector {
-    fn new(amplitudes: Vec<Complex<f64>>, register_indices: Vec<u32>) -> StateVector {
+    fn new(amplitudes: DVector<Complex<f64>>, register_indices: Vec<u32>) -> StateVector {
         let n = (amplitudes.len() as f32).log2() as u32;
         assert!(register_indices.len() as u32 == n);
 
@@ -66,6 +76,10 @@ impl StateVector {
 
         return (result.to_string(), (vec!["|", result, ">"]).join(""));
     }
+
+    fn applyGate(&mut self, G: DMatrix<Complex<f64>>) {
+        self.amplitudes = G * self.amplitudes.clone();
+    } 
 }
 
 impl ToString for StateVector {

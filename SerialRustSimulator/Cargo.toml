@@ -7,3 +7,5 @@ authors = ["Youssef Moawad <youssef_programming@icloud.com>"]
 num-complex = "0.2"
 itertools = "0.7.8"
 rand = "0.5.5"
+lapacke = "0.2.0"
+nalgebra = "0.16.6"
