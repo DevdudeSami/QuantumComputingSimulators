@@ -8,4 +8,8 @@ num-complex = "0.2"
 itertools = "0.7.8"
 rand = "0.5.5"
 lapacke = "0.2.0"
-nalgebra = "0.16.6"
+nalgebra = "0.16.7"
+time = "0.1.40"
+
+[profile.release]
+opt-level=3
