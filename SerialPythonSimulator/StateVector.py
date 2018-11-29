@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import scipy.sparse as scsp
 from functools import reduce
 from itertools import product
 import random
@@ -22,7 +23,7 @@ class StateVector:
     # if round(normalisationCheck, 10) != 1: raise AssertionError("Quantum state not normalised.")
  
     self.n = n
-    self.amplitudes = np.array(amplitudes, dtype=complex)
+    self.amplitudes = scsp.csr_matrix(np.array(amplitudes, dtype=complex))
     self.registerIndices = registerIndices
 
 
@@ -57,10 +58,10 @@ class StateVector:
   #   self.amplitudes /= norm
 
   def applyGate(self, G):
-    self.amplitudes = np.matmul(G, self.amplitudes)
+    self.amplitudes = G.multiply(self.amplitudes)
 
   def combineWith(self, v):
-    newAmplitudes = np.kron(self.amplitudes, v.amplitudes)
+    newAmplitudes = scsp.kron(self.amplitudes, v.amplitudes)
     return StateVector(newAmplitudes, self.registerIndices + v.registerIndices)
 
   @staticmethod
@@ -68,8 +69,8 @@ class StateVector:
     if 0 in r: matrixOperator = O
     else: matrixOperator = I
     for i in range(1,n):
-      if i in r: matrixOperator = np.kron(matrixOperator, O)
-      else: matrixOperator = np.kron(matrixOperator, I)
+      if i in r: matrixOperator = scsp.kron(matrixOperator, O)
+      else: matrixOperator = scsp.kron(matrixOperator, I)
 
     return matrixOperator
 
@@ -80,13 +81,13 @@ class StateVector:
 
     if r1 == 0: 
       matrixOperator = O
-      for i in range(2,self.n): matrixOperator = np.kron(matrixOperator, I)
+      for i in range(2,self.n): matrixOperator = scsp.kron(matrixOperator, I)
     else: 
       matrixOperator = I
       for i in range(1,self.n): 
-        if i == r1: matrixOperator = np.kron(matrixOperator, O)
+        if i == r1: matrixOperator = scsp.kron(matrixOperator, O)
         elif i == r2: pass
-        else: matrixOperator = np.kron(matrixOperator, I)
+        else: matrixOperator = scsp.kron(matrixOperator, I)
 
     return matrixOperator
   
@@ -96,18 +97,18 @@ class StateVector:
 
     if indices[0] == 0: 
       matrixOperator = O
-      for i in range(len(indices),self.n): matrixOperator = np.kron(matrixOperator, I)
+      for i in range(len(indices),self.n): matrixOperator = scsp.kron(matrixOperator, I)
     else: 
       matrixOperator = I
       for i in range(1,self.n): 
-        if i == indices[0]: matrixOperator = np.kron(matrixOperator, O)
+        if i == indices[0]: matrixOperator = scsp.kron(matrixOperator, O)
         elif i in indices: pass
-        else: matrixOperator = np.kron(matrixOperator, I)
+        else: matrixOperator = scsp.kron(matrixOperator, I)
 
     return matrixOperator
 
   def addQubit(self):
-    self.amplitudes = np.kron(self.amplitudes, np.array([1,0],dtype=complex))
+    self.amplitudes = scsp.kron(self.amplitudes, np.array([1,0],dtype=complex))
     newQID = max(self.registerIndices)+1
     self.registerIndices += [newQID]
     self.n += 1
@@ -207,4 +208,4 @@ class StateVector:
   def applyOddGate(self, G, r=[0]):
     indices = list(map(lambda x: self.registerIndices.index(x), r))
     operator = StateVector.prepareMatrixOperator(G,indices,self.n)
-    self.amplitudes = np.matmul(operator, self.amplitudes)
+    self.amplitudes = operator.multiply(self.amplitudes)

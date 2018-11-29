@@ -12,11 +12,13 @@ I = np.array([[1,0],[0,1]], dtype=complex)
 start_time = time.time()
 
 identity = scsp.csr_matrix(I.copy())
+# identity = I.copy()
 
 for i in range(0,13):
 	# if(i%10000==0): print(i)
 	print(i)
 	identity = scsp.kron(identity,I)
+	# identity = np.kron(identity,I)
 	# H = H/np.linalg.norm(H)
 
 

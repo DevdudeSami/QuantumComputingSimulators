@@ -2,20 +2,21 @@
 from Accumulator import Accumulator
 from StateVector import StateVector as V
 import numpy as np
+import scipy.sparse as scsp
 from functools import reduce
 from itertools import product
 import random
 import math
 
-I = np.array([[1,0],[0,1]], dtype=complex)
-H = np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2)
-X = np.array([[0,1],[1,0]], dtype=complex)
-Y = np.array([[1j,0],[0,-1j]], dtype=complex)
-Z = np.array([[1,0],[0,-1]], dtype=complex)
-P = np.array([[1,0],[0,1j]], dtype=complex)
-CNOT = np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]], dtype=complex)
-TOFF = np.array([[1,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,0,1,0,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,1,0]], dtype=complex)
-SWAP = np.array([[1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]], dtype=complex)
+I = scsp.csr_matrix(np.array([[1,0],[0,1]], dtype=complex))
+H = scsp.csr_matrix(np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2))
+X = scsp.csr_matrix(np.array([[0,1],[1,0]], dtype=complex))
+Y = scsp.csr_matrix(np.array([[1j,0],[0,-1j]], dtype=complex))
+Z = scsp.csr_matrix(np.array([[1,0],[0,-1]], dtype=complex))
+P = scsp.csr_matrix(np.array([[1,0],[0,1j]], dtype=complex))
+CNOT = scsp.csr_matrix(np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]], dtype=complex))
+TOFF = scsp.csr_matrix(np.array([[1,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,0,1,0,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,1,0]], dtype=complex))
+SWAP = scsp.csr_matrix(np.array([[1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]], dtype=complex))
 
 def CU(G):
   return np.array([[1,0,0,0],[0,1,0,0],[0,0,G[0][0],G[0][1]],[0,0,G[1][0],G[1][1]]], dtype=complex)
@@ -71,9 +72,9 @@ class QRegister:
   def stateVector(self):
     if len(self.vectors) == 1: return self.vectors[0].measure
     elif (len(self.vectors) >= 2): 
-      stateVector = np.kron(self.vectors[0].amplitudes, self.vectors[1].amplitudes)
+      stateVector = scsp.kron(self.vectors[0].amplitudes, self.vectors[1].amplitudes)
       for i in range(2, len(self.vectors)):
-        stateVector = np.kron(stateVector, self.vectors[i].amplitudes)
+        stateVector = scsp.kron(stateVector, self.vectors[i].amplitudes)
       return stateVector
     return None
 
