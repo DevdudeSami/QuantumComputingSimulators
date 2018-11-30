@@ -7,14 +7,14 @@ import time
 
 # H = np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2)
 # H = np.random.randn(64,64)
-I = np.array([[1,0],[0,1]], dtype=complex)
+I = scsp.csr_matrix(np.array([[1,0],[0,1]], dtype=complex))
 
 start_time = time.time()
 
-identity = scsp.csr_matrix(I.copy())
+identity = I.copy()
 # identity = I.copy()
 
-for i in range(0,13):
+for i in range(0,10):
 	# if(i%10000==0): print(i)
 	print(i)
 	identity = scsp.kron(identity,I)
