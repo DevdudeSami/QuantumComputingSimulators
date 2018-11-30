@@ -1,0 +1,355 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EE186546219511B800C29D9C /* Tensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186545219511B800C29D9C /* Tensor.cpp */; };
+		EE186549219511D600C29D9C /* StateVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186547219511D600C29D9C /* StateVector.cpp */; };
+		EE18654C219519BB00C29D9C /* Gates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE18654A219519BB00C29D9C /* Gates.cpp */; };
+		EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE50F48B218BDE0A00B9B10A /* main.cpp */; };
+		EE50F4C3218BDF6F00B9B10A /* libarmadillo.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */; };
+		EE927FB621AF801800CF41ED /* SparseTensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE927FB421AF801800CF41ED /* SparseTensor.cpp */; };
+		EEB05BAC219D9ED300F7B6C5 /* ArrayTensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEB05BAA219D9ED300F7B6C5 /* ArrayTensor.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EE50F486218BDE0A00B9B10A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		EE186544219511B800C29D9C /* Tensor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tensor.hpp; sourceTree = "<group>"; };
+		EE186545219511B800C29D9C /* Tensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tensor.cpp; sourceTree = "<group>"; };
+		EE186547219511D600C29D9C /* StateVector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StateVector.cpp; sourceTree = "<group>"; };
+		EE186548219511D600C29D9C /* StateVector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StateVector.hpp; sourceTree = "<group>"; };
+		EE18654A219519BB00C29D9C /* Gates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Gates.cpp; sourceTree = "<group>"; };
+		EE18654B219519BB00C29D9C /* Gates.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Gates.hpp; sourceTree = "<group>"; };
+		EE50F488218BDE0A00B9B10A /* SerialXcodeSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SerialXcodeSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE50F48B218BDE0A00B9B10A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		EE50F4BE218BDEB100B9B10A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libarmadillo.9.dylib; path = ../../../../../../../usr/local/lib/libarmadillo.9.dylib; sourceTree = "<group>"; };
+		EE927FB421AF801800CF41ED /* SparseTensor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SparseTensor.cpp; sourceTree = "<group>"; };
+		EE927FB521AF801800CF41ED /* SparseTensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SparseTensor.hpp; sourceTree = "<group>"; };
+		EEB05BAA219D9ED300F7B6C5 /* ArrayTensor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayTensor.cpp; sourceTree = "<group>"; };
+		EEB05BAB219D9ED300F7B6C5 /* ArrayTensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ArrayTensor.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EE50F485218BDE0A00B9B10A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE50F4C3218BDF6F00B9B10A /* libarmadillo.9.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE50F47F218BDE0A00B9B10A = {
+			isa = PBXGroup;
+			children = (
+				EE50F48A218BDE0A00B9B10A /* SerialXcodeSimulator */,
+				EE50F489218BDE0A00B9B10A /* Products */,
+				EE50F4BD218BDEB000B9B10A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		EE50F489218BDE0A00B9B10A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE50F488218BDE0A00B9B10A /* SerialXcodeSimulator */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE50F48A218BDE0A00B9B10A /* SerialXcodeSimulator */ = {
+			isa = PBXGroup;
+			children = (
+				EE50F48B218BDE0A00B9B10A /* main.cpp */,
+				EEB05BAA219D9ED300F7B6C5 /* ArrayTensor.cpp */,
+				EEB05BAB219D9ED300F7B6C5 /* ArrayTensor.hpp */,
+				EE186545219511B800C29D9C /* Tensor.cpp */,
+				EE186544219511B800C29D9C /* Tensor.hpp */,
+				EE186547219511D600C29D9C /* StateVector.cpp */,
+				EE186548219511D600C29D9C /* StateVector.hpp */,
+				EE18654A219519BB00C29D9C /* Gates.cpp */,
+				EE18654B219519BB00C29D9C /* Gates.hpp */,
+				EE927FB421AF801800CF41ED /* SparseTensor.cpp */,
+				EE927FB521AF801800CF41ED /* SparseTensor.hpp */,
+			);
+			path = SerialXcodeSimulator;
+			sourceTree = "<group>";
+		};
+		EE50F4BD218BDEB000B9B10A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */,
+				EE50F4BE218BDEB100B9B10A /* Accelerate.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EE50F487218BDE0A00B9B10A /* SerialXcodeSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE50F48F218BDE0A00B9B10A /* Build configuration list for PBXNativeTarget "SerialXcodeSimulator" */;
+			buildPhases = (
+				EE50F484218BDE0A00B9B10A /* Sources */,
+				EE50F485218BDE0A00B9B10A /* Frameworks */,
+				EE50F486218BDE0A00B9B10A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SerialXcodeSimulator;
+			productName = SerialXcodeSimulator;
+			productReference = EE50F488218BDE0A00B9B10A /* SerialXcodeSimulator */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EE50F480218BDE0A00B9B10A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Youssef Moawad";
+				TargetAttributes = {
+					EE50F487218BDE0A00B9B10A = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = EE50F483218BDE0A00B9B10A /* Build configuration list for PBXProject "SerialXcodeSimulator" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EE50F47F218BDE0A00B9B10A;
+			productRefGroup = EE50F489218BDE0A00B9B10A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EE50F487218BDE0A00B9B10A /* SerialXcodeSimulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EE50F484218BDE0A00B9B10A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE927FB621AF801800CF41ED /* SparseTensor.cpp in Sources */,
+				EEB05BAC219D9ED300F7B6C5 /* ArrayTensor.cpp in Sources */,
+				EE186546219511B800C29D9C /* Tensor.cpp in Sources */,
+				EE186549219511D600C29D9C /* StateVector.cpp in Sources */,
+				EE18654C219519BB00C29D9C /* Gates.cpp in Sources */,
+				EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		EE50F48D218BDE0A00B9B10A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		EE50F48E218BDE0A00B9B10A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		EE50F490218BDE0A00B9B10A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-Xpreprocessor",
+					"-fopenmp",
+					"-lomp",
+					"-O3",
+				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-Xpreprocessor",
+					"-fopenmp",
+					"-lomp",
+					"-lmpi",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		EE50F491218BDE0A00B9B10A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-Xpreprocessor",
+					"-fopenmp",
+					"-lomp",
+					"-O3",
+				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-Xpreprocessor",
+					"-fopenmp",
+					"-lomp",
+					"-lmpi",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE50F483218BDE0A00B9B10A /* Build configuration list for PBXProject "SerialXcodeSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE50F48D218BDE0A00B9B10A /* Debug */,
+				EE50F48E218BDE0A00B9B10A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE50F48F218BDE0A00B9B10A /* Build configuration list for PBXNativeTarget "SerialXcodeSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE50F490218BDE0A00B9B10A /* Debug */,
+				EE50F491218BDE0A00B9B10A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EE50F480218BDE0A00B9B10A /* Project object */;
+}
