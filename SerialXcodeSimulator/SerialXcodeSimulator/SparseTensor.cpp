@@ -49,7 +49,7 @@ SparseTensor SparseTensor::addTo(SparseTensor m) {
   vector<key> ks;
   unsigned int new_nnz = 0;
 
-  #pragma omp for
+  #pragma omp parallel for
   for(int i = 0; i < nnz; i++) {
     if(find(m.keys, m.keys + m.nnz, keys[i]) != m.keys + m.nnz) {
       ks.push_back(keys[i]);
@@ -63,7 +63,7 @@ SparseTensor SparseTensor::addTo(SparseTensor m) {
     }
   }
   
-  #pragma omp for
+  #pragma omp parallel for
   for(int i = 0; i < m.nnz; i++) {
     if(find(keys, keys+nnz, m.keys[i]) == keys+nnz) {
       ks.push_back(m.keys[i]);
@@ -81,13 +81,19 @@ SparseTensor SparseTensor::addTo(SparseTensor m) {
   return SparseTensor(r,c,nnz,new_keys,new_vals);
 }
 
-//SparseTensor SparseTensor::kMultiplyTo(cxd s) {
-//  dok d_;
-//
-//  for(auto const& k : keys(d)) d_[k] = s*d[k];
-//
-//  return SparseTensor(r,c,d_);
-//}
+SparseTensor SparseTensor::kMultiplyTo(cxd s) {
+
+  key* new_keys = new key[nnz];
+  cxd* new_vals = new cxd[nnz];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < nnz; i++) {
+    new_keys[i] = keys[i];
+    new_vals[i] = s*vals[i];
+  }
+
+  return SparseTensor(r,c,nnz,new_keys,new_vals);
+}
 //
 //SparseTensor SparseTensor::multiplyTo(SparseTensor m) {
 //  assert(c == m.r);

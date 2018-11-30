@@ -32,16 +32,16 @@ int main(int argc, char const *argv[]) {
 //
 //  cout << state.measure() << endl;
 
-  SparseTensor identity (I(), 2);
+  SparseTensor identity (H(), 4);
   
 //  Tensor identity = I();
   
-//  cout << identity.kronWith(identity).kronWith(identity).dense().toString() << endl;
+//  cout << identity.kronWith(identity).kMultiplyTo(2).dense().toString() << endl;
   
   for(int i = 0; i < 12; i++) {
     cout << i << endl;
-    identity = identity.kronWith(SparseTensor(I(), 2));
-//    identity = identity.kronWith(I());
+    identity = identity.kronWith(SparseTensor(H(), 4));
+    identity = identity.kMultiplyTo(4);
   }
 
   auto end = chrono::high_resolution_clock::now();
