@@ -34,11 +34,14 @@ int main(int argc, char const *argv[]) {
 
   SparseTensor identity (I(), 2);
   
+//  Tensor identity = I();
+  
 //  cout << identity.kronWith(identity).kronWith(identity).dense().toString() << endl;
   
-  for(int i = 0; i < 20; i++) {
+  for(int i = 0; i < 12; i++) {
     cout << i << endl;
     identity = identity.kronWith(SparseTensor(I(), 2));
+//    identity = identity.kronWith(I());
   }
 
   auto end = chrono::high_resolution_clock::now();
