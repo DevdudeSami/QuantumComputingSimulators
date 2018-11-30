@@ -27,21 +27,22 @@ class SparseTensor {
 private:
   unsigned int r;
   unsigned int c;
-  dok d;
-//  key* keys;
-//  cxd* vals;
-  static vector<key> keys(dok const& m);
+  unsigned int nnz;
+//  dok d;
+  key* keys;
+  cxd* vals;
+//  static vector<key> keys(dok const& m);
 public:
-  SparseTensor(unsigned int r, unsigned int c, dok d);
-  SparseTensor(Tensor t);
+  SparseTensor(unsigned int r, unsigned int c, unsigned int nnz, key* keys, cxd* vals);
+  SparseTensor(Tensor t, unsigned int nnz);
   SparseTensor(vector<key> positions, unsigned int r, unsigned int c);
   
   SparseTensor addTo(SparseTensor m);
-  SparseTensor kMultiplyTo(cxd s);
-  SparseTensor multiplyTo(SparseTensor m);
+//  SparseTensor kMultiplyTo(cxd s);
+//  SparseTensor multiplyTo(SparseTensor m);
   SparseTensor kronWith(SparseTensor m);
   
-//  cxd elementAt(int r, int c);
+  cxd* elementAt(int r, int c);
 //  void setElementAt(int r, int c, cxd e);
   
   Tensor dense();

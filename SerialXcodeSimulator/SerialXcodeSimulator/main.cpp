@@ -33,13 +33,13 @@ int main(int argc, char const *argv[]) {
 //  cout << state.measure() << endl;
 
   
-  SparseTensor identity (I());
+  SparseTensor identity (I(), 2);
   
-//  cout << st.multiplyTo(SparseTensor(H())).dense().toString() << endl;
+//  cout << identity.kronWith(identity).kronWith(identity).dense().toString() << endl;
   
-  for(int i = 0; i < 10; i++) {
+  for(int i = 0; i < 15; i++) {
     cout << i << endl;
-    identity = identity.kronWith(SparseTensor(I()));
+    identity = identity.kronWith(SparseTensor(I(), 2));
   }
 
   auto end = chrono::steady_clock::now();
