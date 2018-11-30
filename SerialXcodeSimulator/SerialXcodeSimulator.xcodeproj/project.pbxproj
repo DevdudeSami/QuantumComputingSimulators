@@ -292,6 +292,7 @@
 					"-Xpreprocessor",
 					"-fopenmp",
 					"-lomp",
+					"-O3",
 				);
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
@@ -314,6 +315,7 @@
 					"-Xpreprocessor",
 					"-fopenmp",
 					"-lomp",
+					"-O3",
 				);
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
