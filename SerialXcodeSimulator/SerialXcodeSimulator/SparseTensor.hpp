@@ -33,7 +33,7 @@ public:
   
   SparseTensor addTo(SparseTensor m);
   SparseTensor kMultiplyTo(cxd s);
-//  SparseTensor multiplyTo(SparseTensor m);
+  SparseTensor multiplyTo(SparseTensor m);
   SparseTensor kronWith(SparseTensor m);
   
   cxd* elementAt(int r, int c);

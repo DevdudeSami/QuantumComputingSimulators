@@ -94,32 +94,57 @@ SparseTensor SparseTensor::kMultiplyTo(cxd s) {
 
   return SparseTensor(r,c,nnz,new_keys,new_vals);
 }
-//
-//SparseTensor SparseTensor::multiplyTo(SparseTensor m) {
-//  assert(c == m.r);
-//
-//  dok d_;
-//
-//  vector<key> keys1 = keys(d);
-//  vector<key> keys2 = keys(m.d);
-//
-//  for(int i = 0; i < keys1.size(); i++) {
-//    for(int j = 0; j < keys2.size(); j++) {
-//      key k1 = keys1[i];
-//      key k2 = keys2[j];
-//      if(get<1>(k1) == get<0>(k2)) {
-//        vector<key> d_keys = keys(d_);
-//        key k = make_pair(get<0>(k1), get<1>(k2));
-//
-//        if(find(d_keys.begin(), d_keys.end(), k) != d_keys.end()) d_[k] += d[k1]*m.d[k2];
-//        else d_[k] = d[k1]*m.d[k2];
-//      }
-//    }
-//  }
-//
-//  return SparseTensor(r,m.c,d_);
-//}
-//
+
+SparseTensor SparseTensor::multiplyTo(SparseTensor m) {
+  assert(c == m.r);
+
+  vector<cxd> values;
+  vector<key> ks;
+  unsigned int new_nnz = 0;
+
+  /*
+   Each step where a multiplication takes place, need to do all the multiplications required, i.e. find the final result
+   that would go into that position. And then not revisit it again. Perhaps we need to first populate the keys of the final
+   result, but that's hard to do in an array since we don't know the final nnz.
+   
+   What we can do is... Have a vector (well, the pair of vectors above) where at each multiplication, you just add in the key,
+   even if it already exists. After all the loops, we do some sort of reduce and add all the ones with the same key. This
+   wouldn't allow us to calculate nnz however... Unless...
+   */
+
+  
+//  #pragma omp parallel for
+  for(int i = 0; i < nnz; i++) {
+//    #pragma omp parallel for
+    for(int j = 0; j < m.nnz; j++) {
+      key k1 = keys[i];
+      key k2 = m.keys[j];
+      if(k1.second == k2.first) {
+        key k = make_pair(k1.first, k2.second);
+
+        ptrdiff_t keyIndex = distance(ks.begin(), find(ks.begin(), ks.end(), k));
+        
+        if(keyIndex < ks.size()) {
+          values[keyIndex] += vals[i]*m.vals[j];
+        }
+        else {
+          new_nnz++;
+          ks.push_back(k);
+          values.push_back(vals[i]*m.vals[j]);
+        }
+      }
+    }
+  }
+  
+  cxd *new_vals = new cxd[new_nnz];
+  key *new_keys = new key[new_nnz];
+  
+  copy(values.begin(), values.end(), new_vals);
+  copy(ks.begin(), ks.end(), new_keys);
+
+  return SparseTensor(r,m.c,new_nnz,new_keys,new_vals);
+}
+
 SparseTensor SparseTensor::kronWith(SparseTensor m) {
 
   key* new_keys = new key[nnz*m.nnz];
