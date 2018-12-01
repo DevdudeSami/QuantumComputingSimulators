@@ -13,10 +13,10 @@ m = H.copy()
 
 start_time = time.time()
 
-for i in range(0,13):
+for i in range(0,10):
 	print(i)
-	m = scsp.kron(m,H)
-	m = m * 4
+	m = scsp.kron(m,H) * 4
+	m.dot(m)
 	# identity = np.kron(identity,I)
 
 

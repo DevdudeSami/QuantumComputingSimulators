@@ -100,15 +100,19 @@ I = SMatrix.onesAt([(0,0),(1,1)],2,2)
 
 H = SMatrix.fromDense([[1,1],[1,-1]]).kMultiplyTo(1/math.sqrt(2))
 
-M2 = M.multiplyTo(M2)
-print(M2.dense)
 
-H = I.kronWith(H).kronWith(H)
-print(H.dense)
+# M2 = M.multiplyTo(M2)
+# print(M2.dense)
+
+# H = I.kronWith(H).kronWith(H)
+# print(H.dense)
 	
 		
+m = SMatrix.fromDense([[1,1],[1,-1]]).kMultiplyTo(1/math.sqrt(2))
+m = m.kronWith(m).kMultiplyTo(4)
+m = m.multiplyTo(m)
 
-
+print(m.dense)
 
 
 
