@@ -5,21 +5,19 @@ import time
 # from numba import jit
 # from multiprocessing import Pool
 
-# H = np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2)
-# H = np.random.randn(64,64)
+H = scsp.dok_matrix(np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2))
 I = scsp.dok_matrix(np.array([[1,0],[0,1]], dtype=complex))
+
+m = H.copy()
+# identity = I.copy()
 
 start_time = time.time()
 
-identity = I.copy()
-# identity = I.copy()
-
-for i in range(0,12):
-	# if(i%10000==0): print(i)
+for i in range(0,13):
 	print(i)
-	identity = scsp.kron(identity,I)
+	m = scsp.kron(m,H)
+	m = m * 4
 	# identity = np.kron(identity,I)
-	# H = H/np.linalg.norm(H)
 
 
 

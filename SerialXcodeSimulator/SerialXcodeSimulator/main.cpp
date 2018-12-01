@@ -21,7 +21,7 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   
-  auto start = chrono::high_resolution_clock::now();
+  
   
 //  Row amps = {0,0,0,0,1,0,0,0};
 //  vector<int> qIDs = {0,1,2};
@@ -32,16 +32,19 @@ int main(int argc, char const *argv[]) {
 //
 //  cout << state.measure() << endl;
 
-  SparseTensor identity (H(), 4);
+  const SparseTensor static_m (H(), 4);
+  SparseTensor m (H(), 4);
+  
+  auto start = chrono::high_resolution_clock::now();
   
 //  Tensor identity = I();
   
 //  cout << identity.kronWith(identity).kMultiplyTo(2).dense().toString() << endl;
   
-  for(int i = 0; i < 12; i++) {
+  for(int i = 0; i < 13; i++) {
     cout << i << endl;
-    identity = identity.kronWith(SparseTensor(H(), 4));
-    identity = identity.kMultiplyTo(4);
+    m = m.kronWith(static_m);
+    m = m.kMultiplyTo(4);
   }
 
   auto end = chrono::high_resolution_clock::now();
