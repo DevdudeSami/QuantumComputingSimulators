@@ -221,6 +221,20 @@ bool SparseTensor::elementIsNonZero(unsigned int i, unsigned int j) {
   return find(keys, keys+nnz, k) != keys+nnz;
 }
 
+void SparseTensor::enumerateElements(function<void(int,int,cxd)> f) {
+  for(int i = 0; i < r; i++) {
+    for(int j = 0; j < c; j++) {
+      cxd *potentialElement = elementAt(i, j);
+      if(potentialElement == nullptr) f(i,j,0);
+      else f(i,j,*potentialElement);
+    }
+  }
+}
+
+void SparseTensor::enumerateNNZElements(function<void(int,int,cxd)> f) {
+  for(int i = 0; i < nnz; i++)
+      f(keys[i].first,keys[i].second,vals[i]);
+}
 
 //vector<key> SparseTensor::keys(dok const& m) {
 //  vector<key> result;

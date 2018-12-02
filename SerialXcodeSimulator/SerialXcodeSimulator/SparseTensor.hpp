@@ -42,10 +42,11 @@ public:
   bool isNormalised();
   
   cxd* elementAt(int r, int c);
-//  void setElementAt(int r, int c, cxd e);
-  
   bool elementIsNonZero(unsigned int i, unsigned int j);
   
+  void enumerateElements(function<void(int,int,cxd)> f);
+  void enumerateNNZElements(function<void(int,int,cxd)> f);
+
   Tensor dense();
   
 };
