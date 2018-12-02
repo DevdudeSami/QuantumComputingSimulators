@@ -165,6 +165,20 @@ SparseTensor SparseTensor::kronWith(SparseTensor m) {
   return SparseTensor(r*m.r,c*m.c,nnz*m.nnz,new_keys,new_vals);
 }
 
+cxd SparseTensor::dotProductWith(SparseTensor t) {
+  assert(matchesDimensionsWith(t));
+  
+  cxd result = 0;
+  
+  #pragma omp parallel for reduction (+:result)
+  for(int i = 0; i < nnz; i++) {
+    cxd *e = t.elementAt(keys[i].first, keys[i].second);
+    if(e != nullptr) result += (*e)*vals[i];
+  }
+  
+  return result;
+}
+
 Tensor SparseTensor::dense() {
   Tensor t (r,c);
   

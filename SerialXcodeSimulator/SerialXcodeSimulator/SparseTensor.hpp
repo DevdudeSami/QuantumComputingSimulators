@@ -35,6 +35,7 @@ public:
   SparseTensor kMultiplyTo(cxd s);
   SparseTensor multiplyTo(SparseTensor m);
   SparseTensor kronWith(SparseTensor m);
+  cxd dotProductWith(SparseTensor t);
   
   SparseTensor transpose();
   
