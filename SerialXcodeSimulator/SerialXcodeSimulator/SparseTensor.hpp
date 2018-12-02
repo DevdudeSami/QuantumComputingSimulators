@@ -36,8 +36,11 @@ public:
   SparseTensor multiplyTo(SparseTensor m);
   SparseTensor kronWith(SparseTensor m);
   
+  SparseTensor transpose();
+  
   cxd* elementAt(int r, int c);
 //  void setElementAt(int r, int c, cxd e);
+  
   
   Tensor dense();
   

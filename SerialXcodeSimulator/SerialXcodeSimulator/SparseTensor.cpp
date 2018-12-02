@@ -186,6 +186,21 @@ cxd *SparseTensor::elementAt(int r, int c) {
   return nullptr;
 }
 
+SparseTensor SparseTensor::transpose() {
+  
+  key* new_keys = new key[nnz];
+  cxd* new_vals = new cxd[nnz];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < nnz; i++) {
+    new_keys[i] = make_pair(keys[i].second, keys[i].first);
+    new_vals[i] = vals[i];
+  }
+  
+  return SparseTensor(c,r,nnz,new_keys,new_vals);
+}
+
+
 //vector<key> SparseTensor::keys(dok const& m) {
 //  vector<key> result;
 //  for (auto const& i : m) {

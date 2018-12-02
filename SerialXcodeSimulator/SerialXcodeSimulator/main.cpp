@@ -23,14 +23,14 @@ int main(int argc, char const *argv[]) {
   
   auto start = chrono::high_resolution_clock::now();
   
-  Row amps = {0,0,0,0,1,0,0,0};
-  vector<int> qIDs = {0,1,2};
-
-  StateVector state (Tensor(amps), qIDs);
-
-  state.swap(0, 2);
-
-  cout << state.measure() << endl;
+//  Row amps = {0,0,0,0,1,0,0,0};
+//  vector<int> qIDs = {0,1,2};
+//
+//  StateVector state (Tensor(amps), qIDs);
+//
+//  state.swap(0, 2);
+//
+//  cout << state.measure() << endl;
 
 //  const SparseTensor static_m (H(), 4);
 //  SparseTensor m (H(), 4);
@@ -48,6 +48,11 @@ int main(int argc, char const *argv[]) {
 //    m = m.kMultiplyTo(4);
 //    m.multiplyTo(m);
 //  }
+  
+  
+  // Transpose test
+//  SparseTensor swap (SWAP(),6);
+//  cout << swap.transpose().dense().toString() << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
