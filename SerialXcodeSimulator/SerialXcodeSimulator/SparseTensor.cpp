@@ -200,6 +200,21 @@ SparseTensor SparseTensor::transpose() {
   return SparseTensor(c,r,nnz,new_keys,new_vals);
 }
 
+bool SparseTensor::matchesDimensionsWith(SparseTensor t) {
+  return r == t.r && c == t.c;
+}
+
+bool SparseTensor::isNormalised() {
+  double sumOfNorms = 0;
+  
+  #pragma omp parallel for reduction (+:sumOfNorms)
+  for(int i = 0; i < nnz; i++) {
+    sumOfNorms += abs(vals[i]);
+  }
+  
+  return sumOfNorms == 1;
+}
+
 
 //vector<key> SparseTensor::keys(dok const& m) {
 //  vector<key> result;

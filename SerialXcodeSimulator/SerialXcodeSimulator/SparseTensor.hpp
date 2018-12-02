@@ -38,6 +38,9 @@ public:
   
   SparseTensor transpose();
   
+  bool matchesDimensionsWith(SparseTensor t);
+  bool isNormalised();
+  
   cxd* elementAt(int r, int c);
 //  void setElementAt(int r, int c, cxd e);
   
