@@ -215,6 +215,12 @@ bool SparseTensor::isNormalised() {
   return sumOfNorms == 1;
 }
 
+bool SparseTensor::elementIsNonZero(unsigned int i, unsigned int j) {
+  key k = make_pair(i, j);
+  
+  return find(keys, keys+nnz, k) != keys+nnz;
+}
+
 
 //vector<key> SparseTensor::keys(dok const& m) {
 //  vector<key> result;

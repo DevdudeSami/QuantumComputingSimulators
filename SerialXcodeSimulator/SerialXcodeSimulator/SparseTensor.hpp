@@ -44,6 +44,7 @@ public:
   cxd* elementAt(int r, int c);
 //  void setElementAt(int r, int c, cxd e);
   
+  bool elementIsNonZero(unsigned int i, unsigned int j);
   
   Tensor dense();
   
