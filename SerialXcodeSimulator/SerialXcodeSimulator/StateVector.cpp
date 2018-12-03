@@ -14,7 +14,7 @@ using namespace std;
 
 vector<string> qubitStatesCombinations(unsigned int n);
 
-StateVector::StateVector(Tensor amps, vector<int> ids) : n(ids.size()), amplitudes(amps), qIDs(ids) {
+StateVector::StateVector(SparseTensor amps, vector<int> ids) : n(ids.size()), amplitudes(amps), qIDs(ids) {
   
   assert(amplitudes.rowCount() == 1);
   assert(log2(amplitudes.colCount()) == n);
@@ -28,8 +28,8 @@ vector<double> StateVector::probabilities() {
   return result;
 }
 
-void StateVector::applyGate(Tensor t) {
-  amplitudes = t.multiplyBy(amplitudes.transpose()).transpose();
+void StateVector::applyGate(SparseTensor t) {
+  amplitudes = t.multiplyTo(amplitudes.transpose()).transpose();
 }
 
 string StateVector::measure() {
@@ -44,7 +44,7 @@ string StateVector::measure() {
 }
 
 StateVector StateVector::combineWith(StateVector v) {
-  Tensor newAmplitudes = amplitudes.kronWith(v.amplitudes);
+  SparseTensor newAmplitudes = amplitudes.kronWith(v.amplitudes);
   vector<int> newQIDs = {};
   newQIDs.insert(newQIDs.end(), qIDs.begin(), qIDs.end());
   newQIDs.insert(newQIDs.end(), v.qIDs.begin(), v.qIDs.end());
@@ -52,10 +52,10 @@ StateVector StateVector::combineWith(StateVector v) {
 }
 
 // indices is the indices in registerIndices (in the state vector), not the ids of the qubits
-Tensor StateVector::prepareOperator(Tensor t, vector<int> indices) {
+SparseTensor StateVector::prepareOperator(SparseTensor t, vector<int> indices) {
   for(int i = 1; i < indices.size(); i++) assert(indices[i] == indices[i-1] + 1);
   
-  Tensor op (0,0);
+  SparseTensor op (0,0,0,{},{});
   
   if(indices[0] == 0) {
     op = t;
@@ -92,14 +92,14 @@ void StateVector::swap(uint q1ID, uint q2ID) {
   
   int i = q1PositionInVector;
   while(i < q1PositionInVector + steps) {
-    Tensor op = prepareOperator(SWAP(), {i, i+1});
+    SparseTensor op = prepareOperator(SWAP(), {i, i+1});
     applyGate(op);
     i++;
   }
   
   i = q2PositionInVector - 1;
   while(i > q2PositionInVector - steps) {
-    Tensor op = prepareOperator(SWAP(), {i-1, i});
+    SparseTensor op = prepareOperator(SWAP(), {i-1, i});
     applyGate(op);
     i--;
   }

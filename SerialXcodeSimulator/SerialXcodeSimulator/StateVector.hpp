@@ -10,22 +10,22 @@
 #define StateVector_hpp
 
 #include <stdio.h>
-#include "Tensor.hpp"
+#include "SparseTensor.hpp"
 
 using namespace std;
 
 class StateVector {
 private:
   unsigned long n;
-  Tensor amplitudes;
+  SparseTensor amplitudes;
   vector<int> qIDs;
 public:
-  StateVector(Tensor amps, vector<int> ids);
+  StateVector(SparseTensor amps, vector<int> ids);
   vector<double> probabilities();
-  void applyGate(Tensor t);
+  void applyGate(SparseTensor t);
   string measure();
   StateVector combineWith(StateVector v);
-  Tensor prepareOperator(Tensor t, vector<int> indices);
+  SparseTensor prepareOperator(SparseTensor t, vector<int> indices);
   void swap(unsigned int q1ID, unsigned int q2ID);
 };
 
