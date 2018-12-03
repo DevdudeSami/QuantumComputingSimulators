@@ -81,6 +81,14 @@ SparseTensor SparseTensor::addTo(SparseTensor t) {
   return SparseTensor(r,c,nnz,new_keys,new_vals);
 }
 
+unsigned int SparseTensor::rowCount() {
+  return r;
+}
+
+unsigned int SparseTensor::colCount() {
+  return c;
+}
+
 SparseTensor SparseTensor::multiplyTo(cxd s) {
 
   key* new_keys = new key[nnz];

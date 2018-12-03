@@ -31,6 +31,9 @@ public:
   SparseTensor(Tensor t, unsigned int nnz);
   SparseTensor(vector<key> positions, unsigned int r, unsigned int c);
   
+  unsigned int rowCount();
+  unsigned int colCount();
+  
   SparseTensor addTo(SparseTensor t);
   SparseTensor multiplyTo(cxd s);
   SparseTensor multiplyTo(SparseTensor t);
