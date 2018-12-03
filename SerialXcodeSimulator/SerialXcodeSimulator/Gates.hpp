@@ -10,11 +10,11 @@
 #define Gates_hpp
 
 #include <stdio.h>
-#include "Tensor.hpp"
+#include "SparseTensor.hpp"
 
-Tensor I();
-Tensor H();
+SparseTensor I();
+SparseTensor H();
 
-Tensor SWAP();
+SparseTensor SWAP();
 
 #endif /* Gates_hpp */

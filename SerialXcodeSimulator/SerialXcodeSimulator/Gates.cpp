@@ -9,29 +9,35 @@
 #include "Gates.hpp"
 
 /************* Q Gates ***************/
-Tensor I() {
-  Tensor t (2,2);
-  t.setElementAt(0,0,1);
-  t.setElementAt(1,1,1);
-  return t;
-}
-
-Tensor H() {
-  Tensor t (2,2);
-  t.setElementAt(0,0,1);
-  t.setElementAt(0,1,1);
-  t.setElementAt(1,0,1);
-  t.setElementAt(1,1,-1);
-  t = t.multiplyBy(1/sqrt(2));
-  return t;
-}
-
-Tensor SWAP() {
-  Row row1 = {1,0,0,0};
-  Row row2 = {0,0,1,0};
-  Row row3 = {0,1,0,0};
-  Row row4 = {0,0,0,1};
+SparseTensor I() {
+  key keys[2] = {make_pair(0, 0), make_pair(1, 1)};
+  cxd vals[2] = {cxd(1), cxd(1)};
+  unsigned int r = 2;
+  unsigned int c = 2;
+  unsigned int nnz = 2;
   
-  return Tensor({row1, row2, row3, row4});
+  return SparseTensor(r, c, nnz, keys, vals);
+}
+
+SparseTensor H() {
+  key keys[4] = {make_pair(0, 0), make_pair(0, 1), make_pair(1, 0), make_pair(1, 1)};
+  cxd vals[4] = {cxd(1), cxd(1), cxd(1), cxd(-1)};
+  unsigned int r = 2;
+  unsigned int c = 2;
+  unsigned int nnz = 4;
+  
+  SparseTensor t (r, c, nnz, keys, vals);
+  
+  return t.multiplyTo(1/sqrt(2));
+}
+
+SparseTensor SWAP() {
+  key keys[4] = {make_pair(0, 0), make_pair(1, 2), make_pair(2, 1), make_pair(3, 3)};
+  cxd vals[4] = {cxd(1), cxd(1), cxd(1), cxd(1)};
+  unsigned int r = 4;
+  unsigned int c = 4;
+  unsigned int nnz = 4;
+
+  return SparseTensor(r, c, nnz, keys, vals);
 }
 /************* END Q Gates ***************/
