@@ -33,12 +33,12 @@ int main(int argc, char const *argv[]) {
 //  cout << state.measure() << endl;
 
 //  const SparseTensor static_m (H(), 4);
-//  SparseTensor m (H(), 4);
+  SparseTensor m (H(), 4);
   
-//  SparseTensor m1 = m.kronWith(m).kMultiplyTo(4);
-//  SparseTensor m2 = m1.multiplyTo(m1);
-//
-//  cout << m2.dense().toString() << endl;
+  SparseTensor m1 = m.kronWith(m).kMultiplyTo(4);
+  SparseTensor m2 = m1.multiplyTo(m1);
+
+  cout << m2.toString() << endl;
 
 //  cout << m.kronWith(m).kMultiplyTo(4).dense().toString() << endl;
 

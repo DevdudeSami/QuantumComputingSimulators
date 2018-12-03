@@ -50,7 +50,7 @@ public:
 
   Tensor dense();
   
-//  string toString();
+  string toString();
 };
 
 

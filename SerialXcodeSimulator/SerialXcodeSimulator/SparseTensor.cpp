@@ -246,19 +246,19 @@ void SparseTensor::enumerateNNZElements(function<void(int,int,cxd)> f) {
     f(keys[i].first,keys[i].second,vals[i]);
 }
 
-//string SparseTensor::toString() {
-//  string result = "";
-//  
-//  for(int i = 0; i < r; i++) {
-//    for(int j = 0; j < c; j++) {
-//      cxd *val = elementAt(i,j);
-//      result += to_string(val.real()) + (val.imag() != 0 ? " + " + to_string(val.imag()) + "i" : "") + "\t";
-//    }
-//    result += "\n";
-//  }
-//  
-//  return result;
-//}
+string SparseTensor::toString() {
+  string result = "";
+  
+  for(int i = 0; i < r; i++) {
+    for(int j = 0; j < c; j++) {
+      cxd val = elementAt(i,j);
+      result += to_string(val.real()) + (val.imag() != 0 ? " + " + to_string(val.imag()) + "i" : "") + "\t";
+    }
+    result += "\n";
+  }
+  
+  return result;
+}
 
 //vector<key> SparseTensor::keys(dok const& m) {
 //  vector<key> result;
