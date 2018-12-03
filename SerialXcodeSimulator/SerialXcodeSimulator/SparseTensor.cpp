@@ -81,7 +81,7 @@ SparseTensor SparseTensor::addTo(SparseTensor t) {
   return SparseTensor(r,c,nnz,new_keys,new_vals);
 }
 
-SparseTensor SparseTensor::kMultiplyTo(cxd s) {
+SparseTensor SparseTensor::multiplyTo(cxd s) {
 
   key* new_keys = new key[nnz];
   cxd* new_vals = new cxd[nnz];

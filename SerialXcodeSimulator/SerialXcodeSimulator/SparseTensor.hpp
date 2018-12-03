@@ -32,7 +32,7 @@ public:
   SparseTensor(vector<key> positions, unsigned int r, unsigned int c);
   
   SparseTensor addTo(SparseTensor t);
-  SparseTensor kMultiplyTo(cxd s);
+  SparseTensor multiplyTo(cxd s);
   SparseTensor multiplyTo(SparseTensor t);
   SparseTensor kronWith(SparseTensor t);
   cxd dotProductWith(SparseTensor t);

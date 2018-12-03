@@ -35,17 +35,17 @@ int main(int argc, char const *argv[]) {
 //  const SparseTensor static_m (H(), 4);
   SparseTensor m (H(), 4);
   
-  SparseTensor m1 = m.kronWith(m).kMultiplyTo(4);
+  SparseTensor m1 = m.kronWith(m).multiplyTo(4);
   SparseTensor m2 = m1.multiplyTo(m1);
 
   cout << m2.toString() << endl;
 
-//  cout << m.kronWith(m).kMultiplyTo(4).dense().toString() << endl;
+//  cout << m.kronWith(m).multiplyTo(4).dense().toString() << endl;
 
 //  for(int i = 0; i < 10; i++) {
 //    cout << i << endl;
 //    m = m.kronWith(static_m);
-//    m = m.kMultiplyTo(4);
+//    m = m.multiplyTo(4);
 //    m.multiplyTo(m);
 //  }
   
