@@ -31,10 +31,10 @@ public:
   SparseTensor(Tensor t, unsigned int nnz);
   SparseTensor(vector<key> positions, unsigned int r, unsigned int c);
   
-  SparseTensor addTo(SparseTensor m);
+  SparseTensor addTo(SparseTensor t);
   SparseTensor kMultiplyTo(cxd s);
-  SparseTensor multiplyTo(SparseTensor m);
-  SparseTensor kronWith(SparseTensor m);
+  SparseTensor multiplyTo(SparseTensor t);
+  SparseTensor kronWith(SparseTensor t);
   cxd dotProductWith(SparseTensor t);
   
   SparseTensor transpose();
@@ -42,7 +42,7 @@ public:
   bool matchesDimensionsWith(SparseTensor t);
   bool isNormalised();
   
-  cxd* elementAt(int r, int c);
+  cxd elementAt(unsigned int i, unsigned int j);
   bool elementIsNonZero(unsigned int i, unsigned int j);
   
   void enumerateElements(function<void(int,int,cxd)> f);
@@ -50,6 +50,7 @@ public:
 
   Tensor dense();
   
+//  string toString();
 };
 
 

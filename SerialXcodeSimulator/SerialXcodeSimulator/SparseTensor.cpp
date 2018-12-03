@@ -41,9 +41,9 @@ SparseTensor::SparseTensor(vector<key> positions, unsigned int r, unsigned int c
   keys = &positions[0];
 }
 
-SparseTensor SparseTensor::addTo(SparseTensor m) {
-  assert(r == m.r);
-  assert(c == m.c);
+SparseTensor SparseTensor::addTo(SparseTensor t) {
+  assert(r == t.r);
+  assert(c == t.c);
   
   vector<cxd> values;
   vector<key> ks;
@@ -51,9 +51,9 @@ SparseTensor SparseTensor::addTo(SparseTensor m) {
 
   #pragma omp parallel for
   for(int i = 0; i < nnz; i++) {
-    if(find(m.keys, m.keys + m.nnz, keys[i]) != m.keys + m.nnz) {
+    if(find(t.keys, t.keys + t.nnz, keys[i]) != t.keys + t.nnz) {
       ks.push_back(keys[i]);
-      values.push_back(vals[i]+m.vals[i]);
+      values.push_back(vals[i]+t.vals[i]);
       new_nnz++;
     }
     else {
@@ -64,10 +64,10 @@ SparseTensor SparseTensor::addTo(SparseTensor m) {
   }
   
   #pragma omp parallel for
-  for(int i = 0; i < m.nnz; i++) {
-    if(find(keys, keys+nnz, m.keys[i]) == keys+nnz) {
-      ks.push_back(m.keys[i]);
-      values.push_back(m.vals[i]);
+  for(int i = 0; i < t.nnz; i++) {
+    if(find(keys, keys+nnz, t.keys[i]) == keys+nnz) {
+      ks.push_back(t.keys[i]);
+      values.push_back(t.vals[i]);
       new_nnz++;
     }
   }
@@ -95,8 +95,8 @@ SparseTensor SparseTensor::kMultiplyTo(cxd s) {
   return SparseTensor(r,c,nnz,new_keys,new_vals);
 }
 
-SparseTensor SparseTensor::multiplyTo(SparseTensor m) {
-  assert(c == m.r);
+SparseTensor SparseTensor::multiplyTo(SparseTensor t) {
+  assert(c == t.r);
 
   vector<cxd> values;
   vector<key> ks;
@@ -116,21 +116,21 @@ SparseTensor SparseTensor::multiplyTo(SparseTensor m) {
 //  #pragma omp parallel for
   for(int i = 0; i < nnz; i++) {
 //    #pragma omp parallel for
-    for(int j = 0; j < m.nnz; j++) {
+    for(int j = 0; j < t.nnz; j++) {
       key k1 = keys[i];
-      key k2 = m.keys[j];
+      key k2 = t.keys[j];
       if(k1.second == k2.first) {
         key k = make_pair(k1.first, k2.second);
 
         ptrdiff_t keyIndex = distance(ks.begin(), find(ks.begin(), ks.end(), k));
         
         if(keyIndex < ks.size()) {
-          values[keyIndex] += vals[i]*m.vals[j];
+          values[keyIndex] += vals[i]*t.vals[j];
         }
         else {
           new_nnz++;
           ks.push_back(k);
-          values.push_back(vals[i]*m.vals[j]);
+          values.push_back(vals[i]*t.vals[j]);
         }
       }
     }
@@ -142,27 +142,27 @@ SparseTensor SparseTensor::multiplyTo(SparseTensor m) {
   copy(values.begin(), values.end(), new_vals);
   copy(ks.begin(), ks.end(), new_keys);
 
-  return SparseTensor(r,m.c,new_nnz,new_keys,new_vals);
+  return SparseTensor(r,t.c,new_nnz,new_keys,new_vals);
 }
 
-SparseTensor SparseTensor::kronWith(SparseTensor m) {
+SparseTensor SparseTensor::kronWith(SparseTensor t) {
 
-  key* new_keys = new key[nnz*m.nnz];
-  cxd* new_vals = new cxd[nnz*m.nnz];
+  key* new_keys = new key[nnz*t.nnz];
+  cxd* new_vals = new cxd[nnz*t.nnz];
 
   #pragma omp parallel for
   for(int i = 0; i < nnz; i++) {
     #pragma omp parallel for
-    for(int j = 0; j < m.nnz; j++) {
+    for(int j = 0; j < t.nnz; j++) {
       key k1 = keys[i];
-      key k2 = m.keys[j];
+      key k2 = t.keys[j];
 
-      new_keys[i*m.nnz+j] = make_pair(k1.first*m.r+k2.first, k1.second*m.c+k2.second);
-      new_vals[i*m.nnz+j] = vals[i] * m.vals[j];
+      new_keys[i*t.nnz+j] = make_pair(k1.first*t.r+k2.first, k1.second*t.c+k2.second);
+      new_vals[i*t.nnz+j] = vals[i] * t.vals[j];
     }
   }
 
-  return SparseTensor(r*m.r,c*m.c,nnz*m.nnz,new_keys,new_vals);
+  return SparseTensor(r*t.r,c*t.c,nnz*t.nnz,new_keys,new_vals);
 }
 
 cxd SparseTensor::dotProductWith(SparseTensor t) {
@@ -172,8 +172,8 @@ cxd SparseTensor::dotProductWith(SparseTensor t) {
   
   #pragma omp parallel for reduction (+:result)
   for(int i = 0; i < nnz; i++) {
-    cxd *e = t.elementAt(keys[i].first, keys[i].second);
-    if(e != nullptr) result += (*e)*vals[i];
+    cxd e = t.elementAt(keys[i].first, keys[i].second);
+    if(e != cxd(0)) result += e*vals[i];
   }
   
   return result;
@@ -182,6 +182,7 @@ cxd SparseTensor::dotProductWith(SparseTensor t) {
 Tensor SparseTensor::dense() {
   Tensor t (r,c);
   
+  #pragma omp parallel for
   for(int i = 0; i < nnz; i++) {
     key k = keys[i];
     t.setElementAt(k.first, k.second, vals[i]);
@@ -190,14 +191,14 @@ Tensor SparseTensor::dense() {
   return t;
 }
 
-cxd *SparseTensor::elementAt(int r, int c) {
-  key k = make_pair(r, c);
+cxd SparseTensor::elementAt(unsigned int i, unsigned int j) {
+  key k = make_pair(i, j);
 
   for(int i = 0; i < nnz; i++) {
-    if(keys[i] == k) return &vals[i];
+    if(keys[i] == k) return vals[i];
   }
   
-  return nullptr;
+  return 0;
 }
 
 SparseTensor SparseTensor::transpose() {
@@ -222,9 +223,8 @@ bool SparseTensor::isNormalised() {
   double sumOfNorms = 0;
   
   #pragma omp parallel for reduction (+:sumOfNorms)
-  for(int i = 0; i < nnz; i++) {
+  for(int i = 0; i < nnz; i++)
     sumOfNorms += abs(vals[i]);
-  }
   
   return sumOfNorms == 1;
 }
@@ -236,19 +236,29 @@ bool SparseTensor::elementIsNonZero(unsigned int i, unsigned int j) {
 }
 
 void SparseTensor::enumerateElements(function<void(int,int,cxd)> f) {
-  for(int i = 0; i < r; i++) {
-    for(int j = 0; j < c; j++) {
-      cxd *potentialElement = elementAt(i, j);
-      if(potentialElement == nullptr) f(i,j,0);
-      else f(i,j,*potentialElement);
-    }
-  }
+  for(int i = 0; i < r; i++)
+    for(int j = 0; j < c; j++)
+      f(i,j,elementAt(i, j));
 }
 
 void SparseTensor::enumerateNNZElements(function<void(int,int,cxd)> f) {
   for(int i = 0; i < nnz; i++)
-      f(keys[i].first,keys[i].second,vals[i]);
+    f(keys[i].first,keys[i].second,vals[i]);
 }
+
+//string SparseTensor::toString() {
+//  string result = "";
+//  
+//  for(int i = 0; i < r; i++) {
+//    for(int j = 0; j < c; j++) {
+//      cxd *val = elementAt(i,j);
+//      result += to_string(val.real()) + (val.imag() != 0 ? " + " + to_string(val.imag()) + "i" : "") + "\t";
+//    }
+//    result += "\n";
+//  }
+//  
+//  return result;
+//}
 
 //vector<key> SparseTensor::keys(dok const& m) {
 //  vector<key> result;
