@@ -13,8 +13,15 @@
 #include "SparseTensor.hpp"
 
 SparseTensor I();
+SparseTensor X();
+SparseTensor Y();
+SparseTensor Z();
+SparseTensor P();
 SparseTensor H();
 
+SparseTensor CNOT();
 SparseTensor SWAP();
+
+SparseTensor TOFF();
 
 #endif /* Gates_hpp */
