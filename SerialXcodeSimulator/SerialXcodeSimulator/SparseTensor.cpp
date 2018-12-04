@@ -9,7 +9,13 @@
 #include "SparseTensor.hpp"
 #include <omp.h>
 
-SparseTensor::SparseTensor(unsigned int r, unsigned int c, unsigned int nnz, key* keys, cxd* vals) : r{r},  c{c}, nnz{nnz}, keys{keys}, vals{vals} {}
+SparseTensor::SparseTensor(unsigned int r, unsigned int c, unsigned int nnz, key* keys, cxd* vals) : r{r},  c{c}, nnz{nnz} {
+  this->keys = new key[nnz];
+  this->vals = new cxd[nnz];
+  
+  copy(keys, keys+nnz, this->keys);
+  copy(vals, vals+nnz, this->vals);
+}
 
 SparseTensor::SparseTensor(Tensor t, unsigned int nnz) : nnz{nnz} {
   r = t.rowCount();
