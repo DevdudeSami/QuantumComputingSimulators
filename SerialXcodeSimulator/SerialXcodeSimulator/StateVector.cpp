@@ -14,7 +14,7 @@ using namespace std;
 
 vector<string> qubitStatesCombinations(unsigned int n);
 
-StateVector::StateVector(SparseTensor amps, vector<int> ids) : n(ids.size()), amplitudes(amps), qIDs(ids) {
+StateVector::StateVector(SparseTensor amps, vector<unsigned int> ids) : n(ids.size()), amplitudes(amps), qIDs(ids) {
   
   assert(amplitudes.rowCount() == 1);
   assert(log2(amplitudes.colCount()) == n);
@@ -29,6 +29,8 @@ vector<double> StateVector::probabilities() {
 }
 
 unsigned long StateVector::numberOfQubits() { return n; }
+
+vector<unsigned int> StateVector::qubitIDs() { return qIDs; }
 
 void StateVector::applyGate(SparseTensor t) {
   amplitudes = t.multiplyTo(amplitudes.transpose()).transpose();
@@ -67,7 +69,7 @@ string StateVector::measure() {
 
 StateVector StateVector::combineWith(StateVector v) {
   SparseTensor newAmplitudes = amplitudes.kronWith(v.amplitudes);
-  vector<int> newQIDs = {};
+  vector<unsigned int> newQIDs = {};
   newQIDs.insert(newQIDs.end(), qIDs.begin(), qIDs.end());
   newQIDs.insert(newQIDs.end(), v.qIDs.begin(), v.qIDs.end());
   return StateVector(newAmplitudes, newQIDs);

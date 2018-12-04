@@ -18,11 +18,12 @@ class StateVector {
 private:
   unsigned long n;
   SparseTensor amplitudes;
-  vector<int> qIDs;
+  vector<unsigned int> qIDs;
 public:
-  StateVector(SparseTensor amps, vector<int> ids);
+  StateVector(SparseTensor amps, vector<unsigned int> ids);
   vector<double> probabilities();
   unsigned long numberOfQubits();
+  vector<unsigned int> qubitIDs();
   void applyGate(SparseTensor t);
   void applyNGate(SparseTensor t, vector<int> qIDs);
   string measure();
