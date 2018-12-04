@@ -15,6 +15,7 @@
 #include "Gates.hpp"
 #include "StateVector.hpp"
 #include "SparseTensor.hpp"
+#include "Accumulator.hpp"
 
 using namespace std;
 
@@ -26,9 +27,10 @@ int main(int argc, char const *argv[]) {
 
   StateVector state (SparseTensor(Tensor(amps),1), qIDs);
 
-  state.applyNGate(X(), vector<int>({0}));
+  state.applyNGate(H(), vector<int>({0}));
+  state.applyNGate(CNOT(), vector<int>({0,1}));
   
-  cout << state.measure() << endl;
+  cout << takeMeasurementsInString(state, 1000, nullptr) << endl;
 
 //  const SparseTensor static_m (H(), 4);
 //  SparseTensor m = H();
