@@ -32,6 +32,26 @@ void StateVector::applyGate(SparseTensor t) {
   amplitudes = t.multiplyTo(amplitudes.transpose()).transpose();
 }
 
+void StateVector::applyNGate(SparseTensor t, vector<int> qIDs) {
+  vector<pair<int, int>> swapsDone;
+  vector<int> qIndicesToSwapInto;
+  
+  // Swap into the first qIDs.size() qubits
+  for(int i = 0; i < qIDs.size(); i++) {
+    qIndicesToSwapInto.push_back(i);
+    swapsDone.push_back(make_pair(qIDs[i], this->qIDs[i]));
+    swap(qIDs[i], this->qIDs[i]);
+  }
+  
+  SparseTensor op = prepareOperator(t, qIndicesToSwapInto);
+  applyGate(op);
+  
+  // Swap back in reverse order
+  for(int i = qIDs.size() - 1; i >= 0; i--) {
+    swap(swapsDone[i].first, swapsDone[i].second);
+  }
+}
+
 string StateVector::measure() {
   vector<string> combs = qubitStatesCombinations(n);
   vector<double> probs = probabilities();

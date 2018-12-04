@@ -23,6 +23,7 @@ public:
   StateVector(SparseTensor amps, vector<int> ids);
   vector<double> probabilities();
   void applyGate(SparseTensor t);
+  void applyNGate(SparseTensor t, vector<int> qIDs);
   string measure();
   StateVector combineWith(StateVector v);
   SparseTensor prepareOperator(SparseTensor t, vector<int> indices);

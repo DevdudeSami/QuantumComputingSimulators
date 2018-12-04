@@ -22,15 +22,13 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
   
-  Row amps = {0,1,0,0,0,0,0,0};
-  vector<int> qIDs = {0,1,2};
+  Row amps = {1,0,0,0};
+  vector<int> qIDs = {0,1};
 
-  StateVector state (SparseTensor(Tensor(amps),2), qIDs);
+  StateVector state (SparseTensor(Tensor(amps),1), qIDs);
 
-//  state.applyGate(SWAP());
+  state.applyNGate(X(), vector<int>({0}));
   
-  state.swap(0, 2);
-
   cout << state.measure() << endl;
 
 //  const SparseTensor static_m (H(), 4);
