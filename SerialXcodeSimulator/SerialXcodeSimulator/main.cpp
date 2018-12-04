@@ -12,7 +12,6 @@
 #include <mpi.h>
 
 #include "Tensor.hpp"
-#include "ArrayTensor.hpp"
 #include "Gates.hpp"
 #include "StateVector.hpp"
 #include "SparseTensor.hpp"

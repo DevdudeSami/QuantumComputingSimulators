@@ -10,10 +10,10 @@
 		EE186546219511B800C29D9C /* Tensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186545219511B800C29D9C /* Tensor.cpp */; };
 		EE186549219511D600C29D9C /* StateVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186547219511D600C29D9C /* StateVector.cpp */; };
 		EE18654C219519BB00C29D9C /* Gates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE18654A219519BB00C29D9C /* Gates.cpp */; };
+		EE3A7EDD21B610B700418E1B /* Accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3A7EDB21B610B700418E1B /* Accumulator.cpp */; };
 		EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE50F48B218BDE0A00B9B10A /* main.cpp */; };
 		EE50F4C3218BDF6F00B9B10A /* libarmadillo.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */; };
 		EE927FB621AF801800CF41ED /* SparseTensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE927FB421AF801800CF41ED /* SparseTensor.cpp */; };
-		EEB05BAC219D9ED300F7B6C5 /* ArrayTensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEB05BAA219D9ED300F7B6C5 /* ArrayTensor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,14 +35,14 @@
 		EE186548219511D600C29D9C /* StateVector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StateVector.hpp; sourceTree = "<group>"; };
 		EE18654A219519BB00C29D9C /* Gates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Gates.cpp; sourceTree = "<group>"; };
 		EE18654B219519BB00C29D9C /* Gates.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Gates.hpp; sourceTree = "<group>"; };
+		EE3A7EDB21B610B700418E1B /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
+		EE3A7EDC21B610B700418E1B /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 		EE50F488218BDE0A00B9B10A /* SerialXcodeSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SerialXcodeSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE50F48B218BDE0A00B9B10A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EE50F4BE218BDEB100B9B10A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libarmadillo.9.dylib; path = ../../../../../../../usr/local/lib/libarmadillo.9.dylib; sourceTree = "<group>"; };
 		EE927FB421AF801800CF41ED /* SparseTensor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SparseTensor.cpp; sourceTree = "<group>"; };
 		EE927FB521AF801800CF41ED /* SparseTensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SparseTensor.hpp; sourceTree = "<group>"; };
-		EEB05BAA219D9ED300F7B6C5 /* ArrayTensor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayTensor.cpp; sourceTree = "<group>"; };
-		EEB05BAB219D9ED300F7B6C5 /* ArrayTensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ArrayTensor.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,8 +78,6 @@
 			isa = PBXGroup;
 			children = (
 				EE50F48B218BDE0A00B9B10A /* main.cpp */,
-				EEB05BAA219D9ED300F7B6C5 /* ArrayTensor.cpp */,
-				EEB05BAB219D9ED300F7B6C5 /* ArrayTensor.hpp */,
 				EE186545219511B800C29D9C /* Tensor.cpp */,
 				EE186544219511B800C29D9C /* Tensor.hpp */,
 				EE186547219511D600C29D9C /* StateVector.cpp */,
@@ -88,6 +86,8 @@
 				EE18654B219519BB00C29D9C /* Gates.hpp */,
 				EE927FB421AF801800CF41ED /* SparseTensor.cpp */,
 				EE927FB521AF801800CF41ED /* SparseTensor.hpp */,
+				EE3A7EDB21B610B700418E1B /* Accumulator.cpp */,
+				EE3A7EDC21B610B700418E1B /* Accumulator.hpp */,
 			);
 			path = SerialXcodeSimulator;
 			sourceTree = "<group>";
@@ -158,8 +158,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE927FB621AF801800CF41ED /* SparseTensor.cpp in Sources */,
-				EEB05BAC219D9ED300F7B6C5 /* ArrayTensor.cpp in Sources */,
 				EE186546219511B800C29D9C /* Tensor.cpp in Sources */,
+				EE3A7EDD21B610B700418E1B /* Accumulator.cpp in Sources */,
 				EE186549219511D600C29D9C /* StateVector.cpp in Sources */,
 				EE18654C219519BB00C29D9C /* Gates.cpp in Sources */,
 				EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */,
