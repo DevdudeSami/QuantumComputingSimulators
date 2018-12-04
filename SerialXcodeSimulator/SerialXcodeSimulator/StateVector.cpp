@@ -28,6 +28,8 @@ vector<double> StateVector::probabilities() {
   return result;
 }
 
+unsigned long StateVector::numberOfQubits() { return n; }
+
 void StateVector::applyGate(SparseTensor t) {
   amplitudes = t.multiplyTo(amplitudes.transpose()).transpose();
 }

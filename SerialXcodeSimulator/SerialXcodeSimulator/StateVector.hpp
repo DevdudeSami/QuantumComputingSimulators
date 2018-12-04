@@ -22,6 +22,7 @@ private:
 public:
   StateVector(SparseTensor amps, vector<int> ids);
   vector<double> probabilities();
+  unsigned long numberOfQubits();
   void applyGate(SparseTensor t);
   void applyNGate(SparseTensor t, vector<int> qIDs);
   string measure();
