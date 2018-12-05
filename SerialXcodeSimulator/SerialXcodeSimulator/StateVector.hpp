@@ -25,10 +25,10 @@ public:
   unsigned long numberOfQubits();
   vector<unsigned int> qubitIDs();
   void applyGate(SparseTensor t);
-  void applyNGate(SparseTensor t, vector<int> qIDs);
+  void applyNGate(SparseTensor t, vector<unsigned int> qIDs);
   string measure();
   StateVector combineWith(StateVector v);
-  SparseTensor prepareOperator(SparseTensor t, vector<int> indices);
+  SparseTensor prepareOperator(SparseTensor t, vector<unsigned int> indices);
   void swap(unsigned int q1ID, unsigned int q2ID);
 };
 

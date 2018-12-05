@@ -36,9 +36,9 @@ void StateVector::applyGate(SparseTensor t) {
   amplitudes = t.multiplyTo(amplitudes.transpose()).transpose();
 }
 
-void StateVector::applyNGate(SparseTensor t, vector<int> qIDs) {
+void StateVector::applyNGate(SparseTensor t, vector<unsigned int> qIDs) {
   vector<pair<int, int>> swapsDone;
-  vector<int> qIndicesToSwapInto;
+  vector<unsigned int> qIndicesToSwapInto;
   
   // Swap into the first qIDs.size() qubits
   for(int i = 0; i < qIDs.size(); i++) {
@@ -76,7 +76,7 @@ StateVector StateVector::combineWith(StateVector v) {
 }
 
 // indices is the indices in registerIndices (in the state vector), not the ids of the qubits
-SparseTensor StateVector::prepareOperator(SparseTensor t, vector<int> indices) {
+SparseTensor StateVector::prepareOperator(SparseTensor t, vector<unsigned int> indices) {
   for(int i = 1; i < indices.size(); i++) assert(indices[i] == indices[i-1] + 1);
   
   SparseTensor op (0,0,0,{},{});
@@ -114,7 +114,7 @@ void StateVector::swap(uint q1ID, uint q2ID) {
     q2PositionInVector = temp;
   }
   
-  int i = q1PositionInVector;
+  unsigned int i = q1PositionInVector;
   while(i < q1PositionInVector + steps) {
     SparseTensor op = prepareOperator(SWAP(), {i, i+1});
     applyGate(op);
