@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "StateVector.hpp"
 #include "SparseTensor.hpp"
+#include "Gates.hpp"
 
 using namespace std;
 
@@ -35,10 +36,14 @@ public:
   void applySingleGateToMutlipleQubits(vector<QID> qIDs, SparseTensor gate);
   void applyMultiGate(vector<QID> qIDs, SparseTensor gate);
   
+  /// The first qubit in the vector is used as the control.
+  void entangleQubits(vector<QID> qIDs);
+  
   list_index combineTwoQubits(QID q1ID, QID q2ID);
   list_index combineQubits(vector<QID> qIDs);
   StateVector stateVectorWithQID(QID qID);
   list_index listIndexFromQID(QID qID);
+  vector<QID> allQubits();
 };
 
 

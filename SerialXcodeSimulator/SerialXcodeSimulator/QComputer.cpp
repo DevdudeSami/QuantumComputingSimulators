@@ -98,7 +98,7 @@ StateVector QComputer::stateVectorWithQID(QID qID) {
   return vectors[listIndexFromQID(qID)];
 }
 
-unsigned int QComputer::listIndexFromQID(QID qID) {
+list_index QComputer::listIndexFromQID(QID qID) {
   for(list_index i = 0; i < vectors.size(); i++) {
     vector<QID> qubitIDs = vectors[i].qubitIDs();
     if (find(qubitIDs.begin(), qubitIDs.end(), qID) != qubitIDs.end()) {
@@ -107,4 +107,20 @@ unsigned int QComputer::listIndexFromQID(QID qID) {
   }
   
   throw exception();
+}
+
+void QComputer::entangleQubits(vector<QID> qIDs) {
+  applySingleGate(qIDs[0], H());
+  
+  for(auto it = ++qIDs.begin(); it != qIDs.end(); ++it) {
+    applyMultiGate(vector<QID>({qIDs[0], *it}), CNOT());
+  }
+}
+
+vector<QID> QComputer::allQubits() {
+  vector<QID> result;
+  for (QID i = 0; i < n; i++) {
+    result.push_back(i);
+  }
+  return result;
 }
