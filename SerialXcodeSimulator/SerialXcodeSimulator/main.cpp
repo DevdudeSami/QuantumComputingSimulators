@@ -23,9 +23,13 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QComputer comp (30);
-  StateVector v = comp.stateVector();
-  cout << "done" << endl;
+  QComputer comp (5);
+  
+  comp.applySingleGate(0, H());
+//  comp.applySingleGate(0, X());
+
+  comp.applyMultiGate(vector<QID>({0,1}), CNOT());
+  
   cout << comp.measure() << endl;
   
 //  Row amps = {1,0,0,0,0,0,0,0};
