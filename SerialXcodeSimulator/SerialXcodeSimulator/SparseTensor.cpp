@@ -238,9 +238,9 @@ bool SparseTensor::isNormalised() {
   
   #pragma omp parallel for reduction (+:sumOfNorms)
   for(int i = 0; i < nnz; i++)
-    sumOfNorms += abs(vals[i]);
+    sumOfNorms += pow(abs(vals[i]),2);
   
-  return sumOfNorms == 1;
+  return round(sumOfNorms*100000)/100000 == 1;
 }
 
 bool SparseTensor::elementIsNonZero(unsigned int i, unsigned int j) {
