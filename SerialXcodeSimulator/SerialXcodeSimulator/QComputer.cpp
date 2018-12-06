@@ -44,14 +44,18 @@ StateVector QComputer::stateVector() {
 }
 
 string QComputer::measure() {
-  string result = "|";
+  vector<char> result (' ', n);
   
-  for(StateVector v: vectors)
-    result += v.measure();
+  for(StateVector v: vectors) {
+    string measurement = v.measure();
+    vector<QID> qIDs = v.qubitIDs();
+    for(int i = 0; i < measurement.length(); i++) {
+      QID qID = qIDs[i];
+      result[qID] = measurement[i];
+    }
+  }
   
-  result += ">";
-  
-  return result;
+  return "|" + string(result.begin(), result.end()) + ">";
 }
 
 list_index QComputer::combineTwoQubits(QID q1ID, QID q2ID) {

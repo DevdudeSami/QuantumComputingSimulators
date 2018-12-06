@@ -23,15 +23,15 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QComputer comp (3);
+  QComputer comp (6);
   
 //  comp.applySingleGate(0, H());
-//  comp.applySingleGate(1, H());
+  comp.applySingleGate(1, H());
 //  comp.applySingleGate(0, X());
 
-//  comp.applyMultiGate(vector<QID>({0,1}), CNOT());
+  comp.applyMultiGate(vector<QID>({1,5}), CNOT());
   
-  comp.entangleQubits(comp.allQubits());
+//  comp.entangleQubits(comp.allQubits());
   
   cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
