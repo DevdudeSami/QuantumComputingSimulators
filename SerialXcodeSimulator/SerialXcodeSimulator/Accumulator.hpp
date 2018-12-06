@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <map>
 #include "StateVector.hpp"
+#include "QComputer.hpp"
 
 using namespace std;
 
@@ -19,5 +20,8 @@ typedef  map<string, unsigned int> states_count;
 
 states_count takeMeasurements(StateVector state, unsigned int n, int *qID);
 string takeMeasurementsInString(StateVector state, unsigned int n, int *qID);
+
+states_count takeMeasurements(QComputer comp, unsigned int n, int *qID);
+string takeMeasurementsInString(QComputer comp, unsigned int n, int *qID);
 
 #endif /* Accumulator_hpp */
