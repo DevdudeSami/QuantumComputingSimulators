@@ -88,7 +88,7 @@ SparseTensor StateVector::prepareOperator(SparseTensor t, vector<unsigned int> i
   }
   
   op = I();
-  for(int i = 1; i < indices.size(); i++) {
+  for(int i = 1; i < n; i++) {
     if(i == indices[0]) op = op.kronWith(t);
     else if(find(indices.begin(), indices.end(), i) != indices.end()) {}
     else op = op.kronWith(I());
