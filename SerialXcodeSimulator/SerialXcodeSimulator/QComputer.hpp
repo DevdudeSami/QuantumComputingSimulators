@@ -40,6 +40,8 @@ public:
   /// The first qubit in the vector is used as the control.
   void entangleQubits(vector<QID> qIDs);
   
+  void flipQubit(QID qID);
+  
   list_index combineTwoQubits(QID q1ID, QID q2ID);
   list_index combineQubits(vector<QID> qIDs);
   StateVector stateVectorWithQID(QID qID);

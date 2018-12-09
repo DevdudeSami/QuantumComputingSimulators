@@ -123,6 +123,10 @@ void QComputer::entangleQubits(vector<QID> qIDs) {
   }
 }
 
+void QComputer::flipQubit(QID qID) {
+  applySingleGate(qID, X());
+}
+
 vector<QID> QComputer::allQubits() {
   vector<QID> result;
   for (QID i = 0; i < n; i++) {

@@ -17,23 +17,30 @@
 #include "SparseTensor.hpp"
 #include "Accumulator.hpp"
 #include "QComputer.hpp"
+#include "Algorithms.hpp"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QComputer comp (6);
+//  QComputer comp (15);
   
-//  comp.applySingleGate(0, H());
-  comp.applySingleGate(1, H());
-//  comp.applySingleGate(0, X());
-
-  comp.applyMultiGate(vector<QID>({1,5}), CNOT());
+//  comp.combineQubits(comp.allQubits());
+  
+//  comp.applySingleGate(3, H());
+//  comp.applySingleGate(1, H());
+//  comp.applySingleGate(1, X());
+//
+//  comp.applyMultiGate({1,5}, CNOT());
   
 //  comp.entangleQubits(comp.allQubits());
+//  comp.applySingleGate(3, X());
   
-  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
+//  comp.applySingleGateToMutlipleQubits(vector<QID>({1,5}), X());
+//  comp.applyMultiGate(vector<QID>({1,5,3}), TOFF());
+  
+//  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
 //  Row amps = {1,0,0,0,0,0,0,0};
 //  vector<int> qIDs = {0,1,2};
@@ -45,31 +52,43 @@ int main(int argc, char const *argv[]) {
 //
 //  cout << takeMeasurementsInString(state, 1000, nullptr) << endl;
 
-//  const SparseTensor static_m (H(), 4);
+//  const SparseTensor static_i = I();
+//  const SparseTensor static_h = H();
 //  SparseTensor m = H();
-//
-//  SparseTensor m1 = m.kronWith(m).multiplyTo(4);
-//  SparseTensor m2 = m1.multiplyTo(m1);
-//
-//  cout << m2.toString() << endl;
 
-//  cout << m.kronWith(m).multiplyTo(4).dense().toString() << endl;
-
-//  for(int i = 0; i < 10; i++) {
+//  for(int i = 0; i < 15; i++) {
 //    cout << i << endl;
-//    m = m.kronWith(static_m);
-//    m = m.multiplyTo(4);
-//    m.multiplyTo(m);
+//    if(i%2 == 0) m = m.kronWith(static_h);
+//    else m = m.kronWith(static_i);
+//
+//    auto end = chrono::high_resolution_clock::now();
+//    auto diff = end - start;
+//    cout << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
 //  }
+
+  // Algorithms testing
   
+  // Half Adder testing
+  cout << HalfAdder(0, 0) << endl;
+  cout << HalfAdder(0, 1) << endl;
+  cout << HalfAdder(1, 0) << endl;
+  cout << HalfAdder(1, 1) << endl;
   
-  // Transpose test
-//  SparseTensor swap (SWAP(),6);
-//  cout << swap.transpose().dense().toString() << endl;
+  cout << "-----" << endl;
+  
+  // Full Adder testing
+  cout << FullAdder(0, 0, 0) << endl;
+  cout << FullAdder(0, 0, 1) << endl;
+  cout << FullAdder(0, 1, 0) << endl;
+  cout << FullAdder(0, 1, 1) << endl;
+  cout << FullAdder(1, 0, 0) << endl;
+  cout << FullAdder(1, 0, 1) << endl;
+  cout << FullAdder(1, 1, 0) << endl;
+  cout << FullAdder(1, 1, 1) << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
-  cout << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
+  cout << "--- end time: " << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
 
   return 0;
 }
