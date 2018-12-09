@@ -28,6 +28,7 @@ public:
   QComputer(string s);
   QComputer(unsigned int n);
   
+  unsigned int numberOfQubits();
   vector<StateVector> stateVectors();
   StateVector stateVector();
   string measure();

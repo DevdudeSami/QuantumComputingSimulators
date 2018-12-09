@@ -29,6 +29,8 @@ QComputer::QComputer(unsigned int n) : n{n} {
   }
 }
 
+unsigned int QComputer::numberOfQubits() { return n; }
+
 vector<StateVector> QComputer::stateVectors() { return vectors; }
 
 StateVector QComputer::stateVector() {
