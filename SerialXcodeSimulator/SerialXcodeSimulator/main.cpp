@@ -24,7 +24,17 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-//  QComputer comp (15);
+//  QComputer comp (6);
+  
+//  comp.flipQubit(3);
+//  comp.flipQubit(2);
+//  
+//  MAJCircuit(&comp, {2,1,0});
+//  MAJCircuit(&comp, {4,3,2});
+//  UMACircuit(&comp, {2,3,4});
+//  UMACircuit(&comp, {0,1,2});
+//
+//  comp.applyMultiGate({4,5}, CNOT());
   
 //  comp.combineQubits(comp.allQubits());
   
@@ -69,22 +79,25 @@ int main(int argc, char const *argv[]) {
   // Algorithms testing
   
   // Half Adder testing
-  cout << HalfAdder(0, 0) << endl;
-  cout << HalfAdder(0, 1) << endl;
-  cout << HalfAdder(1, 0) << endl;
-  cout << HalfAdder(1, 1) << endl;
+//  cout << HalfAdder(0, 0) << endl;
+//  cout << HalfAdder(0, 1) << endl;
+//  cout << HalfAdder(1, 0) << endl;
+//  cout << HalfAdder(1, 1) << endl;
+//
+//  cout << "-----" << endl;
+//
+//  // Full Adder testing
+//  cout << FullAdder(0, 0, 0) << endl;
+//  cout << FullAdder(0, 0, 1) << endl;
+//  cout << FullAdder(0, 1, 0) << endl;
+//  cout << FullAdder(0, 1, 1) << endl;
+//  cout << FullAdder(1, 0, 0) << endl;
+//  cout << FullAdder(1, 0, 1) << endl;
+//  cout << FullAdder(1, 1, 0) << endl;
+//  cout << FullAdder(1, 1, 1) << endl;
   
-  cout << "-----" << endl;
-  
-  // Full Adder testing
-  cout << FullAdder(0, 0, 0) << endl;
-  cout << FullAdder(0, 0, 1) << endl;
-  cout << FullAdder(0, 1, 0) << endl;
-  cout << FullAdder(0, 1, 1) << endl;
-  cout << FullAdder(1, 0, 0) << endl;
-  cout << FullAdder(1, 0, 1) << endl;
-  cout << FullAdder(1, 1, 0) << endl;
-  cout << FullAdder(1, 1, 1) << endl;
+  // Ripple Carry Adder testing
+  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
