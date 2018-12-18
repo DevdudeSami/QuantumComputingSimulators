@@ -10,18 +10,36 @@
 #define Gates_hpp
 
 #include <stdio.h>
-#include "SparseTensor.hpp"
+#include "QComputer.hpp"
 
-SparseTensor I();
-SparseTensor X();
-SparseTensor Y();
-SparseTensor Z();
-SparseTensor P();
-SparseTensor H();
+using namespace std;
 
-SparseTensor CNOT();
-SparseTensor SWAP();
+class QComputer;
+typedef unsigned int QID;
 
-SparseTensor TOFF();
+SparseTensor IGate();
+SparseTensor XGate();
+SparseTensor YGate();
+SparseTensor ZGate();
+SparseTensor PGate();
+SparseTensor HGate();
+
+SparseTensor CNOTGate();
+SparseTensor SWAPGate();
+
+SparseTensor TOFFGate();
+
+void GateCircuit(QComputer *comp, vector<QID> qIDs, SparseTensor t);
+
+void IGate(QComputer *comp, vector<QID> qIDs);
+void XGate(QComputer *comp, vector<QID> qIDs);
+void YGate(QComputer *comp, vector<QID> qIDs);
+void ZGate(QComputer *comp, vector<QID> qIDs);
+void PGate(QComputer *comp, vector<QID> qIDs);
+void HGate(QComputer *comp, vector<QID> qIDs);
+void CNOTGate(QComputer *comp, vector<QID> qIDs);
+void SWAPGate(QComputer *comp, vector<QID> qIDs);
+void TOFFGate(QComputer *comp, vector<QID> qIDs);
+
 
 #endif /* Gates_hpp */

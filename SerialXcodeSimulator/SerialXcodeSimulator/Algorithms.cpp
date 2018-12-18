@@ -13,8 +13,8 @@ void HalfAdderCircuit(QComputer *comp, vector<QID> qIDs) {
   assert(comp->numberOfQubits() >= 3);
   assert(qIDs.size() == 3);
   
-  comp->applyMultiGate(qIDs, TOFF());
-  comp->applyMultiGate({qIDs[0], qIDs[1]}, CNOT());
+  TOFFGate(comp, qIDs);
+  CNOTGate(comp, {qIDs[0], qIDs[1]});
 }
 
 string HalfAdder(uint A, uint B) {
@@ -36,7 +36,7 @@ void FullAdderCircuit(QComputer *comp, vector<QID> qIDs) {
   
   HalfAdderCircuit(comp, {qIDs[0], qIDs[1], qIDs[3]});
   HalfAdderCircuit(comp, {qIDs[1], qIDs[2], qIDs[3]});
-  comp->applyMultiGate({qIDs[0], qIDs[1]}, CNOT());
+  CNOTGate(comp, {qIDs[0], qIDs[1]});
 }
 
 string FullAdder(uint A, uint B, uint C) {

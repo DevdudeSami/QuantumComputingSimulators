@@ -116,15 +116,15 @@ list_index QComputer::listIndexFromQID(QID qID) {
 }
 
 void QComputer::entangleQubits(vector<QID> qIDs) {
-  applySingleGate(qIDs[0], H());
+  applySingleGate(qIDs[0], HGate());
   
   for(auto it = ++qIDs.begin(); it != qIDs.end(); ++it) {
-    applyMultiGate(vector<QID>({qIDs[0], *it}), CNOT());
+    applyMultiGate(vector<QID>({qIDs[0], *it}), CNOTGate());
   }
 }
 
 void QComputer::flipQubit(QID qID) {
-  applySingleGate(qID, X());
+  applySingleGate(qID, XGate());
 }
 
 vector<QID> QComputer::allQubits() {

@@ -83,15 +83,15 @@ SparseTensor StateVector::prepareOperator(SparseTensor t, vector<unsigned int> i
   
   if(indices[0] == 0) {
     op = t;
-    for(int i = indices.size(); i < n; i++) op = op.kronWith(I());
+    for(int i = indices.size(); i < n; i++) op = op.kronWith(IGate());
     return op;
   }
   
-  op = I();
+  op = IGate();
   for(int i = 1; i < n; i++) {
     if(i == indices[0]) op = op.kronWith(t);
     else if(find(indices.begin(), indices.end(), i) != indices.end()) {}
-    else op = op.kronWith(I());
+    else op = op.kronWith(IGate());
   }
   
   return op;
@@ -116,14 +116,14 @@ void StateVector::swap(uint q1ID, uint q2ID) {
   
   unsigned int i = q1PositionInVector;
   while(i < q1PositionInVector + steps) {
-    SparseTensor op = prepareOperator(SWAP(), {i, i+1});
+    SparseTensor op = prepareOperator(SWAPGate(), {i, i+1});
     applyGate(op);
     i++;
   }
   
   i = q2PositionInVector - 1;
   while(i > q2PositionInVector - steps) {
-    SparseTensor op = prepareOperator(SWAP(), {i-1, i});
+    SparseTensor op = prepareOperator(SWAPGate(), {i-1, i});
     applyGate(op);
     i--;
   }
