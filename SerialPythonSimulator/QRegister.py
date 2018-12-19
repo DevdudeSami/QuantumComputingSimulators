@@ -7,6 +7,7 @@ from functools import reduce
 from itertools import product
 import random
 import math
+import time
 
 I = scsp.csr_matrix(np.array([[1,0],[0,1]], dtype=complex))
 H = scsp.csr_matrix(np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2))
@@ -55,8 +56,8 @@ class QRegister:
     vectors = []
     currentQubitIndex = 0
     for v in desc.split('|'):
-      amplitudes = list(map(lambda x: complex(x), v.split(',')))
-      n = int(math.log(len(amplitudes), 2))
+      amplitudes = scsp.csr_matrix(np.array(list(map(lambda x: complex(x), v.split(',')))))
+      n = int(math.log(amplitudes.shape[1], 2))
       vectors.append(V(amplitudes, list(range(currentQubitIndex, currentQubitIndex+n))))
       currentQubitIndex += n
     return QRegister(*vectors)
@@ -65,7 +66,8 @@ class QRegister:
   def withQubits(n):
     vectors = []
     for i in range(0,n):
-      vectors.append(V([1,0], [i]))
+      amps = scsp.csr_matrix(np.array([1,0]))
+      vectors.append(V(amps, [i]))
     return QRegister(*vectors)
 
   @property
@@ -145,7 +147,7 @@ class QRegister:
 
     combinedState = self.vectors[q1ListIndex].combineWith(self.vectors[q2ListIndex])
     self.vectors[min(q1ListIndex,q2ListIndex)] = combinedState
-    self.vectors = list(np.delete(self.vectors, max(q1ListIndex,q2ListIndex)))
+    del self.vectors[max(q1ListIndex,q2ListIndex)]
     return min(q1ListIndex,q2ListIndex)
 
   def combineQubits(self,indices):
@@ -167,7 +169,7 @@ class QRegister:
   # q1 is the control, q2 is the target
   def entangleTwoQubits(self, q1, q2):
     self.applySingleQGate(q1, H)
-    self.applyDoubleQGateToSingleQubits(q1, q2, CNOT)
+    self.applyNGate([q1, q2], CNOT)
 
   def entangleThreeQubits(self, q1, q2, q3):
     self.applySingleQGate(q1, H)
@@ -182,13 +184,15 @@ class QRegister:
   @property
   def allQubits(self): return list(range(0,self.n))
 
-stateDescription = '1,0|1,0'
+start_time = time.time()
+
+# stateDescription = '1,0|1,0'
 
 # myReg = QRegister.fromString(stateDescription)
-myReg = QRegister.withQubits(4)
+# myReg = QRegister.withQubits(4)
 
-myReg.applySingleQGate(0,X)
-myReg.applySingleQGate(1,X)
+# myReg.applySingleQGate(0,X)
+# myReg.applySingleQGate(1,X)
 # print(myReg.vectors)
 # myReg.applyNGate([0,1],CU(H))
 
@@ -209,7 +213,7 @@ myReg.applySingleQGate(1,X)
 
 # myReg.entangleNQubits(myReg.allQubits)
 
-myAcc = Accumulator(myReg)
+# myAcc = Accumulator(myReg)
 # print(myAcc.takeMeasurements(1000))
 
 
@@ -269,9 +273,9 @@ def DJAlgorithm(gate):
 ########## TELEPORTATION ###########§
 
 # q0 is x, q1 is y, q2 is z
-initialStateDescription = "1,0|1,0|1,0" # x, y, z
+# initialStateDescription = "1,0|1,0|1,0" # x, y, z
 
-teleportationReg = QRegister.fromString(initialStateDescription)
+# teleportationReg = QRegister.fromString(initialStateDescription)
 
 # teleportationReg.applySingleQGate(1,L)
 # teleportationReg.applyDoubleQGateToSingleQubits(1,2,CNOT)
@@ -284,16 +288,16 @@ teleportationReg = QRegister.fromString(initialStateDescription)
 # teleportationReg.applySingleQGate(2,T)
 # teleportationReg.applyDoubleQGateToSingleQubits(2,0,CNOT)
 
-teleportationReg.entangleTwoQubits(1,0) # x and y start off entangled
-teleportationReg.applyDoubleQGateToSingleQubits(2,0,CNOT)
-teleportationReg.applySingleQGate(2,H)
+# teleportationReg.entangleTwoQubits(1,0) # x and y start off entangled
+# teleportationReg.applyDoubleQGateToSingleQubits(2,0,CNOT)
+# teleportationReg.applySingleQGate(2,H)
 # zMeasure = teleportationReg.measureQubit(2)
 # xMeasure = teleportationReg.measureQubit(0)
-m = teleportationReg.measure[0]
-zMeasure = int(m[2])
-xMeasure = int(m[0])
-if xMeasure == 1: teleportationReg.applySingleQGate(1,X)
-if zMeasure == 1: teleportationReg.applySingleQGate(1,Z)
+# m = teleportationReg.measure[0]
+# zMeasure = int(m[2])
+# xMeasure = int(m[0])
+# if xMeasure == 1: teleportationReg.applySingleQGate(1,X)
+# if zMeasure == 1: teleportationReg.applySingleQGate(1,Z)
 
 # print(teleportationReg.measureQubit(1))
 
@@ -342,10 +346,10 @@ def halfAdder(A, B):
   m = qComputer.measure[0]
   return m[1], m[2]
 
-# print(halfAdder(0,0))
-# print(halfAdder(0,1))
-# print(halfAdder(1,0))
-# print(halfAdder(1,1))
+print(halfAdder(0,0))
+print(halfAdder(0,1))
+print(halfAdder(1,0))
+print(halfAdder(1,1))
 
 ######### Full Adder ###########
 
@@ -369,14 +373,14 @@ def fullAdder(A, B, C = 0):
   m = qComputer.measure[0]
   return m[3], m[2]
 
-# print(fullAdder(0,0,0))
-# print(fullAdder(0,0,1))
-# print(fullAdder(0,1,0))
-# print(fullAdder(0,1,1))
-# print(fullAdder(1,0,0))
-# print(fullAdder(1,0,1))
-# print(fullAdder(1,1,0))
-# print(fullAdder(1,1,1))
+print(fullAdder(0,0,0))
+print(fullAdder(0,0,1))
+print(fullAdder(0,1,0))
+print(fullAdder(0,1,1))
+print(fullAdder(1,0,0))
+print(fullAdder(1,0,1))
+print(fullAdder(1,1,0))
+print(fullAdder(1,1,1))
 
 ######### Ripple 4-bit Adder #########
 
@@ -407,11 +411,12 @@ def ripple4BitAdder(A="0000", B="0000"):
   print("2")
   fullAdderCircuit(qComputer, [4,5,12,10])
   print("3")
-  # fullAdderCircuit(qComputer, [6,7,12,11])
-  # print("4")
+  fullAdderCircuit(qComputer, [6,7,12,11])
+  print("4")
 
   m = qComputer.measure[0]
   return m[8] + m[9] + m[10] + m[11]
 
-print(ripple4BitAdder("0000", "0010"))
+# print(ripple4BitAdder("0000", "0010"))
 
+print("--- %s seconds ---" % (time.time() - start_time))

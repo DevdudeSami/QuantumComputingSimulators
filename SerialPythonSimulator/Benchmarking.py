@@ -13,10 +13,11 @@ m = H.copy()
 
 start_time = time.time()
 
-for i in range(0,10):
+for i in range(0,15):
 	print(i)
-	m = scsp.kron(m,H) * 4
-	m.dot(m)
+	if(i%2 == 0): m = scsp.kron(m,H)
+	else: m = scsp.kron(m,I)
+	print("--- %s seconds ---" % (time.time() - start_time))
 	# identity = np.kron(identity,I)
 
 

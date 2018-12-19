@@ -5,25 +5,40 @@ from functools import reduce
 from itertools import product
 import random
 import math
+from Accumulator import Accumulator
 
-I = np.array([[1,0],[0,1]], dtype=complex)
-SWAP = np.array([[1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]], dtype=complex)
+I = scsp.csr_matrix(np.array([[1,0],[0,1]], dtype=complex))
+H = scsp.csr_matrix(np.array([[1,1],[1,-1]], dtype=complex)/math.sqrt(2))
+X = scsp.csr_matrix(np.array([[0,1],[1,0]], dtype=complex))
+Y = scsp.csr_matrix(np.array([[1j,0],[0,-1j]], dtype=complex))
+Z = scsp.csr_matrix(np.array([[1,0],[0,-1]], dtype=complex))
+P = scsp.csr_matrix(np.array([[1,0],[0,1j]], dtype=complex))
+CNOT = scsp.csr_matrix(np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]], dtype=complex))
+TOFF = scsp.csr_matrix(np.array([[1,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,0,1,0,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,1,0]], dtype=complex))
+SWAP = scsp.csr_matrix(np.array([[1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]], dtype=complex))
 
 class StateVector:
 
+  # amplitudes needs to be a csr matrix
   def __init__(self, amplitudes, registerIndices):
-    n = int(math.log(len(amplitudes), 2))
+    # if(type(amplitudes) != scsp.bsr.bsr_matrix):
+    #   amplitudes = scsp.csr_matrix(np.array(amplitudes, dtype=complex))
+    # else:
+    #   amplitudes = amplitudes.tocsr()
 
+    assert(type(amplitudes) == scsp.csr_matrix)
+
+    n = int(math.log(amplitudes.shape[1], 2))
     # if len(amplitudes) != 2**n: raise AssertionError("Length of list amplitudes not equal to number of qubits squared.")
     # assert(len(amplitudes) == 2**n)
     assert(len(registerIndices) == n)
-    
-    normalisationCheck = reduce((lambda x, y: (x + abs(y)**2)), amplitudes, 0)
+
+    normalisationCheck = reduce((lambda x, y: (x + abs(y)**2)), amplitudes.data, 0)
     assert(round(normalisationCheck, 10) == 1)
     # if round(normalisationCheck, 10) != 1: raise AssertionError("Quantum state not normalised.")
  
     self.n = n
-    self.amplitudes = scsp.csr_matrix(np.array(amplitudes, dtype=complex))
+    self.amplitudes = amplitudes
     self.registerIndices = registerIndices
 
 
@@ -42,7 +57,7 @@ class StateVector:
 
   @property
   def probabilities(self):
-    return np.array(list(map(lambda x: abs(x)**2, self.amplitudes)))
+    return np.array(list(map(lambda x: abs(x)**2, self.amplitudes.todense().tolist()[0])))
 
   @property
   def measure(self):
@@ -58,10 +73,10 @@ class StateVector:
   #   self.amplitudes /= norm
 
   def applyGate(self, G):
-    self.amplitudes = G.multiply(self.amplitudes)
+    self.amplitudes = (G @ self.amplitudes.transpose()).transpose()
 
   def combineWith(self, v):
-    newAmplitudes = scsp.kron(self.amplitudes, v.amplitudes)
+    newAmplitudes = scsp.kron(self.amplitudes, v.amplitudes).tocsr()
     return StateVector(newAmplitudes, self.registerIndices + v.registerIndices)
 
   @staticmethod
@@ -149,13 +164,13 @@ class StateVector:
     i = q1PositionInVector
     while i < q1PositionInVector + steps:
       operator = self.prepareDoubleQubitMatrixOperator(SWAP, i, i+1)
-      self.amplitudes = operator @ self.amplitudes
+      self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
       i += 1
 
     i = q2PositionInVector - 1
     while i > q2PositionInVector - steps:
       operator = self.prepareDoubleQubitMatrixOperator(SWAP, i-1, i)
-      self.amplitudes = operator @ self.amplitudes
+      self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
       i -= 1
 
   def applyDoubleQGate(self, G, r1, r2):
@@ -173,25 +188,25 @@ class StateVector:
           self.swap(r1, r2)
           self.swap(self.registerIndices[1], r1)
           operator = self.prepareDoubleQubitMatrixOperator(G, 0, 1)
-          self.amplitudes = operator @ self.amplitudes
+          self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
           self.swap(self.registerIndices[1], r1)
           self.swap(r1, r2)
           return
 
         self.swap(r1, self.registerIndices[r2Position-1])
         operator = self.prepareDoubleQubitMatrixOperator(G, r2Position-1, r2Position)
-        self.amplitudes = operator @ self.amplitudes
+        self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
         self.swap(r1, self.registerIndices[r2Position-1])
         return
         
 
       self.swap(r2, self.registerIndices[r1Position+1])
       operator = self.prepareDoubleQubitMatrixOperator(G, r1Position, r1Position+1)
-      self.amplitudes = operator @ self.amplitudes
+      self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
       self.swap(r2, self.registerIndices[r1Position+1])
     else:
       operator = self.prepareDoubleQubitMatrixOperator(G, r1Position, r1Position+1)
-      self.amplitudes = operator @ self.amplitudes
+      self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
 
 
     
@@ -208,4 +223,15 @@ class StateVector:
   def applyOddGate(self, G, r=[0]):
     indices = list(map(lambda x: self.registerIndices.index(x), r))
     operator = StateVector.prepareMatrixOperator(G,indices,self.n)
-    self.amplitudes = operator.multiply(self.amplitudes)
+    self.amplitudes = (operator @ self.amplitudes.transpose()).transpose()
+
+
+
+# State vector testing
+
+# st = StateVector(scsp.csr_matrix(np.array([1,0])), [0])
+# st.applyGate(H)
+
+# acc = Accumulator(st)
+
+# print(acc.takeMeasurements(1000))
