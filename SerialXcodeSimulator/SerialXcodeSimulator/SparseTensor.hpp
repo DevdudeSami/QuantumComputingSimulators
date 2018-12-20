@@ -37,6 +37,7 @@ public:
   SparseTensor addTo(SparseTensor t);
   SparseTensor multiplyTo(cxd s);
   SparseTensor multiplyTo(SparseTensor t);
+  SparseTensor multiplyToVector(SparseTensor v);
   SparseTensor kronWith(SparseTensor t);
   cxd dotProductWith(SparseTensor t);
   

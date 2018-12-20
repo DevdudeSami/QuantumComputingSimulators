@@ -159,6 +159,55 @@ SparseTensor SparseTensor::multiplyTo(SparseTensor t) {
   return SparseTensor(r,t.c,new_nnz,new_keys,new_vals);
 }
 
+SparseTensor SparseTensor::multiplyToVector(SparseTensor v) {
+  assert(c == v.r);
+  assert(v.c == 1);
+  
+  vector<cxd> _vals;
+  vector<key> _keys;
+  
+  #pragma omp parallel for
+  for(int i = 0; i < nnz; i++) {
+    #pragma omp parallel for
+    for(int j = 0; j < v.nnz; j++) {
+      key k1 = keys[i];
+      key k2 = v.keys[j];
+      if(k1.second == k2.first) {
+        key k = make_pair(k1.first, k2.second);
+        _keys.push_back(k);
+        _vals.push_back(vals[i]*v.vals[j]);
+      }
+    }
+  }
+  
+  vector<cxd> values;
+  vector<key> ks;
+  unsigned int new_nnz = _keys.size(); // Not the final value of this
+  
+  for(int i = 0; i < _keys.size(); i++) {
+    cxd sum = _vals[i];
+    for(int j = i+1; j < _keys.size(); j++) {
+      if(_keys[i] == _keys[j]) {
+        new_nnz--;
+        sum += _vals[j];
+        _vals.erase(_vals.begin()+j);
+        _keys.erase(_keys.begin()+j);
+        j--;
+      }
+    }
+    ks.push_back(_keys[i]);
+    values.push_back(sum);
+  }
+  
+  cxd *new_vals = new cxd[new_nnz];
+  key *new_keys = new key[new_nnz];
+  
+  copy(values.begin(), values.end(), new_vals);
+  copy(ks.begin(), ks.end(), new_keys);
+  
+  return SparseTensor(r,v.c,new_nnz,new_keys,new_vals);
+}
+
 SparseTensor SparseTensor::kronWith(SparseTensor t) {
 
   key* new_keys = new key[nnz*t.nnz];
