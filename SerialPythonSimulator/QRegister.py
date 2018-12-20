@@ -346,10 +346,10 @@ def halfAdder(A, B):
   m = qComputer.measure[0]
   return m[1], m[2]
 
-print(halfAdder(0,0))
-print(halfAdder(0,1))
-print(halfAdder(1,0))
-print(halfAdder(1,1))
+# print(halfAdder(0,0))
+# print(halfAdder(0,1))
+# print(halfAdder(1,0))
+# print(halfAdder(1,1))
 
 ######### Full Adder ###########
 
@@ -373,50 +373,181 @@ def fullAdder(A, B, C = 0):
   m = qComputer.measure[0]
   return m[3], m[2]
 
-print(fullAdder(0,0,0))
-print(fullAdder(0,0,1))
-print(fullAdder(0,1,0))
-print(fullAdder(0,1,1))
-print(fullAdder(1,0,0))
-print(fullAdder(1,0,1))
-print(fullAdder(1,1,0))
-print(fullAdder(1,1,1))
+# print(fullAdder(0,0,0))
+# print(fullAdder(0,0,1))
+# print(fullAdder(0,1,0))
+# print(fullAdder(0,1,1))
+# print(fullAdder(1,0,0))
+# print(fullAdder(1,0,1))
+# print(fullAdder(1,1,0))
+# print(fullAdder(1,1,1))
 
 ######### Ripple 4-bit Adder #########
 
 # def ripple4BitAdderCircuit(qComputer, qIDs=[]):
 
 # A is the first 4-bit number, B is the second 4-bit number
-def ripple4BitAdder(A="0000", B="0000"):
-  # need a qubit for each input - 8
-  # need a qubit for each output - 4
-  # need a qubit for the carry - 1
+# def ripple4BitAdder(A="0000", B="0000"):
+#   # need a qubit for each input - 8
+#   # need a qubit for each output - 4
+#   # need a qubit for the carry - 1
 
-  qComputer = QRegister.withQubits(13)
+#   qComputer = QRegister.withQubits(13)
 
-  # let carry be the last qubit (id 12)
-  # 0,2,4,6 are the A inputs
-  # 1,3,5,7 are the B inputs
-  # 8,9,10,11 are the S outputs
+#   # let carry be the last qubit (id 12)
+#   # 0,2,4,6 are the A inputs
+#   # 1,3,5,7 are the B inputs
+#   # 8,9,10,11 are the S outputs
 
-  # flip depending on A and B
-  for i in range(0,len(A)):
-    if A[i] == "1": qComputer.flipQubit(i*2)
-  for i in range(0,len(B)):
-    if B[i] == "1": qComputer.flipQubit(i*2+1)
+#   # flip depending on A and B
+#   for i in range(0,len(A)):
+#     if A[i] == "1": qComputer.flipQubit(i*2)
+#   for i in range(0,len(B)):
+#     if B[i] == "1": qComputer.flipQubit(i*2+1)
 
-  fullAdderCircuit(qComputer, [0,1,12,8])
-  print("1")
-  fullAdderCircuit(qComputer, [2,3,12,9])
-  print("2")
-  fullAdderCircuit(qComputer, [4,5,12,10])
-  print("3")
-  fullAdderCircuit(qComputer, [6,7,12,11])
-  print("4")
+#   fullAdderCircuit(qComputer, [0,1,12,8])
+#   print("1")
+#   fullAdderCircuit(qComputer, [2,3,12,9])
+#   print("2")
+#   fullAdderCircuit(qComputer, [4,5,12,10])
+#   print("3")
+#   fullAdderCircuit(qComputer, [6,7,12,11])
+#   print("4")
 
-  m = qComputer.measure[0]
-  return m[8] + m[9] + m[10] + m[11]
+#   m = qComputer.measure[0]
+#   return m[8] + m[9] + m[10] + m[11]
 
-# print(ripple4BitAdder("0000", "0010"))
+########## Cucarro 6-bit ripple carry adder
+
+def sixBitRippleCarryAdderCircuit(comp, qIDs):
+  assert(comp.n >= 14)
+  assert(len(qIDs) == 14)
+
+  # Time slice 1
+  comp.applyNGate([qIDs[4], qIDs[3]], CNOT)
+  comp.applyNGate([qIDs[6], qIDs[5]], CNOT)
+  comp.applyNGate([qIDs[8], qIDs[7]], CNOT)
+  comp.applyNGate([qIDs[10], qIDs[9]], CNOT)
+  comp.applyNGate([qIDs[12], qIDs[11]], CNOT)
+  print(1)
+
+  # Time slice 2
+  comp.applyNGate([qIDs[4], qIDs[2]], CNOT)
+  print(2)
+  
+  # Time slice 3
+  comp.applyNGate([qIDs[0], qIDs[1], qIDs[2]], TOFF)
+  comp.applyNGate([qIDs[6], qIDs[4]], CNOT)
+  print(3)
+    
+  # Time slice 4
+  comp.applyNGate([qIDs[2], qIDs[3], qIDs[4]], TOFF)
+  comp.applyNGate([qIDs[8], qIDs[6]], CNOT)
+  print(4)
+    
+  # Time slice 5
+  comp.applyNGate([qIDs[4], qIDs[5], qIDs[6]], TOFF)
+  comp.applyNGate([qIDs[10], qIDs[8]], CNOT)
+  print(5)
+    
+  # Time slice 6
+  comp.applyNGate([qIDs[6], qIDs[7], qIDs[8]], TOFF)
+  comp.applyNGate([qIDs[12], qIDs[10]], CNOT)
+  print(6)
+    
+  # Time slice 7
+  comp.applyNGate([qIDs[8], qIDs[9], qIDs[10]], TOFF)
+  comp.applyNGate([qIDs[12], qIDs[13]], CNOT)
+  print(7)
+    
+  # Time slice 8
+  comp.flipQubit(3)
+  comp.flipQubit(5)
+  comp.flipQubit(7)
+  comp.flipQubit(9)
+  comp.applyNGate([qIDs[10], qIDs[11], qIDs[13]], TOFF)
+  print(8)
+
+  # Time slice 9
+  comp.applyNGate([qIDs[2], qIDs[3]], CNOT)
+  comp.applyNGate([qIDs[4], qIDs[5]], CNOT)
+  comp.applyNGate([qIDs[6], qIDs[7]], CNOT)
+  comp.applyNGate([qIDs[8], qIDs[9]], CNOT)
+  comp.applyNGate([qIDs[10], qIDs[11]], CNOT)
+  print(9)
+
+  # Time slice 10
+  comp.applyNGate([qIDs[8], qIDs[9], qIDs[10]], TOFF)
+  print(10)
+
+  # Time slice 11
+  comp.applyNGate([qIDs[6], qIDs[7], qIDs[8]], TOFF)
+  comp.flipQubit(9)
+  comp.applyNGate([qIDs[12], qIDs[10]], CNOT)
+  print(11)
+
+  # Time slice 12
+  comp.applyNGate([qIDs[4], qIDs[5], qIDs[6]], TOFF)
+  comp.flipQubit(7)
+  comp.applyNGate([qIDs[10], qIDs[8]], CNOT)
+  print(12)
+
+  # Time slice 13
+  comp.applyNGate([qIDs[2], qIDs[3], qIDs[4]], TOFF)
+  comp.flipQubit(5)
+  comp.applyNGate([qIDs[8], qIDs[6]], CNOT)
+  print(13)
+  
+  # Time slice 14
+  comp.applyNGate([qIDs[0], qIDs[1], qIDs[2]], TOFF)
+  comp.flipQubit(3)
+  comp.applyNGate([qIDs[6], qIDs[4]], CNOT)
+  print(14)
+
+  # Time slice 15
+  comp.applyNGate([qIDs[4], qIDs[2]], CNOT)
+  print(15)
+
+  # Time slice 16
+  comp.applyNGate([qIDs[1], qIDs[0]], CNOT)
+  comp.applyNGate([qIDs[4], qIDs[3]], CNOT)
+  comp.applyNGate([qIDs[6], qIDs[5]], CNOT)
+  comp.applyNGate([qIDs[8], qIDs[7]], CNOT)
+  comp.applyNGate([qIDs[10], qIDs[9]], CNOT)
+  comp.applyNGate([qIDs[12], qIDs[11]], CNOT)
+  print(16)
+
+
+def sixBitRippleCarryAdder(A, B):
+  comp = QRegister.withQubits(14)
+
+  # Bit 2 is the input carry
+
+  # Bits 0,3,5,6,9,11 are B
+  if(B[5] == '1'): comp.flipQubit(0)
+  if(B[4] == '1'): comp.flipQubit(3)
+  if(B[3] == '1'): comp.flipQubit(5)
+  if(B[2] == '1'): comp.flipQubit(7)
+  if(B[1] == '1'): comp.flipQubit(9)
+  if(B[0] == '1'): comp.flipQubit(11)
+
+  # Bits 1,4,6,8,10,12 are B
+  if(A[5] == '1'): comp.flipQubit(1)
+  if(A[4] == '1'): comp.flipQubit(4)
+  if(A[3] == '1'): comp.flipQubit(6)
+  if(A[2] == '1'): comp.flipQubit(8)
+  if(A[1] == '1'): comp.flipQubit(10)
+  if(A[0] == '1'): comp.flipQubit(12)
+
+  # Bit 13 is the Z bit
+
+  sixBitRippleCarryAdderCircuit(comp, comp.allQubits)
+
+  m = comp.measure[0]
+  return m[13] + m[11] + m[9] + m[7] + m[5] + m[3] + m[0]
+
+
+print(sixBitRippleCarryAdder("111111", "111111"))
+
 
 print("--- %s seconds ---" % (time.time() - start_time))
