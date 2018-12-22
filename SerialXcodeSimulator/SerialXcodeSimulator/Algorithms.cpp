@@ -245,3 +245,13 @@ string AltSixQubitRippleCarryAdder(string A, string B) {
   // Bits 0,3,5,7,9,11 are the sum after the circuit is done
   return {m[14], m[12], m[10], m[8], m[6], m[4], m[1]};
 }
+
+void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
+  for(int i = 0; i < qIDs.size(); i++) {
+    HGate(comp, {qIDs[i]});
+    
+    for(int j = i+1; j < qIDs.size(); j++) {
+      CRmGate(j-i+1, comp, {qIDs[j], qIDs[i]});
+    }
+  }
+}

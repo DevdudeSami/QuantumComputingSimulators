@@ -30,7 +30,7 @@ key PKeys[2] = {make_pair(0, 0), make_pair(1, 1)};
 cxd PVals[2] = {cxd(1), cxd(0,1)};
 const SparseTensor P (2, 2, 2, PKeys, PVals);
 
-key HKeys[4] = {make_pair(0, 0), make_pair(1, 1), make_pair(2, 3), make_pair(3, 2)};
+key HKeys[4] = {make_pair(0, 0), make_pair(0, 1), make_pair(1, 0), make_pair(1, 1)};
 cxd HVals[4] = {cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(-1/sqrt(2))};
 const SparseTensor H (2, 2, 4, HKeys, HVals);
 
@@ -56,6 +56,14 @@ SparseTensor CNOTGate() { return SparseTensor(CNOT); }
 SparseTensor SWAPGate() { return SparseTensor(SWAP); }
 SparseTensor TOFFGate() { return SparseTensor(TOFF); }
 
+SparseTensor CRm(uint m) {
+  cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, m));
+  
+  key keys[4] = {make_pair(0, 0), make_pair(1, 1), make_pair(2, 2), make_pair(3, 3)};
+  cxd vals[4] = {cxd(1), cxd(1), cxd(1), omega};
+  return SparseTensor (4, 4, 4, keys, vals);
+}
+
 /************* END Q Gates ***************/
 
 void GateCircuit(QComputer *comp, vector<QID> qIDs, SparseTensor t) {
@@ -77,4 +85,5 @@ void CNOTGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, CNOT)
 void SWAPGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, SWAP); }
 void TOFFGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, TOFF); }
 
+void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, CRm(m)); }
 

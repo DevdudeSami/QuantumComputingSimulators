@@ -24,33 +24,11 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-//  QComputer comp (6);
+  QComputer comp (10);
   
-//  comp.flipQubit(3);
-//  comp.flipQubit(2);
-//  
-//  MAJCircuit(&comp, {2,1,0});
-//  MAJCircuit(&comp, {4,3,2});
-//  UMACircuit(&comp, {2,3,4});
-//  UMACircuit(&comp, {0,1,2});
-//
-//  comp.applyMultiGate({4,5}, CNOT());
+  QuantumFourierTransform(&comp, comp.allQubits());
   
-//  comp.combineQubits(comp.allQubits());
-  
-//  comp.applySingleGate(3, H());
-//  comp.applySingleGate(1, H());
-//  comp.applySingleGate(1, X());
-//
-//  comp.applyMultiGate({1,5}, CNOT());
-  
-//  comp.entangleQubits(comp.allQubits());
-//  comp.applySingleGate(3, X());
-  
-//  comp.applySingleGateToMutlipleQubits(vector<QID>({1,5}), X());
-//  comp.applyMultiGate(vector<QID>({1,5,3}), TOFF());
-  
-//  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
+  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
 //  Row amps = {1,0,0,0,0,0,0,0};
 //  vector<int> qIDs = {0,1,2};
@@ -97,7 +75,7 @@ int main(int argc, char const *argv[]) {
 //  cout << FullAdder(1, 1, 1) << endl;
   
   // Ripple Carry Adder testing
-  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
+//  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
