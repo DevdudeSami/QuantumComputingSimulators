@@ -31,6 +31,8 @@ SparseTensor TOFFGate();
 
 SparseTensor CRm(uint m);
 
+SparseTensor QFT(uint n);
+
 void GateCircuit(QComputer *comp, vector<QID> qIDs, SparseTensor t);
 
 void IGate(QComputer *comp, vector<QID> qIDs);
@@ -43,5 +45,6 @@ void CNOTGate(QComputer *comp, vector<QID> qIDs);
 void SWAPGate(QComputer *comp, vector<QID> qIDs);
 void TOFFGate(QComputer *comp, vector<QID> qIDs);
 void CRmGate(uint m, QComputer *comp, vector<QID> qIDs);
+void QFTGate(QComputer *comp, vector<QID> qIDs);
 
 #endif /* Gates_hpp */

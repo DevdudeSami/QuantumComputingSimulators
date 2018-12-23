@@ -64,6 +64,25 @@ SparseTensor CRm(uint m) {
   return SparseTensor (4, 4, 4, keys, vals);
 }
 
+SparseTensor QFT(uint n) {
+  uint N = pow(2,n);
+  cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, n));
+  
+  key* keys = new key[N*N];
+  cxd* vals = new cxd[N*N];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < N; i++) {
+    #pragma omp parallel for
+    for(int j = 0; j < N; j++) {
+      keys[j+i*N] = make_pair(i, j);
+      vals[j+i*N] =  pow(omega, i*j)/sqrt(N);
+    }
+  }
+  
+  return SparseTensor(N, N, N*N, keys, vals);
+}
+
 /************* END Q Gates ***************/
 
 void GateCircuit(QComputer *comp, vector<QID> qIDs, SparseTensor t) {
@@ -87,3 +106,4 @@ void TOFFGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, TOFF)
 
 void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, CRm(m)); }
 
+void QFTGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, QFT(qIDs.size())); }

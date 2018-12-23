@@ -24,10 +24,13 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
+//  cout << QFT(10).toString() << endl;
+  
   QComputer comp (10);
-  
-  QuantumFourierTransform(&comp, comp.allQubits());
-  
+
+//  QuantumFourierTransform(&comp, comp.allQubits());
+  QFTGate(&comp, comp.allQubits());
+
   cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
 //  Row amps = {1,0,0,0,0,0,0,0};
