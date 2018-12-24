@@ -22,51 +22,7 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  auto start = chrono::high_resolution_clock::now();
-  
-  QComputer comp (13);
-
-//  QuantumFourierTransform(&comp, comp.allQubits());
-  QFTGate(&comp, comp.allQubits());
-//
-//  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
-  
-//  const SparseTensor static_i = I();
-//  const SparseTensor static_h = H();
-//  SparseTensor m = H();
-
-//  for(int i = 0; i < 15; i++) {
-//    cout << i << endl;
-//    if(i%2 == 0) m = m.kronWith(static_h);
-//    else m = m.kronWith(static_i);
-//
-//    auto end = chrono::high_resolution_clock::now();
-//    auto diff = end - start;
-//    cout << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
-//  }
-
-  // Algorithms testing
-  
-  // Half Adder testing
-//  cout << HalfAdder(0, 0) << endl;
-//  cout << HalfAdder(0, 1) << endl;
-//  cout << HalfAdder(1, 0) << endl;
-//  cout << HalfAdder(1, 1) << endl;
-//
-//  cout << "-----" << endl;
-//
-//  // Full Adder testing
-//  cout << FullAdder(0, 0, 0) << endl;
-//  cout << FullAdder(0, 0, 1) << endl;
-//  cout << FullAdder(0, 1, 0) << endl;
-//  cout << FullAdder(0, 1, 1) << endl;
-//  cout << FullAdder(1, 0, 0) << endl;
-//  cout << FullAdder(1, 0, 1) << endl;
-//  cout << FullAdder(1, 1, 0) << endl;
-//  cout << FullAdder(1, 1, 1) << endl;
-  
-  // Ripple Carry Adder testing
-//  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
+  auto start = chrono::high_resolution_clock::
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
