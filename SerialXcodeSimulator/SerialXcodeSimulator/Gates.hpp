@@ -18,6 +18,7 @@ class QComputer;
 typedef unsigned int QID;
 
 SparseTensor IGate();
+SparseTensor IGate(uint n);
 SparseTensor XGate();
 SparseTensor YGate();
 SparseTensor ZGate();
@@ -28,6 +29,7 @@ SparseTensor CNOTGate();
 SparseTensor SWAPGate();
 
 SparseTensor TOFFGate();
+
 
 SparseTensor CRm(uint m);
 

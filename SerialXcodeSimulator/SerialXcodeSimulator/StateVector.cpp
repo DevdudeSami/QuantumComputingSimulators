@@ -38,16 +38,14 @@ void StateVector::applyGate(Tensor* t) {
 
 void StateVector::applyNGate(Tensor *t, vector<unsigned int> qIDs) {
   vector<pair<int, int>> swapsDone;
-  vector<unsigned int> qIndicesToSwapInto;
   
   // Swap into the first qIDs.size() qubits
   for(int i = 0; i < qIDs.size(); i++) {
-    qIndicesToSwapInto.push_back(i);
     swapsDone.push_back(make_pair(qIDs[i], this->qIDs[i]));
     swap(qIDs[i], this->qIDs[i]);
   }
   
-  Tensor *op = prepareOperator(t, qIndicesToSwapInto);
+  Tensor *op = prepareOperatorToRunAtStart(t, qIDs.size());
   applyGate(op);
   
   // Swap back in reverse order
@@ -105,6 +103,16 @@ Tensor *StateVector::prepareOperator(Tensor *t, vector<unsigned int> indices) {
   
   return op;
 }
+
+Tensor* StateVector::prepareOperatorToRunAtStart(Tensor* t, uint numberOfAppliedQubits) {
+  assert(log2(t->colCount()) == numberOfAppliedQubits);
+  
+  // there will be a single identity (dimension 2^(n - numberOfAppliedQubits)) to kron with t
+  SparseTensor I = IGate(pow(2, n-numberOfAppliedQubits));
+  
+  return new SparseTensor(t->sparseKronWith(I));
+}
+
 
 void StateVector::swap(uint q1ID, uint q2ID) {
   if(q1ID == q2ID) return;

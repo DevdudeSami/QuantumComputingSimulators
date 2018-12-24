@@ -56,6 +56,19 @@ SparseTensor CNOTGate() { return SparseTensor(CNOT); }
 SparseTensor SWAPGate() { return SparseTensor(SWAP); }
 SparseTensor TOFFGate() { return SparseTensor(TOFF); }
 
+SparseTensor IGate(uint n) {
+  key keys[n];
+  cxd vals[n];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < n; i++) {
+    keys[i] = make_pair(i, i);
+    vals[i] = cxd(1);
+  }
+  
+  return SparseTensor(n,n,n,keys,vals);
+}
+
 SparseTensor CRm(uint m) {
   cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, m));
   

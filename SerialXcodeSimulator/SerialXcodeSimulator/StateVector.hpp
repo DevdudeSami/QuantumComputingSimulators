@@ -29,6 +29,7 @@ public:
   string measure();
   StateVector combineWith(StateVector v);
   Tensor* prepareOperator(Tensor *t, vector<unsigned int> indices);
+  Tensor* prepareOperatorToRunAtStart(Tensor* t, uint numberOfAppliedQubits);
   void swap(unsigned int q1ID, unsigned int q2ID);
 };
 
