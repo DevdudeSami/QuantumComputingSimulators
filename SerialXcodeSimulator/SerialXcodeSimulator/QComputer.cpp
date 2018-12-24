@@ -22,7 +22,7 @@ QComputer::QComputer(unsigned int n) : n{n} {
     key keys[1] = {make_pair(0,0)};
     cxd vals[1] = {cxd(1)};
     
-    SparseTensor amps (1, 2, 1, keys, vals);
+    SparseTensor amps (2, 1, 1, keys, vals);
     StateVector v (amps, vector<QID>({i}));
     
     vectors.push_back(v);

@@ -26,12 +26,12 @@ int main(int argc, char const *argv[]) {
 
 //  cout << QFT(10).toString() << endl;
   
-  QComputer comp (12);
+//  QComputer comp (12);
 
 //  QuantumFourierTransform(&comp, comp.allQubits());
-  QFTGate(&comp, comp.allQubits());
-
-  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
+//  QFTGate(&comp, comp.allQubits());
+//
+//  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
 //  Row amps = {1,0,0,0,0,0,0,0};
 //  vector<int> qIDs = {0,1,2};
@@ -78,7 +78,7 @@ int main(int argc, char const *argv[]) {
 //  cout << FullAdder(1, 1, 1) << endl;
   
   // Ripple Carry Adder testing
-//  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
+  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

@@ -16,8 +16,8 @@ vector<string> qubitStatesCombinations(unsigned int n);
 
 StateVector::StateVector(SparseTensor amps, vector<unsigned int> ids) : n(ids.size()), amplitudes(amps), qIDs(ids) {
   
-  assert(amplitudes.rowCount() == 1);
-  assert(log2(amplitudes.colCount()) == n);
+  assert(amplitudes.colCount() == 1);
+  assert(log2(amplitudes.rowCount()) == n);
   assert(amplitudes.isNormalised());
   
 }
@@ -33,7 +33,7 @@ unsigned long StateVector::numberOfQubits() { return n; }
 vector<unsigned int> StateVector::qubitIDs() { return qIDs; }
 
 void StateVector::applyGate(Tensor* t) {
-  amplitudes = t->multiplyTo(amplitudes.transpose()).transpose();
+  amplitudes = t->multiplyTo(amplitudes);
 }
 
 void StateVector::applyNGate(Tensor *t, vector<unsigned int> qIDs) {
