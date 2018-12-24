@@ -12,39 +12,39 @@
 
 key IKeys[2] = {make_pair(0, 0), make_pair(1, 1)};
 cxd IVals[2] = {cxd(1), cxd(1)};
-const SparseTensor I (2, 2, 2, IKeys, IVals);
+SparseTensor I (2, 2, 2, IKeys, IVals);
 
 key XKeys[2] = {make_pair(0, 1), make_pair(1, 0)};
 cxd XVals[2] = {cxd(1), cxd(1)};
-const SparseTensor X (2, 2, 2, XKeys, XVals);
+SparseTensor X (2, 2, 2, XKeys, XVals);
 
 key YKeys[2] = {make_pair(0, 0), make_pair(1, 1)};
 cxd YVals[2] = {cxd(0,1), cxd(0,-1)};
-const SparseTensor Y (2, 2, 2, YKeys, YVals);
+SparseTensor Y (2, 2, 2, YKeys, YVals);
 
 key ZKeys[2] = {make_pair(0, 0), make_pair(1, 1)};
 cxd ZVals[2] = {cxd(1), cxd(-1)};
-const SparseTensor Z (2, 2, 2, ZKeys, ZVals);
+SparseTensor Z (2, 2, 2, ZKeys, ZVals);
 
 key PKeys[2] = {make_pair(0, 0), make_pair(1, 1)};
 cxd PVals[2] = {cxd(1), cxd(0,1)};
-const SparseTensor P (2, 2, 2, PKeys, PVals);
+SparseTensor P (2, 2, 2, PKeys, PVals);
 
 key HKeys[4] = {make_pair(0, 0), make_pair(0, 1), make_pair(1, 0), make_pair(1, 1)};
 cxd HVals[4] = {cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(-1/sqrt(2))};
-const SparseTensor H (2, 2, 4, HKeys, HVals);
+SparseTensor H (2, 2, 4, HKeys, HVals);
 
 key CNOTKeys[4] = {make_pair(0, 0), make_pair(1, 1), make_pair(2, 3), make_pair(3, 2)};
 cxd CNOTVals[4] = {cxd(1), cxd(1), cxd(1), cxd(1)};
-const SparseTensor CNOT (4, 4, 4, CNOTKeys, CNOTVals);
+SparseTensor CNOT (4, 4, 4, CNOTKeys, CNOTVals);
 
 key SWAPKeys[4] = {make_pair(0, 0), make_pair(1, 2), make_pair(2, 1), make_pair(3, 3)};
 cxd SWAPVals[4] = {cxd(1), cxd(1), cxd(1), cxd(1)};
-const SparseTensor SWAP (4, 4, 4, SWAPKeys, SWAPVals);
+SparseTensor SWAP (4, 4, 4, SWAPKeys, SWAPVals);
 
 key TOFFKeys[8] = {make_pair(0, 0), make_pair(1, 1), make_pair(2, 2), make_pair(3, 3), make_pair(4, 4), make_pair(5, 5), make_pair(6, 7), make_pair(7, 6)};
 cxd TOFFVals[8] = {cxd(1), cxd(1), cxd(1), cxd(1), cxd(1), cxd(1), cxd(1), cxd(1)};
-const SparseTensor TOFF (8, 8, 8, TOFFKeys, TOFFVals);
+SparseTensor TOFF (8, 8, 8, TOFFKeys, TOFFVals);
 
 SparseTensor IGate() { return SparseTensor(I); }
 SparseTensor XGate() { return SparseTensor(X); }
@@ -85,25 +85,31 @@ SparseTensor QFT(uint n) {
 
 /************* END Q Gates ***************/
 
-void GateCircuit(QComputer *comp, vector<QID> qIDs, SparseTensor t) {
-  assert(t.colCount() == t.rowCount());
-  int n = (int)log2(t.colCount());
+void GateCircuit(QComputer *comp, vector<QID> qIDs, Tensor* t) {
+  assert(t->colCount() == t->rowCount());
+  int n = (int)log2(t->colCount());
   assert(qIDs.size() == n);
   assert(comp->numberOfQubits() >= n);
   
   comp->applyMultiGate(qIDs, t);
 }
 
-void IGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, I); }
-void XGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, X); }
-void YGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, Y); }
-void ZGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, Z); }
-void PGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, P); }
-void HGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, H); }
-void CNOTGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, CNOT); }
-void SWAPGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, SWAP); }
-void TOFFGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, TOFF); }
+void IGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &I); }
+void XGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &X); }
+void YGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &Y); }
+void ZGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &Z); }
+void PGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &P); }
+void HGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &H); }
+void CNOTGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &CNOT); }
+void SWAPGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &SWAP); }
+void TOFFGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &TOFF); }
 
-void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, CRm(m)); }
+void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) {
+  SparseTensor gate = CRm(m);
+  GateCircuit(comp, qIDs, &gate);
+}
 
-void QFTGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, QFT(qIDs.size())); }
+void QFTGate(QComputer *comp, vector<QID> qIDs) {
+  SparseTensor gate = QFT(qIDs.size());
+  GateCircuit(comp, qIDs, &gate);
+}

@@ -85,19 +85,19 @@ list_index QComputer::combineQubits(vector<QID> qIDs) {
   return finalCombinedStateIndex;
 }
 
-void QComputer::applySingleGate(QID qID, SparseTensor gate) {
-  vectors[listIndexFromQID(qID)].applyNGate(&gate, vector<QID>({qID}));
+void QComputer::applySingleGate(QID qID, Tensor *gate) {
+  vectors[listIndexFromQID(qID)].applyNGate(gate, vector<QID>({qID}));
 }
 
-void QComputer::applySingleGateToMutlipleQubits(vector<QID> qIDs, SparseTensor gate) {
+void QComputer::applySingleGateToMutlipleQubits(vector<QID> qIDs, Tensor *gate) {
   for(QID qID: qIDs) {
     applySingleGate(qID, gate);
   }
 }
 
-void QComputer::applyMultiGate(vector<QID> qIDs, SparseTensor gate) {
+void QComputer::applyMultiGate(vector<QID> qIDs, Tensor* gate) {
   list_index combinedStateIndex = combineQubits(qIDs);
-  vectors[combinedStateIndex].applyNGate(&gate, qIDs);
+  vectors[combinedStateIndex].applyNGate(gate, qIDs);
 }
 
 StateVector QComputer::stateVectorWithQID(QID qID) {
@@ -116,15 +116,19 @@ list_index QComputer::listIndexFromQID(QID qID) {
 }
 
 void QComputer::entangleQubits(vector<QID> qIDs) {
-  applySingleGate(qIDs[0], HGate());
+  SparseTensor H = HGate();
+  SparseTensor CNOT = CNOTGate();
+  
+  applySingleGate(qIDs[0], &H);
   
   for(auto it = ++qIDs.begin(); it != qIDs.end(); ++it) {
-    applyMultiGate(vector<QID>({qIDs[0], *it}), CNOTGate());
+    applyMultiGate(vector<QID>({qIDs[0], *it}), &CNOT);
   }
 }
 
 void QComputer::flipQubit(QID qID) {
-  applySingleGate(qID, XGate());
+  SparseTensor X = XGate();
+  applySingleGate(qID, &X);
 }
 
 vector<QID> QComputer::allQubits() {

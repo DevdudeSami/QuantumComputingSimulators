@@ -33,7 +33,7 @@ SparseTensor CRm(uint m);
 
 SparseTensor QFT(uint n);
 
-void GateCircuit(QComputer *comp, vector<QID> qIDs, SparseTensor t);
+void GateCircuit(QComputer *comp, vector<QID> qIDs, Tensor* t);
 
 void IGate(QComputer *comp, vector<QID> qIDs);
 void XGate(QComputer *comp, vector<QID> qIDs);
