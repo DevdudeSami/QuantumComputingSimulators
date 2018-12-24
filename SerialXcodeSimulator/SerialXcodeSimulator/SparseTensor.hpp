@@ -12,13 +12,18 @@
 #include <stdio.h>
 #include <complex>
 #include <tuple>
+
+#include "DenseTensor.hpp"
 #include "Tensor.hpp"
 
 using namespace std;
 
 typedef pair<int, int> key;
+typedef complex<double> cxd;
 
-class SparseTensor {
+class DenseTensor;
+
+class SparseTensor: public Tensor {
   
 private:
   unsigned int r;
@@ -28,17 +33,23 @@ private:
   cxd* vals;
 public:
   SparseTensor(unsigned int r, unsigned int c, unsigned int nnz, key* keys, cxd* vals);
-  SparseTensor(Tensor t, unsigned int nnz);
+  SparseTensor(DenseTensor t, unsigned int nnz);
   SparseTensor(vector<key> positions, unsigned int r, unsigned int c);
   
   unsigned int rowCount();
   unsigned int colCount();
+  uint getNNZ();
   
   SparseTensor addTo(SparseTensor t);
   SparseTensor multiplyTo(cxd s);
   SparseTensor multiplyTo(SparseTensor t);
   SparseTensor multiplyToVector(SparseTensor v);
-  SparseTensor kronWith(SparseTensor t);
+  SparseTensor sparseKronWith(SparseTensor t);
+  SparseTensor sparseKronWith(DenseTensor t);
+  SparseTensor sparseKronWith(Tensor* t);
+  DenseTensor denseKronWith(SparseTensor t);
+  DenseTensor denseKronWith(DenseTensor t);
+  DenseTensor denseKronWith(Tensor* t);
   cxd dotProductWith(SparseTensor t);
   
   SparseTensor transpose();
@@ -52,7 +63,7 @@ public:
   void enumerateElements(function<void(int,int,cxd)> f);
   void enumerateNNZElements(function<void(int,int,cxd)> f);
 
-  Tensor dense();
+  DenseTensor dense();
   
   string toString();
 };

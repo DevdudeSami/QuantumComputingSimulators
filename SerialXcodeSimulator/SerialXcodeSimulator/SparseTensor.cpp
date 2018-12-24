@@ -17,7 +17,7 @@ SparseTensor::SparseTensor(unsigned int r, unsigned int c, unsigned int nnz, key
   copy(vals, vals+nnz, this->vals);
 }
 
-SparseTensor::SparseTensor(Tensor t, unsigned int nnz) : nnz{nnz} {
+SparseTensor::SparseTensor(DenseTensor t, unsigned int nnz) : nnz{nnz} {
   r = t.rowCount();
   c = t.colCount();
   
@@ -87,13 +87,9 @@ SparseTensor SparseTensor::addTo(SparseTensor t) {
   return SparseTensor(r,c,nnz,new_keys,new_vals);
 }
 
-unsigned int SparseTensor::rowCount() {
-  return r;
-}
-
-unsigned int SparseTensor::colCount() {
-  return c;
-}
+unsigned int SparseTensor::rowCount() { return r; }
+unsigned int SparseTensor::colCount() { return c; }
+uint SparseTensor::getNNZ() { return nnz; }
 
 SparseTensor SparseTensor::multiplyTo(cxd s) {
 
@@ -208,7 +204,7 @@ SparseTensor SparseTensor::multiplyToVector(SparseTensor v) {
   return SparseTensor(r,v.c,new_nnz,new_keys,new_vals);
 }
 
-SparseTensor SparseTensor::kronWith(SparseTensor t) {
+SparseTensor SparseTensor::sparseKronWith(SparseTensor t) {
 
   key* new_keys = new key[nnz*t.nnz];
   cxd* new_vals = new cxd[nnz*t.nnz];
@@ -228,6 +224,83 @@ SparseTensor SparseTensor::kronWith(SparseTensor t) {
   return SparseTensor(r*t.r,c*t.c,nnz*t.nnz,new_keys,new_vals);
 }
 
+SparseTensor SparseTensor::sparseKronWith(DenseTensor t) {
+  uint tNNZ = t.getNNZ();
+  
+  key* new_keys = new key[nnz*tNNZ];
+  cxd* new_vals = new cxd[nnz*tNNZ];
+  
+  #pragma omp parallel for
+  for(int n = 0; n < nnz; n++) {
+    key k = keys[n];
+    cxd v = vals[n];
+    #pragma omp parallel for
+    for(int i = 0; i < t.rowCount(); i++) {
+      #pragma omp parallel for
+      for(int j = 0; j < t.colCount(); j++) {
+        cxd e = t.elementAt(i, j);
+        if(e == cxd(0)) continue;
+        
+        new_keys[n*tNNZ+j+i*t.rowCount()] = make_pair(k.first*t.rowCount()+i, k.second*t.colCount()+j);
+        new_vals[n*tNNZ+j+i*t.rowCount()] = v * e;
+      }
+    }
+  }
+  
+  return SparseTensor(r*t.rowCount(),c*t.colCount(),nnz*tNNZ,new_keys,new_vals);
+}
+
+SparseTensor SparseTensor::sparseKronWith(Tensor* t) {
+  SparseTensor *asSparse = dynamic_cast<SparseTensor*>(t);
+  if(asSparse != nullptr) return sparseKronWith(*asSparse);
+  else return sparseKronWith(*dynamic_cast<DenseTensor*>(t));
+}
+
+DenseTensor SparseTensor::denseKronWith(SparseTensor t) {
+  DenseTensor result (r*t.r,c*t.c);
+  
+  #pragma omp parallel for
+  for(int i = 0; i < nnz; i++) {
+    #pragma omp parallel for
+    for(int j = 0; j < t.nnz; j++) {
+      key k1 = keys[i];
+      key k2 = t.keys[j];
+      
+      result.setElementAt(k1.first*t.r+k2.first, k1.second*t.c+k2.second, vals[i] * t.vals[j]);
+    }
+  }
+  
+  return result;
+}
+
+DenseTensor SparseTensor::denseKronWith(DenseTensor t) {
+  DenseTensor result (r*t.rowCount(),c*t.colCount());
+  
+  #pragma omp parallel for
+  for(int n = 0; n < nnz; n++) {
+    key k = keys[n];
+    cxd v = vals[n];
+    #pragma omp parallel for
+    for(int i = 0; i < t.rowCount(); i++) {
+      #pragma omp parallel for
+      for(int j = 0; j < t.colCount(); j++) {
+        cxd e = t.elementAt(i, j);
+        if(e == cxd(0)) continue;
+        
+        result.setElementAt(k.first*t.rowCount()+i, k.second*t.colCount()+j, v*e);
+      }
+    }
+  }
+  
+  return result;
+}
+
+DenseTensor SparseTensor::denseKronWith(Tensor* t) {
+  SparseTensor *asSparse = dynamic_cast<SparseTensor*>(t);
+  if(asSparse != nullptr) return denseKronWith(*asSparse);
+  else return denseKronWith(*dynamic_cast<DenseTensor*>(t));
+}
+
 cxd SparseTensor::dotProductWith(SparseTensor t) {
   assert(matchesDimensionsWith(t));
   
@@ -242,8 +315,8 @@ cxd SparseTensor::dotProductWith(SparseTensor t) {
   return result;
 }
 
-Tensor SparseTensor::dense() {
-  Tensor t (r,c);
+DenseTensor SparseTensor::dense() {
+  DenseTensor t (r,c);
   
   #pragma omp parallel for
   for(int i = 0; i < nnz; i++) {

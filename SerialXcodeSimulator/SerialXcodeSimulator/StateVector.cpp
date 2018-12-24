@@ -32,11 +32,11 @@ unsigned long StateVector::numberOfQubits() { return n; }
 
 vector<unsigned int> StateVector::qubitIDs() { return qIDs; }
 
-void StateVector::applyGate(SparseTensor t) {
-  amplitudes = t.multiplyTo(amplitudes.transpose()).transpose();
+void StateVector::applyGate(Tensor* t) {
+  amplitudes = t->multiplyTo(amplitudes.transpose()).transpose();
 }
 
-void StateVector::applyNGate(SparseTensor t, vector<unsigned int> qIDs) {
+void StateVector::applyNGate(Tensor *t, vector<unsigned int> qIDs) {
   vector<pair<int, int>> swapsDone;
   vector<unsigned int> qIndicesToSwapInto;
   
@@ -47,7 +47,7 @@ void StateVector::applyNGate(SparseTensor t, vector<unsigned int> qIDs) {
     swap(qIDs[i], this->qIDs[i]);
   }
   
-  SparseTensor op = prepareOperator(t, qIndicesToSwapInto);
+  Tensor *op = prepareOperator(t, qIndicesToSwapInto);
   applyGate(op);
   
   // Swap back in reverse order
@@ -68,30 +68,39 @@ string StateVector::measure() {
 }
 
 StateVector StateVector::combineWith(StateVector v) {
-  SparseTensor newAmplitudes = amplitudes.kronWith(v.amplitudes);
+  SparseTensor newAmplitudes = amplitudes.sparseKronWith(v.amplitudes);
   vector<unsigned int> newQIDs = {};
   newQIDs.insert(newQIDs.end(), qIDs.begin(), qIDs.end());
   newQIDs.insert(newQIDs.end(), v.qIDs.begin(), v.qIDs.end());
   return StateVector(newAmplitudes, newQIDs);
 }
 
+// TODO: Check this function for memory leaks; particularly with using new
 // indices is the indices in registerIndices (in the state vector), not the ids of the qubits
-SparseTensor StateVector::prepareOperator(SparseTensor t, vector<unsigned int> indices) {
+Tensor *StateVector::prepareOperator(Tensor *t, vector<unsigned int> indices) {
   for(int i = 1; i < indices.size(); i++) assert(indices[i] == indices[i-1] + 1);
   
-  SparseTensor op (0,0,0,{},{});
+  Tensor *op;
   
   if(indices[0] == 0) {
     op = t;
-    for(int i = indices.size(); i < n; i++) op = op.kronWith(IGate());
+    for(int i = indices.size(); i < n; i++) {
+      op = new SparseTensor(op->sparseKronWith(IGate()));
+    }
     return op;
   }
   
-  op = IGate();
+  SparseTensor I = IGate();
+  op = &I;
+  
   for(int i = 1; i < n; i++) {
-    if(i == indices[0]) op = op.kronWith(t);
+    if(i == indices[0]) {
+      op = new SparseTensor(op->sparseKronWith(t));
+    }
     else if(find(indices.begin(), indices.end(), i) != indices.end()) {}
-    else op = op.kronWith(IGate());
+    else {
+      op = new SparseTensor(op->sparseKronWith(I));
+    }
   }
   
   return op;
@@ -102,6 +111,8 @@ void StateVector::swap(uint q1ID, uint q2ID) {
   
   int q1PositionInVector = find(qIDs.begin(), qIDs.end(), q1ID) - qIDs.begin();
   int q2PositionInVector = find(qIDs.begin(), qIDs.end(), q2ID) - qIDs.begin();
+  
+  SparseTensor SWAP = SWAPGate();
   
   uint steps = abs(q1PositionInVector-q2PositionInVector);
   
@@ -116,14 +127,15 @@ void StateVector::swap(uint q1ID, uint q2ID) {
   
   unsigned int i = q1PositionInVector;
   while(i < q1PositionInVector + steps) {
-    SparseTensor op = prepareOperator(SWAPGate(), {i, i+1});
+    Tensor *op = prepareOperator(&SWAP, {i, i+1});
+//    cout << op->toString() << endl;
     applyGate(op);
     i++;
   }
   
   i = q2PositionInVector - 1;
   while(i > q2PositionInVector - steps) {
-    SparseTensor op = prepareOperator(SWAPGate(), {i-1, i});
+    Tensor *op = prepareOperator(&SWAP, {i-1, i});
     applyGate(op);
     i--;
   }

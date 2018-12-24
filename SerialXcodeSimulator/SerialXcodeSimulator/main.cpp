@@ -11,7 +11,7 @@
 //#include <omp.h>
 #include <mpi.h>
 
-#include "Tensor.hpp"
+#include "DenseTensor.hpp"
 #include "Gates.hpp"
 #include "StateVector.hpp"
 #include "SparseTensor.hpp"
@@ -26,12 +26,12 @@ int main(int argc, char const *argv[]) {
 
 //  cout << QFT(10).toString() << endl;
   
-  QComputer comp (10);
+//  QComputer comp (10);
 
 //  QuantumFourierTransform(&comp, comp.allQubits());
-  QFTGate(&comp, comp.allQubits());
-
-  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
+//  QFTGate(&comp, comp.allQubits());
+//
+//  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
 //  Row amps = {1,0,0,0,0,0,0,0};
 //  vector<int> qIDs = {0,1,2};

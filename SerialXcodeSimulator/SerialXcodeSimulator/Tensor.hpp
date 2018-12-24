@@ -2,57 +2,37 @@
 //  Tensor.hpp
 //  SerialXcodeSimulator
 //
-//  Created by Youssef Moawad on 09/11/2018.
+//  Created by Youssef Moawad on 23/12/2018.
 //  Copyright © 2018 Youssef Moawad. All rights reserved.
 //
 
 #ifndef Tensor_hpp
 #define Tensor_hpp
 
+#include <stdio.h>
 
-#include <iostream>
-#include <complex>
-#include <vector>
+#include "SparseTensor.hpp"
 
-using namespace std;
-
-using cxd = complex<double>;
-using Row = vector<cxd>;
-using Rows = vector<Row>;
+class SparseTensor;
+class DenseTensor;
 
 class Tensor {
-private:
-  Rows rows;
 public:
-  Tensor(Rows rs);
-  Tensor(int rowCount, int colCount);
-  Tensor(vector<cxd> v);
-  int rowCount();
-  int colCount();
-  cxd elementAt(int r, int c);
-  void setElementAt(int r, int c, cxd newValue);
-  Row getRow(int r);
-  Row getCol(int c);
-  Rows getRows();
-  bool matchesDimensionsWith(Tensor t);
-  Tensor getBlock(int rs, int re, int cs, int ce);
-  void setBlock(int rs, int re, int cs, int ce, Tensor t);
-  void enumerateElements(function<void(int,int,cxd)> f);
-  bool isNormalised();
-  Tensor transpose();
+  virtual uint rowCount() = 0;
+  virtual uint colCount() = 0;
   
-  cxd dotProductWith(Tensor t);
-  Tensor multiplyBy(cxd k);
-  Tensor addTo(Tensor t);
+  virtual SparseTensor multiplyTo(SparseTensor t) = 0;
   
-  Tensor multiplyBy(Tensor t);
+  virtual SparseTensor sparseKronWith(SparseTensor t) = 0;
+  virtual SparseTensor sparseKronWith(DenseTensor t) = 0;
+  virtual SparseTensor sparseKronWith(Tensor* t) = 0;
+  virtual DenseTensor denseKronWith(SparseTensor t) = 0;
+  virtual DenseTensor denseKronWith(DenseTensor t) = 0;
+  virtual DenseTensor denseKronWith(Tensor *t) = 0;
   
-  Tensor kronWith(Tensor t);
+  virtual uint getNNZ() = 0;
   
-  std::string toString();
-  
-  /** Static Functions **/
-  static cxd vectorDotProduct(Row v1, Row v2);
+  virtual std::string toString() = 0;
 };
 
 #endif /* Tensor_hpp */

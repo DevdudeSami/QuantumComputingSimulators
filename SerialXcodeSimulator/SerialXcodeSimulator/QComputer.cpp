@@ -86,7 +86,7 @@ list_index QComputer::combineQubits(vector<QID> qIDs) {
 }
 
 void QComputer::applySingleGate(QID qID, SparseTensor gate) {
-  vectors[listIndexFromQID(qID)].applyNGate(gate, vector<QID>({qID}));
+  vectors[listIndexFromQID(qID)].applyNGate(&gate, vector<QID>({qID}));
 }
 
 void QComputer::applySingleGateToMutlipleQubits(vector<QID> qIDs, SparseTensor gate) {
@@ -97,7 +97,7 @@ void QComputer::applySingleGateToMutlipleQubits(vector<QID> qIDs, SparseTensor g
 
 void QComputer::applyMultiGate(vector<QID> qIDs, SparseTensor gate) {
   list_index combinedStateIndex = combineQubits(qIDs);
-  vectors[combinedStateIndex].applyNGate(gate, qIDs);
+  vectors[combinedStateIndex].applyNGate(&gate, qIDs);
 }
 
 StateVector QComputer::stateVectorWithQID(QID qID) {

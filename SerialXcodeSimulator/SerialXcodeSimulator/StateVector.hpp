@@ -24,11 +24,11 @@ public:
   vector<double> probabilities();
   unsigned long numberOfQubits();
   vector<unsigned int> qubitIDs();
-  void applyGate(SparseTensor t);
-  void applyNGate(SparseTensor t, vector<unsigned int> qIDs);
+  void applyGate(Tensor* t);
+  void applyNGate(Tensor* t, vector<unsigned int> qIDs);
   string measure();
   StateVector combineWith(StateVector v);
-  SparseTensor prepareOperator(SparseTensor t, vector<unsigned int> indices);
+  Tensor* prepareOperator(Tensor *t, vector<unsigned int> indices);
   void swap(unsigned int q1ID, unsigned int q2ID);
 };
 

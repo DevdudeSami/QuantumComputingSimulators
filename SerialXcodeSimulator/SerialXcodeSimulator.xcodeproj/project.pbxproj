@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EE186546219511B800C29D9C /* Tensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186545219511B800C29D9C /* Tensor.cpp */; };
+		EE186546219511B800C29D9C /* DenseTensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186545219511B800C29D9C /* DenseTensor.cpp */; };
 		EE186549219511D600C29D9C /* StateVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186547219511D600C29D9C /* StateVector.cpp */; };
 		EE18654C219519BB00C29D9C /* Gates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE18654A219519BB00C29D9C /* Gates.cpp */; };
 		EE27D34121BC954600BB3761 /* Algorithms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D33F21BC954600BB3761 /* Algorithms.cpp */; };
@@ -31,14 +31,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		EE186544219511B800C29D9C /* Tensor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tensor.hpp; sourceTree = "<group>"; };
-		EE186545219511B800C29D9C /* Tensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tensor.cpp; sourceTree = "<group>"; };
+		EE186544219511B800C29D9C /* DenseTensor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DenseTensor.hpp; sourceTree = "<group>"; };
+		EE186545219511B800C29D9C /* DenseTensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DenseTensor.cpp; sourceTree = "<group>"; };
 		EE186547219511D600C29D9C /* StateVector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StateVector.cpp; sourceTree = "<group>"; };
 		EE186548219511D600C29D9C /* StateVector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StateVector.hpp; sourceTree = "<group>"; };
 		EE18654A219519BB00C29D9C /* Gates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Gates.cpp; sourceTree = "<group>"; };
 		EE18654B219519BB00C29D9C /* Gates.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Gates.hpp; sourceTree = "<group>"; };
 		EE27D33F21BC954600BB3761 /* Algorithms.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Algorithms.cpp; sourceTree = "<group>"; };
 		EE27D34021BC954600BB3761 /* Algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Algorithms.hpp; sourceTree = "<group>"; };
+		EE27D34321CFCA0600BB3761 /* Tensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tensor.hpp; sourceTree = "<group>"; };
 		EE3A7EDB21B610B700418E1B /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
 		EE3A7EDC21B610B700418E1B /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 		EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QComputer.cpp; sourceTree = "<group>"; };
@@ -84,8 +85,8 @@
 			isa = PBXGroup;
 			children = (
 				EE50F48B218BDE0A00B9B10A /* main.cpp */,
-				EE186545219511B800C29D9C /* Tensor.cpp */,
-				EE186544219511B800C29D9C /* Tensor.hpp */,
+				EE186545219511B800C29D9C /* DenseTensor.cpp */,
+				EE186544219511B800C29D9C /* DenseTensor.hpp */,
 				EE186547219511D600C29D9C /* StateVector.cpp */,
 				EE186548219511D600C29D9C /* StateVector.hpp */,
 				EE18654A219519BB00C29D9C /* Gates.cpp */,
@@ -98,6 +99,7 @@
 				EE3A7EDF21B6DD1400418E1B /* QComputer.hpp */,
 				EE27D33F21BC954600BB3761 /* Algorithms.cpp */,
 				EE27D34021BC954600BB3761 /* Algorithms.hpp */,
+				EE27D34321CFCA0600BB3761 /* Tensor.hpp */,
 			);
 			path = SerialXcodeSimulator;
 			sourceTree = "<group>";
@@ -169,7 +171,7 @@
 			files = (
 				EE927FB621AF801800CF41ED /* SparseTensor.cpp in Sources */,
 				EE27D34121BC954600BB3761 /* Algorithms.cpp in Sources */,
-				EE186546219511B800C29D9C /* Tensor.cpp in Sources */,
+				EE186546219511B800C29D9C /* DenseTensor.cpp in Sources */,
 				EE3A7EDD21B610B700418E1B /* Accumulator.cpp in Sources */,
 				EE3A7EE021B6DD1400418E1B /* QComputer.cpp in Sources */,
 				EE186549219511D600C29D9C /* StateVector.cpp in Sources */,
