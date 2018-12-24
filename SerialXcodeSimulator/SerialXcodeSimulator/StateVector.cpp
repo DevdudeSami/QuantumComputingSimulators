@@ -108,7 +108,6 @@ Tensor *StateVector::prepareOperator(Tensor *t, vector<unsigned int> indices) {
 
 void StateVector::swap(uint q1ID, uint q2ID) {
   if(q1ID == q2ID) return;
-  
   int q1PositionInVector = find(qIDs.begin(), qIDs.end(), q1ID) - qIDs.begin();
   int q2PositionInVector = find(qIDs.begin(), qIDs.end(), q2ID) - qIDs.begin();
   
@@ -125,20 +124,38 @@ void StateVector::swap(uint q1ID, uint q2ID) {
     q2PositionInVector = temp;
   }
   
-  unsigned int i = q1PositionInVector;
-  while(i < q1PositionInVector + steps) {
-    Tensor *op = prepareOperator(&SWAP, {i, i+1});
-//    cout << op->toString() << endl;
-    applyGate(op);
-    i++;
+  Tensor* ops[steps*2-1];
+  
+  // TODO: Potentially combine these two loops
+  #pragma omp parallel for
+  for(uint i = q1PositionInVector; i < q1PositionInVector + steps; i++) {
+    ops[i-q1PositionInVector] = prepareOperator(&SWAP, {i,i+1});
   }
   
-  i = q2PositionInVector - 1;
-  while(i > q2PositionInVector - steps) {
-    Tensor *op = prepareOperator(&SWAP, {i-1, i});
-    applyGate(op);
-    i--;
+  #pragma omp parallel for
+  for(uint i = q2PositionInVector - 1; i > q2PositionInVector - steps; i--) {
+    int indexInArray = -i + q2PositionInVector - 1 + steps;
+    ops[indexInArray] = prepareOperator(&SWAP, {i-1,i});
   }
+
+  
+  for(int i = 0; i < steps*2-1; i++) {
+    applyGate(ops[i]);
+  }
+  
+//  unsigned int i = q1PositionInVector;
+//  while(i < q1PositionInVector + steps) {
+//    Tensor *op = prepareOperator(&SWAP, {i, i+1});
+//    applyGate(op);
+//    i++;
+//  }
+//
+//  i = q2PositionInVector - 1;
+//  while(i > q2PositionInVector - steps) {
+//    Tensor *op = prepareOperator(&SWAP, {i-1, i});
+//    applyGate(op);
+//    i--;
+//  }
 }
 
 vector<string> product(vector<string> v1, vector<string> v2) {

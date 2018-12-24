@@ -127,7 +127,7 @@ void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) {
 }
 
 void QFTGate(QComputer *comp, vector<QID> qIDs) {
-  SparseTensor gate = QFT(qIDs.size());
-  //  DenseTensor gate = DenseQFT(qIDs.size());
+//  SparseTensor gate = QFT(qIDs.size());
+  DenseTensor gate = DenseQFT(qIDs.size());
   GateCircuit(comp, qIDs, &gate);
 }

@@ -23,26 +23,14 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
-
-//  cout << QFT(10).toString() << endl;
   
-//  QComputer comp (12);
+  QComputer comp (13);
 
 //  QuantumFourierTransform(&comp, comp.allQubits());
-//  QFTGate(&comp, comp.allQubits());
+  QFTGate(&comp, comp.allQubits());
 //
 //  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
   
-//  Row amps = {1,0,0,0,0,0,0,0};
-//  vector<int> qIDs = {0,1,2};
-//
-//  StateVector state (SparseTensor(Tensor(amps),1), qIDs);
-//
-//  state.applyNGate(H(), vector<int>({0}));
-//  state.applyNGate(CNOT(), vector<int>({0,1}));
-//
-//  cout << takeMeasurementsInString(state, 1000, nullptr) << endl;
-
 //  const SparseTensor static_i = I();
 //  const SparseTensor static_h = H();
 //  SparseTensor m = H();
@@ -78,7 +66,7 @@ int main(int argc, char const *argv[]) {
 //  cout << FullAdder(1, 1, 1) << endl;
   
   // Ripple Carry Adder testing
-  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
+//  cout << AltSixQubitRippleCarryAdder("111111", "111111") << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
