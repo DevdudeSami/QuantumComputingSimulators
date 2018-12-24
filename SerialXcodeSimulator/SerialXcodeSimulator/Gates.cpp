@@ -83,6 +83,23 @@ SparseTensor QFT(uint n) {
   return SparseTensor(N, N, N*N, keys, vals);
 }
 
+DenseTensor DenseQFT(uint n) {
+  uint N = pow(2,n);
+  cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, n));
+  
+  DenseTensor result (N,N);
+  
+  #pragma omp parallel for
+  for(int i = 0; i < N; i++) {
+    #pragma omp parallel for
+    for(int j = 0; j < N; j++) {
+      result.setElementAt(i, j, pow(omega, i*j)/sqrt(N));
+    }
+  }
+  
+  return result;
+}
+
 /************* END Q Gates ***************/
 
 void GateCircuit(QComputer *comp, vector<QID> qIDs, Tensor* t) {
@@ -111,5 +128,6 @@ void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) {
 
 void QFTGate(QComputer *comp, vector<QID> qIDs) {
   SparseTensor gate = QFT(qIDs.size());
+  //  DenseTensor gate = DenseQFT(qIDs.size());
   GateCircuit(comp, qIDs, &gate);
 }
