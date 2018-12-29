@@ -69,6 +69,43 @@ SparseTensor IGate(uint n) {
   return SparseTensor(n,n,n,keys,vals);
 }
 
+/// C^nNot
+SparseTensor CnNOTGate(uint n) {
+  key keys[n];
+  cxd vals[n];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < n-2; i++) {
+    keys[i] = make_pair(i, i);
+    vals[i] = cxd(1);
+  }
+  
+  keys[n-2] = key(n-2,n-1);
+  vals[n-2] = cxd(1);
+  keys[n-1] = key(n-1,n-2);
+  vals[n-1] = cxd(1);
+  
+  return SparseTensor(n,n,n,keys,vals);
+}
+
+/// C^nZ
+SparseTensor CnZGate(uint n) {
+  key keys[n];
+  cxd vals[n];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < n-2; i++) {
+    keys[i] = make_pair(i, i);
+    vals[i] = cxd(1);
+  }
+
+  // only the very last value is different
+  vals[n-1] = cxd(-1);
+  
+  return SparseTensor(n,n,n,keys,vals);
+}
+
+
 SparseTensor CRm(uint m) {
   cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, m));
   

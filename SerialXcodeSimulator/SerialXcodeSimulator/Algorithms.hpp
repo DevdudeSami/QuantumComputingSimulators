@@ -15,9 +15,9 @@
 
 using namespace std;
 
-
-
 void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
 void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
+
+string GroversSearch(uint n, vector<uint> markedStates, uint iters);
 
 #endif /* Algorithms_hpp */

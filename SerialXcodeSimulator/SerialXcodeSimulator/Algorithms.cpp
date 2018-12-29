@@ -35,3 +35,76 @@ void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs) 
   co.executeCircuit();
 }
 
+/// markedStates is a list of the state indices, i.e. the qubit IDs
+vector<ApplicableGate> GroversOracle(QComputer *comp, vector<uint> markedStates) {
+  vector<ApplicableGate> gates;
+  
+  Tensor* X = new SparseTensor(XGate());
+  Tensor* CnNOT = new SparseTensor(CnNOTGate(pow(2, comp->numberOfQubits())));
+  
+  for(auto s: markedStates) {
+    gates.push_back(ApplicableGate(X, {s}));
+  }
+  
+  gates.push_back(ApplicableGate(CnNOT, comp->allQubits()));
+  
+  for(auto s: markedStates) {
+    gates.push_back(ApplicableGate(X, {s}));
+  }
+  
+  return gates;
+}
+
+vector<ApplicableGate> GroversDiffusion(QComputer *comp) {
+  vector<ApplicableGate> gates;
+  
+  Tensor* H = new SparseTensor(HGate());
+  Tensor* X = new SparseTensor(XGate());
+  Tensor* CnZ = new SparseTensor(CnZGate(pow(2, comp->numberOfQubits()-1)));
+  
+  for(uint i = 0; i < comp->numberOfQubits()-1; i++) {
+    gates.push_back(ApplicableGate(H, {i}));
+    gates.push_back(ApplicableGate(X, {i}));
+  }
+  
+  vector<QID> allQs = comp->allQubits();
+  vector<QID> cnzIDs (allQs.begin(), allQs.end()-1);
+  
+  gates.push_back(ApplicableGate(CnZ, cnzIDs));
+  
+  for(uint i = 0; i < comp->numberOfQubits()-1; i++) {
+    gates.push_back(ApplicableGate(X, {i}));
+    gates.push_back(ApplicableGate(H, {i}));
+  }
+  
+  return gates;
+}
+
+string GroversSearch(uint n, vector<uint> markedStates, uint iters) {
+  vector<ApplicableGate> gates;
+  
+  QComputer comp(n+1);
+  
+  // The last qubit must be flipped
+  gates.push_back(XAGate({n}));
+  
+  // H all qubits
+  for(uint i = 0; i < n+1; i++) {
+    gates.push_back(HAGate({i}));
+  }
+  
+  vector<ApplicableGate> oracle = GroversOracle(&comp, markedStates);
+  vector<ApplicableGate> diffusion = GroversDiffusion(&comp);
+  
+  for(int i = 0; i < iters; i++) {
+    gates.insert(gates.end(), oracle.begin(), oracle.end());
+    gates.insert(gates.end(), diffusion.begin(), diffusion.end());
+  }
+  
+  CircuitOptimiser co (&comp, gates);
+  co.executeCircuit();
+  
+  string m = comp.measure();
+  
+  return m.substr(1,n);
+}
