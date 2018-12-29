@@ -21,6 +21,10 @@ CircuitOptimiser::CircuitOptimiser(uint n, vector<ApplicableGate> gates) : comp{
   }
 }
 
+void CircuitOptimiser::addGates(vector<ApplicableGate> gates) {
+  this->gates.insert(this->gates.end(), gates.begin(), gates.end());
+}
+
 list_index CircuitOptimiser::combineTwoQubits(QID q1, QID q2) {
   list_index q1Index = listIndexFromQID(q1);
   list_index q2Index = listIndexFromQID(q2);

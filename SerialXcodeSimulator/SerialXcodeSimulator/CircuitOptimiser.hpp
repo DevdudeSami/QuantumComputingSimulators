@@ -37,6 +37,7 @@ public:
   CircuitOptimiser(QComputer* comp, vector<ApplicableGate> gates);
   CircuitOptimiser(uint n, vector<ApplicableGate> gates);
   
+  void addGates(vector<ApplicableGate> gates);
   void executeCircuit();
 };
 
