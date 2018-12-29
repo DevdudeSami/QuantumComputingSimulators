@@ -33,6 +33,8 @@ int main(int argc, char const *argv[]) {
 //  cout << CircuitOptimisedAltSixQubitRippleCarryAdder("100101", "001011") << endl;
 //  cout << AltSixQubitRippleCarryAdder("100101", "001011") << endl;
   
+  cout << CircuitOptimisedNQubitCuccaroAdder(8, "11100001", "11100001") << endl;
+  
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
   cout << "--- end time: " << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
