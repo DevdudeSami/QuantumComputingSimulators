@@ -144,3 +144,20 @@ void QFTGate(QComputer *comp, vector<QID> qIDs) {
   DenseTensor gate = DenseQFT(qIDs.size());
   GateCircuit(comp, qIDs, &gate);
 }
+
+ApplicableGate XAGate(vector<QID> qIDs) {
+  return ApplicableGate(&X, qIDs);
+}
+
+ApplicableGate HAGate(vector<QID> qIDs) {
+  return ApplicableGate(&H, qIDs);
+}
+
+ApplicableGate CNOTAGate(vector<QID> qIDs) {
+  return ApplicableGate(&CNOT, qIDs);
+}
+
+ApplicableGate TOFFAGate(vector<QID> qIDs) {
+  return ApplicableGate(&TOFF, qIDs);
+}
+

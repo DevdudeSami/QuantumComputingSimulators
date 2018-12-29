@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "QComputer.hpp"
+#include "CircuitOptimiser.hpp"
 
 using namespace std;
 
@@ -24,7 +25,11 @@ void MAJCircuit(QComputer *comp, vector<QID> qIDs);
 void UMACircuit(QComputer *comp, vector<QID> qIDs);
 string SixQubitRippleCarryAdder(string A, string B);
 string AltSixQubitRippleCarryAdder(string A, string B);
+string CircuitOptimisedAltSixQubitRippleCarryAdder(string A, string B);
 
 void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
+void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
+
+void CircuitOptimisedTwoQubitEntanglement(QComputer *comp, vector<QID> qIDs);
 
 #endif /* Algorithms_hpp */

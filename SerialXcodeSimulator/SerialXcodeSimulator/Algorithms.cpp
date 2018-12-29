@@ -246,6 +246,126 @@ string AltSixQubitRippleCarryAdder(string A, string B) {
   return {m[14], m[12], m[10], m[8], m[6], m[4], m[1]};
 }
 
+// TODO: Fix this; the qubit IDs should be indices of the passed qIDs vector
+void CircuitOptimisedAltSixQubitRippleCarryAdderCircuit(QComputer *comp, vector<QID> qIDs) {
+  
+  assert(comp->numberOfQubits() >= 14);
+  assert(qIDs.size() == 14);
+  
+  vector<ApplicableGate> gates = {
+    // Time slice 1
+    CNOTAGate({4,3}),
+    CNOTAGate({6,5}),
+    CNOTAGate({8,7}),
+    CNOTAGate({10,9}),
+    CNOTAGate({12,11}),
+    
+    // Time slice 2
+    CNOTAGate({4,2}),
+    
+    // Time slice 3
+    TOFFAGate({0,1,2}),
+    CNOTAGate({6,4}),
+    
+    // Time slice 4
+    TOFFAGate({2,3,4}),
+    CNOTAGate({8,6}),
+    
+    // Time slice 5
+    TOFFAGate({4,5,6}),
+    CNOTAGate({10,8}),
+
+    // Time slice 6
+    TOFFAGate({6,7,8}),
+    CNOTAGate({12,10}),
+
+    // Time slice 7
+    TOFFAGate({8,9,10}),
+    CNOTAGate({12,13}),
+    
+    // Time slice 8
+    XAGate({3}),
+    XAGate({5}),
+    XAGate({7}),
+    XAGate({9}),
+    TOFFAGate({10,11,13}),
+    
+    // Time slice 9
+    CNOTAGate({2,3}),
+    CNOTAGate({4,5}),
+    CNOTAGate({6,7}),
+    CNOTAGate({8,9}),
+    CNOTAGate({10,11}),
+    
+    // Time slice 10
+    TOFFAGate({8,9,10}),
+    
+    // Time slice 11
+    TOFFAGate({6,7,8}),
+    XAGate({9}),
+    CNOTAGate({12,10}),
+    
+    // Time slice 12
+    TOFFAGate({4,5,6}),
+    XAGate({7}),
+    CNOTAGate({10,8}),
+    
+    // Time slice 13
+    TOFFAGate({2,3,4}),
+    XAGate({5}),
+    CNOTAGate({8,6}),
+    
+    // Time slice 14
+    TOFFAGate({0,1,2}),
+    XAGate({3}),
+    CNOTAGate({6,4}),
+    
+    // Time slice 15
+    CNOTAGate({4,2}),
+    
+    // Time slice 16
+    CNOTAGate({1,0}),
+    CNOTAGate({4,3}),
+    CNOTAGate({6,5}),
+    CNOTAGate({8,7}),
+    CNOTAGate({10,9}),
+    CNOTAGate({12,11}),
+  };
+  
+  CircuitOptimiser co (comp, gates);
+  co.executeCircuit();
+}
+
+string CircuitOptimisedAltSixQubitRippleCarryAdder(string A, string B) {
+  QComputer comp (14);
+  
+  // Bit 2 is the input carry
+  
+  // Bits 0,3,5,7,9,11 are B
+  if(B[5] == '1') comp.flipQubit(0);
+  if(B[4] == '1') comp.flipQubit(3);
+  if(B[3] == '1') comp.flipQubit(5);
+  if(B[2] == '1') comp.flipQubit(7);
+  if(B[1] == '1') comp.flipQubit(9);
+  if(B[0] == '1') comp.flipQubit(11);
+  
+  // Bits 1,4,6,8,10,12 are A
+  if(A[5] == '1') comp.flipQubit(1);
+  if(A[4] == '1') comp.flipQubit(4);
+  if(A[3] == '1') comp.flipQubit(6);
+  if(A[2] == '1') comp.flipQubit(8);
+  if(A[1] == '1') comp.flipQubit(10);
+  if(A[0] == '1') comp.flipQubit(12);
+  
+  // Bit 13 is the Z bit
+  
+  CircuitOptimisedAltSixQubitRippleCarryAdderCircuit(&comp, comp.allQubits());
+  
+  string m = comp.measure();
+  // Bits 0,3,5,7,9,11 are the sum after the circuit is done
+  return {m[14], m[12], m[10], m[8], m[6], m[4], m[1]};
+}
+
 void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
   for(int i = 0; i < qIDs.size(); i++) {
     HGate(comp, {qIDs[i]});
@@ -255,3 +375,34 @@ void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
     }
   }
 }
+
+void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
+  vector<ApplicableGate> gates;
+  
+  for(int i = 0; i < qIDs.size(); i++) {
+    gates.push_back(HAGate({qIDs[i]}));
+    
+    for(int j = i+1; j < qIDs.size(); j++) {
+      SparseTensor crmGate = CRm(j-i+1);
+      
+      gates.push_back(ApplicableGate(&crmGate, {qIDs[j], qIDs[i]}));
+    }
+  }
+  
+  CircuitOptimiser co (comp, gates);
+  co.executeCircuit();
+}
+
+void CircuitOptimisedTwoQubitEntanglement(QComputer *comp, vector<QID> qIDs) {
+  assert(comp->numberOfQubits() >= 2);
+  assert(qIDs.size() == 2);
+  
+  vector<ApplicableGate> gates = {
+    HAGate({0}),
+    CNOTAGate({0,1})
+  };
+  
+  CircuitOptimiser co (comp, gates);
+  co.executeCircuit();
+}
+

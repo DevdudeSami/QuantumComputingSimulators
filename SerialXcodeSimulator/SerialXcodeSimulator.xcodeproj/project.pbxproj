@@ -11,6 +11,7 @@
 		EE186549219511D600C29D9C /* StateVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE186547219511D600C29D9C /* StateVector.cpp */; };
 		EE18654C219519BB00C29D9C /* Gates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE18654A219519BB00C29D9C /* Gates.cpp */; };
 		EE27D34121BC954600BB3761 /* Algorithms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D33F21BC954600BB3761 /* Algorithms.cpp */; };
+		EE27D34721D1826B00BB3761 /* CircuitOptimiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D34521D1826B00BB3761 /* CircuitOptimiser.cpp */; };
 		EE3A7EDD21B610B700418E1B /* Accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3A7EDB21B610B700418E1B /* Accumulator.cpp */; };
 		EE3A7EE021B6DD1400418E1B /* QComputer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */; };
 		EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE50F48B218BDE0A00B9B10A /* main.cpp */; };
@@ -40,6 +41,8 @@
 		EE27D33F21BC954600BB3761 /* Algorithms.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Algorithms.cpp; sourceTree = "<group>"; };
 		EE27D34021BC954600BB3761 /* Algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Algorithms.hpp; sourceTree = "<group>"; };
 		EE27D34321CFCA0600BB3761 /* Tensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tensor.hpp; sourceTree = "<group>"; };
+		EE27D34521D1826B00BB3761 /* CircuitOptimiser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CircuitOptimiser.cpp; sourceTree = "<group>"; };
+		EE27D34621D1826B00BB3761 /* CircuitOptimiser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CircuitOptimiser.hpp; sourceTree = "<group>"; };
 		EE3A7EDB21B610B700418E1B /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
 		EE3A7EDC21B610B700418E1B /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 		EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QComputer.cpp; sourceTree = "<group>"; };
@@ -100,6 +103,8 @@
 				EE27D33F21BC954600BB3761 /* Algorithms.cpp */,
 				EE27D34021BC954600BB3761 /* Algorithms.hpp */,
 				EE27D34321CFCA0600BB3761 /* Tensor.hpp */,
+				EE27D34521D1826B00BB3761 /* CircuitOptimiser.cpp */,
+				EE27D34621D1826B00BB3761 /* CircuitOptimiser.hpp */,
 			);
 			path = SerialXcodeSimulator;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 				EE186549219511D600C29D9C /* StateVector.cpp in Sources */,
 				EE18654C219519BB00C29D9C /* Gates.cpp in Sources */,
 				EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */,
+				EE27D34721D1826B00BB3761 /* CircuitOptimiser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +306,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_CFLAGS = (
@@ -322,6 +329,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_CFLAGS = (

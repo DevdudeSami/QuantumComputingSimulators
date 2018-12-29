@@ -104,6 +104,16 @@ Tensor *StateVector::prepareOperator(Tensor *t, vector<unsigned int> indices) {
   return op;
 }
 
+Tensor* StateVector::prepareOperatorToRunInMiddle(Tensor* t, uint startingIndex) {
+  uint numberOfAppliedQubits = log2(t->colCount());
+  
+  // there will be two identities (dimensions 2^startingIndex and 2^(n-startingIndex-numberOfAppliedQubits) to kron with t before and after
+  SparseTensor I1 = IGate(pow(2, startingIndex));
+  SparseTensor I2 = IGate(pow(2, n-numberOfAppliedQubits-startingIndex));
+  
+  return new SparseTensor(I1.sparseKronWith(t).sparseKronWith(I2));
+}
+
 Tensor* StateVector::prepareOperatorToRunAtStart(Tensor* t, uint numberOfAppliedQubits) {
   assert(log2(t->colCount()) == numberOfAppliedQubits);
   
@@ -137,13 +147,15 @@ void StateVector::swap(uint q1ID, uint q2ID) {
   // TODO: Potentially combine these two loops
   #pragma omp parallel for
   for(uint i = q1PositionInVector; i < q1PositionInVector + steps; i++) {
-    ops[i-q1PositionInVector] = prepareOperator(&SWAP, {i,i+1});
+//    ops[i-q1PositionInVector] = prepareOperator(&SWAP, {i,i+1});
+    ops[i-q1PositionInVector] = prepareOperatorToRunInMiddle(&SWAP, i);
   }
   
   #pragma omp parallel for
   for(uint i = q2PositionInVector - 1; i > q2PositionInVector - steps; i--) {
     int indexInArray = -i + q2PositionInVector - 1 + steps;
-    ops[indexInArray] = prepareOperator(&SWAP, {i-1,i});
+//    ops[indexInArray] = prepareOperator(&SWAP, {i-1,i});
+    ops[indexInArray] = prepareOperatorToRunInMiddle(&SWAP, i-1);
   }
 
   

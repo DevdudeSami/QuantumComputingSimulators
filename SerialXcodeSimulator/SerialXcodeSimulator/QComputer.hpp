@@ -36,6 +36,7 @@ public:
   void applySingleGate(QID qID, Tensor* gate);
   void applySingleGateToMutlipleQubits(vector<QID> qIDs, Tensor* gate);
   void applyMultiGate(vector<QID> qIDs, Tensor* gate);
+  void applyPreparedGate(list_index stateVectorIndex, Tensor* gate);
   
   /// The first qubit in the vector is used as the control.
   void entangleQubits(vector<QID> qIDs);

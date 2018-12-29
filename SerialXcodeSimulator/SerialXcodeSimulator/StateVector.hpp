@@ -30,6 +30,7 @@ public:
   StateVector combineWith(StateVector v);
   Tensor* prepareOperator(Tensor *t, vector<unsigned int> indices);
   Tensor* prepareOperatorToRunAtStart(Tensor* t, uint numberOfAppliedQubits);
+  Tensor* prepareOperatorToRunInMiddle(Tensor* t, uint startingIndex);
   void swap(unsigned int q1ID, unsigned int q2ID);
 };
 

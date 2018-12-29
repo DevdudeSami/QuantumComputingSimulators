@@ -16,6 +16,7 @@ using namespace std;
 
 class QComputer;
 typedef unsigned int QID;
+typedef pair<Tensor*, vector<QID>> ApplicableGate;
 
 SparseTensor IGate();
 SparseTensor IGate(uint n);
@@ -48,5 +49,11 @@ void SWAPGate(QComputer *comp, vector<QID> qIDs);
 void TOFFGate(QComputer *comp, vector<QID> qIDs);
 void CRmGate(uint m, QComputer *comp, vector<QID> qIDs);
 void QFTGate(QComputer *comp, vector<QID> qIDs);
+
+ApplicableGate XAGate(vector<QID> qIDs);
+ApplicableGate HAGate(vector<QID> qIDs);
+ApplicableGate CNOTAGate(vector<QID> qIDs);
+ApplicableGate TOFFAGate(vector<QID> qIDs);
+
 
 #endif /* Gates_hpp */

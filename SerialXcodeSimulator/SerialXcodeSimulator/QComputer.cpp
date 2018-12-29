@@ -100,6 +100,11 @@ void QComputer::applyMultiGate(vector<QID> qIDs, Tensor* gate) {
   vectors[combinedStateIndex].applyNGate(gate, qIDs);
 }
 
+void QComputer::applyPreparedGate(list_index stateVectorIndex, Tensor* gate) {
+//  list_index combinedStateIndex = combineQubits(qIDs);
+  vectors[stateVectorIndex].applyGate(gate);
+}
+
 StateVector QComputer::stateVectorWithQID(QID qID) {
   return vectors[listIndexFromQID(qID)];
 }

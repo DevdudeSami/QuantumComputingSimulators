@@ -23,7 +23,16 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
-
+  
+//  QComputer comp (13);
+//  QuantumFourierTransform(&comp, comp.allQubits());
+//
+//  CircuitOptimisedQuantumFourierTransform(&comp, comp.allQubits());
+//  cout << takeMeasurementsInString(comp, 1000, nullptr) << endl;
+  
+//  cout << CircuitOptimisedAltSixQubitRippleCarryAdder("100101", "001011") << endl;
+//  cout << AltSixQubitRippleCarryAdder("100101", "001011") << endl;
+  
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
   cout << "--- end time: " << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
