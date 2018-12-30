@@ -25,6 +25,7 @@ SparseTensor YGate();
 SparseTensor ZGate();
 SparseTensor PGate();
 SparseTensor HGate();
+DenseTensor HnGate(uint n);
 
 SparseTensor CNOTGate();
 SparseTensor SWAPGate();

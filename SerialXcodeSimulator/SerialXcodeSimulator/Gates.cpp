@@ -69,6 +69,17 @@ SparseTensor IGate(uint n) {
   return SparseTensor(n,n,n,keys,vals);
 }
 
+/// n is the number of qubits
+DenseTensor HnGate(uint n) {
+  DenseTensor H ({{cxd(1/sqrt(2)), cxd(1/sqrt(2))}, {cxd(1/sqrt(2)), cxd(-1/sqrt(2))}});
+  
+  for(int i = 1; i < n; i++) {
+    H = H.denseKronWith(H);
+  }
+  
+  return H;
+}
+
 /// C^nNot
 SparseTensor CnNOTGate(uint n) {
   key keys[n];
