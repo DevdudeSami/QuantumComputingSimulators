@@ -33,6 +33,7 @@ private:
   list_index listIndexFromQID(QID qID);
   
   vector<Step> swapSteps(list_index stateVectorIndex, uint q1ID, uint q2ID);
+  vector<Step> moveQubitSteps(list_index stateVectorIndex, uint src, uint des);
 public:
   CircuitOptimiser(QComputer* comp, vector<ApplicableGate> gates);
   CircuitOptimiser(uint n, vector<ApplicableGate> gates);

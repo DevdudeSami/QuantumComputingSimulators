@@ -96,6 +96,44 @@ Tensor* prepareOperatorToRunInMiddleOfStateVector(Tensor* t, uint startingIndex,
   return new SparseTensor(I1.sparseKronWith(t).sparseKronWith(I2));
 }
 
+vector<Step> CircuitOptimiser::moveQubitSteps(list_index stateVectorIndex, uint srcQID, uint desQID) {
+  if(srcQID == desQID) return {};
+  
+  vector<QID> stateVector = stateVectorsQubitIDs[stateVectorIndex];
+  
+  int q1PositionInVector = find(stateVector.begin(), stateVector.end(), srcQID) - stateVector.begin();
+  int q2PositionInVector = find(stateVector.begin(), stateVector.end(), desQID) - stateVector.begin();
+  
+  uint stepsCount = abs(q1PositionInVector-q2PositionInVector);
+  
+  SparseTensor* SWAP = new SparseTensor(SWAPGate());
+  Step steps[stepsCount];
+  
+  if(q1PositionInVector > q2PositionInVector) {
+    int indexInArray = 0;
+    for(uint i = q1PositionInVector; i > q1PositionInVector - stepsCount; i--) {
+      ApplicableGate g = ApplicableGate(SWAP, {stateVector[i-1],stateVector[i]});
+      steps[indexInArray] = Step(stateVectorsQubitIDs, g);
+      swap(stateVector[i-1],stateVector[i]);
+      stateVectorsQubitIDs[stateVectorIndex] = stateVector;
+      indexInArray++;
+    }
+    
+  } else {
+    int indexInArray = 0;
+    for(uint i = q1PositionInVector; i < q1PositionInVector + stepsCount; i++) {
+      ApplicableGate g = ApplicableGate(SWAP, {stateVector[i],stateVector[i+1]});
+      steps[indexInArray] = Step(stateVectorsQubitIDs, g);
+      swap(stateVector[i],stateVector[i+1]);
+      stateVectorsQubitIDs[stateVectorIndex] = stateVector;
+      indexInArray++;
+    }
+    
+  }
+  
+  return vector<Step>(steps, steps + sizeof steps / sizeof steps[0]);
+}
+
 vector<Step> CircuitOptimiser::swapSteps(list_index stateVectorIndex, uint q1ID, uint q2ID) {
   if(q1ID == q2ID) return {};
 
@@ -152,20 +190,14 @@ void CircuitOptimiser::executeCircuit() {
     qubitsToCombine[steps.size()] = gates[i].second;
     
     // Swaps
-    vector<pair<int, int>> swapsDone;
     for(int j = 0; j < gates[i].second.size(); j++) {
-      swapsDone.push_back(make_pair(gates[i].second[j], stateVectorsQubitIDs[index][j]));
-      vector<Step> swaps = swapSteps(index, gates[i].second[j], stateVectorsQubitIDs[index][j]);
+      vector<Step> swaps = moveQubitSteps(index, gates[i].second[j], stateVectorsQubitIDs[index][j]);
       steps.insert(steps.end(), swaps.begin(), swaps.end());
     }
     
     steps.push_back(Step(stateVectorsQubitIDs, gates[i]));
     
-    // Swap back in reverse order
-//    for(int j = gates[i].second.size() - 1; j >= 0; j--) {
-//      vector<Step> swaps = swapSteps(index, swapsDone[j].first, swapsDone[j].second);
-//      steps.insert(steps.end(), swaps.begin(), swaps.end());
-//    }
+    // No need to swap back
   }
   
   StateVectorApplicableGate ops[steps.size()];

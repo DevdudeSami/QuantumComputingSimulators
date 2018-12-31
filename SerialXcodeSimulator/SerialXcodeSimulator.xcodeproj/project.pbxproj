@@ -13,6 +13,7 @@
 		EE27D34121BC954600BB3761 /* Algorithms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D33F21BC954600BB3761 /* Algorithms.cpp */; };
 		EE27D34721D1826B00BB3761 /* CircuitOptimiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D34521D1826B00BB3761 /* CircuitOptimiser.cpp */; };
 		EE27D34A21D7E94E00BB3761 /* Adders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D34821D7E94E00BB3761 /* Adders.cpp */; };
+		EE27D34E21D8F42A00BB3761 /* QuantumErrorCorrection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE27D34C21D8F42A00BB3761 /* QuantumErrorCorrection.cpp */; };
 		EE3A7EDD21B610B700418E1B /* Accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3A7EDB21B610B700418E1B /* Accumulator.cpp */; };
 		EE3A7EE021B6DD1400418E1B /* QComputer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */; };
 		EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE50F48B218BDE0A00B9B10A /* main.cpp */; };
@@ -46,6 +47,8 @@
 		EE27D34621D1826B00BB3761 /* CircuitOptimiser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CircuitOptimiser.hpp; sourceTree = "<group>"; };
 		EE27D34821D7E94E00BB3761 /* Adders.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Adders.cpp; sourceTree = "<group>"; };
 		EE27D34921D7E94E00BB3761 /* Adders.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Adders.hpp; sourceTree = "<group>"; };
+		EE27D34C21D8F42A00BB3761 /* QuantumErrorCorrection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QuantumErrorCorrection.cpp; sourceTree = "<group>"; };
+		EE27D34D21D8F42A00BB3761 /* QuantumErrorCorrection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = QuantumErrorCorrection.hpp; sourceTree = "<group>"; };
 		EE3A7EDB21B610B700418E1B /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
 		EE3A7EDC21B610B700418E1B /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 		EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QComputer.cpp; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 				EE27D34621D1826B00BB3761 /* CircuitOptimiser.hpp */,
 				EE27D34821D7E94E00BB3761 /* Adders.cpp */,
 				EE27D34921D7E94E00BB3761 /* Adders.hpp */,
+				EE27D34C21D8F42A00BB3761 /* QuantumErrorCorrection.cpp */,
+				EE27D34D21D8F42A00BB3761 /* QuantumErrorCorrection.hpp */,
 			);
 			path = SerialXcodeSimulator;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 				EE186546219511B800C29D9C /* DenseTensor.cpp in Sources */,
 				EE3A7EDD21B610B700418E1B /* Accumulator.cpp in Sources */,
 				EE27D34A21D7E94E00BB3761 /* Adders.cpp in Sources */,
+				EE27D34E21D8F42A00BB3761 /* QuantumErrorCorrection.cpp in Sources */,
 				EE3A7EE021B6DD1400418E1B /* QComputer.cpp in Sources */,
 				EE186549219511D600C29D9C /* StateVector.cpp in Sources */,
 				EE18654C219519BB00C29D9C /* Gates.cpp in Sources */,
