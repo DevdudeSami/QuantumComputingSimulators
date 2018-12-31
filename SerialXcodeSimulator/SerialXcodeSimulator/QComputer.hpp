@@ -48,6 +48,8 @@ public:
   StateVector stateVectorWithQID(QID qID);
   list_index listIndexFromQID(QID qID);
   vector<QID> allQubits();
+  
+  void setStateVectorQIDs(list_index stateVectorIndex, vector<QID> qIDs);
 };
 
 

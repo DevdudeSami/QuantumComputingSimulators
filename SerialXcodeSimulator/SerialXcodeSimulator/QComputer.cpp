@@ -143,3 +143,7 @@ vector<QID> QComputer::allQubits() {
   }
   return result;
 }
+
+void QComputer::setStateVectorQIDs(list_index stateVectorIndex, vector<QID> qIDs) {
+  vectors[stateVectorIndex].setQIDs(qIDs);
+}

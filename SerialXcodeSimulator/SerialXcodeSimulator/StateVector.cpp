@@ -196,3 +196,7 @@ vector<string> qubitStatesCombinations(unsigned int n) {
   
   return results;
 }
+
+void StateVector::setQIDs(vector<unsigned int> qIDs) {
+  this->qIDs = qIDs;
+}

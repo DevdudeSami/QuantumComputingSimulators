@@ -162,10 +162,10 @@ void CircuitOptimiser::executeCircuit() {
     steps.push_back(Step(stateVectorsQubitIDs, gates[i]));
     
     // Swap back in reverse order
-    for(int j = gates[i].second.size() - 1; j >= 0; j--) {
-      vector<Step> swaps = swapSteps(index, swapsDone[j].first, swapsDone[j].second);
-      steps.insert(steps.end(), swaps.begin(), swaps.end());
-    }
+//    for(int j = gates[i].second.size() - 1; j >= 0; j--) {
+//      vector<Step> swaps = swapSteps(index, swapsDone[j].first, swapsDone[j].second);
+//      steps.insert(steps.end(), swaps.begin(), swaps.end());
+//    }
   }
   
   StateVectorApplicableGate ops[steps.size()];
@@ -190,5 +190,6 @@ void CircuitOptimiser::executeCircuit() {
     if(qubitsToCombine.find(i) != qubitsToCombine.end())
       comp->combineQubits(qubitsToCombine[i]);
     comp->applyPreparedGate(ops[i].second, ops[i].first);
+    comp->setStateVectorQIDs(ops[i].second, steps[i].first[ops[i].second]);
   }
 }

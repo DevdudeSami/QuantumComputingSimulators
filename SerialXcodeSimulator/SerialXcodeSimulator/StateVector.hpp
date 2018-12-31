@@ -32,6 +32,8 @@ public:
   Tensor* prepareOperatorToRunAtStart(Tensor* t, uint numberOfAppliedQubits);
   Tensor* prepareOperatorToRunInMiddle(Tensor* t, uint startingIndex);
   void swap(unsigned int q1ID, unsigned int q2ID);
+  
+  void setQIDs(vector<unsigned int> qIDs);
 };
 
 
