@@ -55,6 +55,7 @@ void CRmGate(uint m, QComputer *comp, vector<QID> qIDs);
 void QFTGate(QComputer *comp, vector<QID> qIDs);
 
 ApplicableGate XAGate(vector<QID> qIDs);
+ApplicableGate ZAGate(vector<QID> qIDs);
 ApplicableGate HAGate(vector<QID> qIDs);
 ApplicableGate CNOTAGate(vector<QID> qIDs);
 ApplicableGate TOFFAGate(vector<QID> qIDs);

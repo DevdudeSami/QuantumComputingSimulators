@@ -197,6 +197,10 @@ ApplicableGate XAGate(vector<QID> qIDs) {
   return ApplicableGate(&X, qIDs);
 }
 
+ApplicableGate ZAGate(vector<QID> qIDs) {
+  return ApplicableGate(&Z, qIDs);
+}
+
 ApplicableGate HAGate(vector<QID> qIDs) {
   return ApplicableGate(&H, qIDs);
 }

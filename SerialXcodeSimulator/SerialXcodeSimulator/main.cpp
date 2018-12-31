@@ -18,13 +18,23 @@
 #include "Accumulator.hpp"
 #include "QComputer.hpp"
 #include "Algorithms.hpp"
+#include "Adders.hpp"
+#include "QuantumErrorCorrection.hpp"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
+
+  QComputer comp (9);
   
-  cout << GroversSearch(10, {1,5}, 1) << endl;
+  // put some information in the first qubit
+  comp.flipQubit(0);
+
+  ShorCodeTest(&comp, 0.4);
+
+  cout << comp.measure() << endl;
+
   
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
