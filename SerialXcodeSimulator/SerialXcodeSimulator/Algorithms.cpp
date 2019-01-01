@@ -18,20 +18,45 @@ void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
   }
 }
 
-void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
+vector<ApplicableGate> QuantumFourierTransformGates(vector<QID> qIDs) {
   vector<ApplicableGate> gates;
   
   for(int i = 0; i < qIDs.size(); i++) {
     gates.push_back(HAGate({qIDs[i]}));
     
     for(int j = i+1; j < qIDs.size(); j++) {
-      SparseTensor crmGate = CRm(j-i+1);
+      Tensor* crmGate = new SparseTensor(CRm(j-i+1));
       
-      gates.push_back(ApplicableGate(&crmGate, {qIDs[j], qIDs[i]}));
+      gates.push_back(ApplicableGate(crmGate, {qIDs[j], qIDs[i]}));
     }
   }
   
-  CircuitOptimiser co (comp, gates);
+  return gates;
+}
+
+vector<ApplicableGate> InverseQuantumFourierTransformGates(vector<QID> qIDs) {
+  vector<ApplicableGate> gates;
+  
+  for(int i = qIDs.size() - 1; i >= 0; i--) {
+    gates.push_back(HAGate({qIDs[i]}));
+    
+    for(int j = qIDs.size() - 1; j >= i - 1; j--) {
+      Tensor* crmGate = new SparseTensor(CRm(-(j-i+1)));
+      
+      gates.push_back(ApplicableGate(crmGate, {qIDs[j], qIDs[i]}));
+    }
+  }
+  
+  return gates;
+}
+
+void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
+  CircuitOptimiser co (comp, QuantumFourierTransformGates(qIDs));
+  co.executeCircuit();
+}
+
+void CircuitOptimisedInverseQuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
+  CircuitOptimiser co (comp, InverseQuantumFourierTransformGates(qIDs));
   co.executeCircuit();
 }
 
