@@ -188,16 +188,32 @@ void CircuitOptimiser::executeCircuit() {
     
     list_index index = combineQubits(gates[i].second);
     qubitsToCombine[steps.size()] = gates[i].second;
-    
-    // Swaps
-    for(int j = 0; j < gates[i].second.size(); j++) {
-      vector<Step> swaps = moveQubitSteps(index, gates[i].second[j], stateVectorsQubitIDs[index][j]);
-      steps.insert(steps.end(), swaps.begin(), swaps.end());
+
+    // Move so that required qubits are adjacent
+    // find the first qubit in the vector
+    uint q1Index = find(stateVectorsQubitIDs[index].begin(), stateVectorsQubitIDs[index].end(), gates[i].second[0]) - stateVectorsQubitIDs[index].begin();
+    // check if there's enough room for the rest of the qubits after it
+    if(q1Index + gates[i].second.size() > stateVectorsQubitIDs[index].size()) {
+      // not enough room
+      // move the first qubit back enough steps
+      uint stepsCount = (q1Index + gates[i].second.size()) - stateVectorsQubitIDs[index].size();
+      vector<Step> moves = moveQubitSteps(index, stateVectorsQubitIDs[index][q1Index], stateVectorsQubitIDs[index][q1Index-stepsCount]);
+      steps.insert(steps.end(), moves.begin(), moves.end());
+      q1Index -= stepsCount;
+    }
+    // now there's enough room, move everything in front of the first qubit, starting from the end
+    for(int j = gates[i].second.size() - 1; j >= 1; j--) {
+      vector<Step> moves = moveQubitSteps(index, gates[i].second[j], stateVectorsQubitIDs[index][q1Index+j]);
+      steps.insert(steps.end(), moves.begin(), moves.end());
+    }
+    // the first qubit may have gotten moved; check and move it back
+    uint q1NewIndex = find(stateVectorsQubitIDs[index].begin(), stateVectorsQubitIDs[index].end(), gates[i].second[0]) - stateVectorsQubitIDs[index].begin();
+    if(q1Index != q1NewIndex) {
+      vector<Step> moves = moveQubitSteps(index, stateVectorsQubitIDs[index][q1NewIndex], stateVectorsQubitIDs[index][q1Index]);
+      steps.insert(steps.end(), moves.begin(), moves.end());
     }
     
     steps.push_back(Step(stateVectorsQubitIDs, gates[i]));
-    
-    // No need to swap back
   }
   
   StateVectorApplicableGate ops[steps.size()];
