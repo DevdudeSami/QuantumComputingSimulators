@@ -41,11 +41,15 @@ string QuantumLanguageInterpreter::execute() {
   }
   
   string line;
-
-  // init step
-  getline(file, line);
   vector<string> splitString;
-  split(splitString, line, is_any_of(" "));
+
+  // skip anything that doesn't start with init
+  while(getline(file, line)) {
+    split(splitString, line, is_any_of(" "));
+    if(splitString[0] == "init") break;
+  }
+  
+  // init step
   if(splitString[0] != "init") {
     cerr << "The first line isn't an init statement." << endl;
     exit(1);
@@ -53,10 +57,15 @@ string QuantumLanguageInterpreter::execute() {
   comp = new QComputer(stoi(splitString[1]));
   
   while(getline(file, line)) {
+    if(line.empty()) continue;
     split(splitString, line, is_any_of(" "));
+    if(splitString[0] == "--") continue;
     if(splitString[0] != "return") {
       vector<QID> qubitIDs;
-      for(int i = 1; i < splitString.size(); i++) qubitIDs.push_back(stoi(splitString[i]));
+      for(int i = 1; i < splitString.size(); i++) {
+        if(splitString[i] == "--") break;
+        qubitIDs.push_back(stoi(splitString[i]));
+      }
       
       gates.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
     } else {
