@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "QComputer.hpp"
 #include "CircuitOptimiser.hpp"
+#include "Algorithms.hpp"
 
 using namespace std;
 
@@ -27,5 +28,7 @@ string SixQubitRippleCarryAdder(string A, string B);
 string AltSixQubitRippleCarryAdder(string A, string B);
 string CircuitOptimisedAltSixQubitRippleCarryAdder(string A, string B);
 string CircuitOptimisedNQubitCuccaroAdder(uint n, string A, string B);
+
+string CircuitOptimisedNBitQFTAdder(uint n, string A, string B);
 
 #endif /* Adders_hpp */

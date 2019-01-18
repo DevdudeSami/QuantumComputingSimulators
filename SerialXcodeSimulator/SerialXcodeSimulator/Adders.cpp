@@ -339,3 +339,66 @@ string CircuitOptimisedNQubitCuccaroAdder(uint n, string A, string B) {
 }
 
 
+void CircuitOptimisedNBitQFTAdderCircuit(uint n, QComputer *comp, vector<QID> qIDs) {
+  uint N = 2*n+1;
+  
+  // Bits 0,1,2,..,n-1 are B
+  // Bits n,n+1,n+2,..,2*n are A in reverse
+  
+  vector<QID> bBits;
+  vector<QID> aBits;
+  vector<QID> aBitsReversed;
+  
+  for(uint i = 0; i < n; i++) bBits.push_back(qIDs[i]);
+  for(uint i = n; i < N; i++) {
+    aBits.push_back(qIDs[i]);
+    aBitsReversed.push_back(qIDs[N+n-i-1]);
+  }
+  
+  // Start by QFT on A
+  vector<ApplicableGate> gates = QuantumFourierTransformGates(aBitsReversed);
+  
+  // Overflow bit computation
+  for(uint i = 0; i < n; i++) {
+    Tensor* crmGate = new SparseTensor(CRm(i+2));
+    gates.push_back(ApplicableGate(crmGate, {i,n}));
+  }
+  
+  for(uint i = 0; i < n; i++) {
+    for(uint j = i; j < n; j++) {
+      Tensor* crmGate = new SparseTensor(CRm(j-i+1));
+      gates.push_back(ApplicableGate(crmGate, {j,i+n}));
+    }
+  }
+  
+  // End by IQFT on A
+  vector<ApplicableGate> iqft = InverseQuantumFourierTransformGates(aBitsReversed);
+  gates.insert(gates.end(), iqft.begin(), iqft.end());
+  
+  CircuitOptimiser co (comp, gates);
+  co.executeCircuit();
+}
+
+string CircuitOptimisedNBitQFTAdder(uint n, string A, string B) {
+  assert(A.size() == n);
+  assert(B.size() == n);
+  
+  uint N = 2*n+1;
+  
+  QComputer comp (N);
+  
+  // Bits 0,1,2,..,n-1 are B
+  for(uint i = 0; i < n; i++) if(B[i] == '1') comp.flipQubit(i);
+  
+  // Bits n,n+1,n+2,..,2*n are A in reverse
+  for(uint i = n+1; i < N; i++) if(A[N-i-1] == '1') comp.flipQubit(i);
+  
+  CircuitOptimisedNBitQFTAdderCircuit(n, &comp, comp.allQubits());
+  
+  string m = comp.measure();
+  // Bits of A are the sum after the circuit is done
+  string result = m.substr(1+n,n+1);
+  
+  return result;
+}
+
