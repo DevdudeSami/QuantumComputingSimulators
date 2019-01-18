@@ -1,0 +1,4 @@
+init 10
+X 1
+X 9
+return 1 9

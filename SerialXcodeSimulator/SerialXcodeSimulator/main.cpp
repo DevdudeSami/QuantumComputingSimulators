@@ -20,21 +20,15 @@
 #include "Algorithms.hpp"
 #include "Adders.hpp"
 #include "QuantumErrorCorrection.hpp"
+#include "QuantumLanguageInterpreter.hpp"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QComputer comp (9);
-  
-  // put some information in the first qubit
-  comp.flipQubit(0);
-
-  ShorCodeTest(&comp, 0.4);
-
-  cout << comp.measure() << endl;
-
+  QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/SerialXcodeSimulator/SerialXcodeSimulator/test.qli");
+  cout << qli.execute() << endl; 
   
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
