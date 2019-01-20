@@ -1,5 +1,23 @@
 -- Test program
-init 15
-X 1
-X 14
-return 1 14
+
+
+-- define the entanglement algorithm for 2 qubits
+gate entangle 2
+H 0
+CNOT 0 1
+endgate
+
+-- define entanglement algorithm for 5 qubits
+gate entangle5 5
+H 0
+CNOT 0 1
+CNOT 0 2
+CNOT 0 3
+CNOT 0 4
+endgate
+
+init 3
+
+entangle 0 1
+
+return all

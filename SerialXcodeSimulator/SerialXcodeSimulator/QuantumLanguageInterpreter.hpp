@@ -13,6 +13,7 @@
 #include <fstream>
 #include "CircuitOptimiser.hpp"
 #include <boost/algorithm/string.hpp>
+#include <unordered_map>
 
 using namespace std;
 
