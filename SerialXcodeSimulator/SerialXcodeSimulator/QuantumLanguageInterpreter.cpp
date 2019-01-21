@@ -11,9 +11,11 @@
 using namespace std;
 using namespace boost;
 
-QuantumLanguageInterpreter::QuantumLanguageInterpreter(string filename) : filename{filename} {}
+QuantumLanguageInterpreter::QuantumLanguageInterpreter(string lookUpFolder, string filename) : lookUpFolder{lookUpFolder}, filename{filename} {}
 
 unordered_map<string, vector<ApplicableGate>> userDefinedGates;
+vector<ApplicableGate> gates;
+vector<QID> qubitsToReturn;
 
 Tensor *gateFor(string g) {
   if(g == "I") return new SparseTensor(IGate());
@@ -30,13 +32,68 @@ Tensor *gateFor(string g) {
   exit(1);
 }
 
+void selfDefineGate(QComputer *comp, string gateName, ifstream *file) {
+  string line;
+  vector<string> splitString;
+  
+  vector<ApplicableGate> gatesForGateBeingDefined;
+  
+  while(getline(*file, line)) {
+    split(splitString, line, is_any_of(" "));
+    if(splitString[0] == "endgate") break;
+    
+    vector<QID> qubitIDs;
+    
+    if(splitString[1] == "all") {
+      qubitIDs = comp->allQubits();
+    } else {
+      for(int i = 1; i < splitString.size(); i++) {
+        if(splitString[i] == "--") break;
+        qubitIDs.push_back(stoi(splitString[i]));
+      }
+    }
+    
+    gatesForGateBeingDefined.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
+  }
+  
+  userDefinedGates[gateName] = gatesForGateBeingDefined;
+}
+
+void handleLine(QComputer *comp, vector<string> splitString) {
+  vector<QID> qubitIDs;
+  
+  if(splitString[1] == "all") {
+    qubitIDs = comp->allQubits();
+  } else {
+    for(int i = 1; i < splitString.size(); i++) {
+      if(splitString[i] == "--") break;
+      qubitIDs.push_back(stoi(splitString[i]));
+    }
+  }
+  
+  if(userDefinedGates.find(splitString[0]) != userDefinedGates.end()) {
+    vector<ApplicableGate> gatesForUserDefinedGate = userDefinedGates[splitString[0]];
+    vector<ApplicableGate> finalGates;
+    
+    for(ApplicableGate g : gatesForUserDefinedGate) {
+      vector<QID> qubitIDsPrime;
+      
+      for(QID q : g.second) {
+        qubitIDsPrime.push_back(qubitIDs[q]);
+      }
+      
+      gates.push_back(ApplicableGate(g.first, qubitIDsPrime));
+    }
+    
+  } else gates.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
+}
+
 string QuantumLanguageInterpreter::execute() {
-  QComputer *comp;
-  vector<ApplicableGate> gates;
-  vector<QID> qubitsToReturn;
+  QComputer *comp = nullptr;
+  
   int numberOfMeasurements = 0;
   
-  ifstream file (filename);
+  ifstream file (lookUpFolder + filename);
   
   if(!file) {
     cerr << "Unable to open file " << filename << endl;
@@ -51,39 +108,19 @@ string QuantumLanguageInterpreter::execute() {
     split(splitString, line, is_any_of(" "));
     if(splitString[0] == "--") continue;
     
-    // init step
+    // Handle init step
     if(splitString[0] == "init") {
       comp = new QComputer(stoi(splitString[1]));
       continue;
     }
     
-    // SELF DEFINED GATES
+    // Handle self defined gates
     if(splitString[0] == "gate") {
-      string gateBeingDefined = splitString[1];
-      vector<ApplicableGate> gatesForGateBeingDefined;
-      
-      while(getline(file, line)) {
-        split(splitString, line, is_any_of(" "));
-        if(splitString[0] == "endgate") break;
-        
-        vector<QID> qubitIDs;
-        
-        if(splitString[1] == "all") {
-          qubitIDs = comp->allQubits();
-        } else {
-          for(int i = 1; i < splitString.size(); i++) {
-            if(splitString[i] == "--") break;
-            qubitIDs.push_back(stoi(splitString[i]));
-          }
-        }
-        
-        gatesForGateBeingDefined.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
-      }
-      
-      userDefinedGates[gateBeingDefined] = gatesForGateBeingDefined;
+      selfDefineGate(comp, splitString[1], &file);
       continue;
     }
     
+    // Handle return
     if(splitString[0] == "return") {
       if(splitString[1] == "all") {
         qubitsToReturn = comp->allQubits();
@@ -92,39 +129,14 @@ string QuantumLanguageInterpreter::execute() {
       continue;
     }
     
+    // Handle take
     if(splitString[0] == "take") {
       numberOfMeasurements = stoi(splitString[1]);
       continue;
-    }
+    }
     
-    /* Handle gate */
-    vector<QID> qubitIDs;
-    
-    if(splitString[1] == "all") {
-      qubitIDs = comp->allQubits();
-    } else {
-      for(int i = 1; i < splitString.size(); i++) {
-        if(splitString[i] == "--") break;
-        qubitIDs.push_back(stoi(splitString[i]));
-      }
-    }
-    
-    if(userDefinedGates.find(splitString[0]) != userDefinedGates.end()) {
-      vector<ApplicableGate> gatesForUserDefinedGate = userDefinedGates[splitString[0]];
-      vector<ApplicableGate> finalGates;
-      
-      for(ApplicableGate g : gatesForUserDefinedGate) {
-        vector<QID> qubitIDsPrime;
-        
-        for(QID q : g.second) {
-          qubitIDsPrime.push_back(qubitIDs[q]);
-        }
-        
-        gates.push_back(ApplicableGate(g.first, qubitIDsPrime));
-      }
-      
-    } else gates.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
-    /* END handle gate */
+    // Handle any other line
+    handleLine(comp, splitString);
   }
   
   file.close();

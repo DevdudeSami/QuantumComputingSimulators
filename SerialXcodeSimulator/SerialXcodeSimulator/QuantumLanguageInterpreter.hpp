@@ -20,9 +20,10 @@ using namespace std;
 
 class QuantumLanguageInterpreter {
 private:
+  string lookUpFolder;
   string filename;
 public:
-  QuantumLanguageInterpreter(string filename);
+  QuantumLanguageInterpreter(string lookUpFolder, string filename);
   string execute();
 };
 
