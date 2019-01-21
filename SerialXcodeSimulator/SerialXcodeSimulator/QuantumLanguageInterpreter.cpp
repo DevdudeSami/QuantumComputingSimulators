@@ -11,13 +11,18 @@
 using namespace std;
 using namespace boost;
 
-QuantumLanguageInterpreter::QuantumLanguageInterpreter(string lookUpFolder, string filename) : lookUpFolder{lookUpFolder}, filename{filename} {}
+QuantumLanguageInterpreter::QuantumLanguageInterpreter(string lookUpFolder, string filename) : lookUpFolder{lookUpFolder} {
+  
+  file = ifstream(lookUpFolder + filename);
+  comp = nullptr;
+  
+  if(!file) {
+    cerr << "Unable to open file " << filename << endl;
+    exit(1);
+  }
+}
 
-unordered_map<string, vector<ApplicableGate>> userDefinedGates;
-vector<ApplicableGate> gates;
-vector<QID> qubitsToReturn;
-
-Tensor *gateFor(string g) {
+Tensor* QuantumLanguageInterpreter::gateFor(string g) {
   if(g == "I") return new SparseTensor(IGate());
   else if(g == "X") return new SparseTensor(XGate());
   else if(g == "Y") return new SparseTensor(YGate());
@@ -32,7 +37,12 @@ Tensor *gateFor(string g) {
   exit(1);
 }
 
-void handleLine(QComputer *comp, vector<string> splitString, vector<ApplicableGate> *gates) {
+void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<ApplicableGate> *gates, ifstream *file) {
+  if(splitString[0] == "loop") {
+    handleLoop(splitString[1], stoi(splitString[2]), stoi(splitString[3]), file, gates);
+    return;
+  }
+    
   vector<QID> qubitIDs;
   
   if(splitString[1] == "all") {
@@ -61,26 +71,7 @@ void handleLine(QComputer *comp, vector<string> splitString, vector<ApplicableGa
   } else gates->push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
 }
 
-void selfDefineGate(QComputer *comp, string gateName, ifstream *file) {
-  string line;
-  vector<string> splitString;
-  
-  vector<ApplicableGate> gatesForGateBeingDefined;
-  
-  while(getline(*file, line)) {
-    trim(line);
-    if(line.empty()) continue;
-    split(splitString, line, is_any_of(" "));
-    if(splitString[0] == "--") continue;
-    if(splitString[0] == "endgate") break;
-    
-    handleLine(comp, splitString, &gatesForGateBeingDefined);
-  }
-  
-  userDefinedGates[gateName] = gatesForGateBeingDefined;
-}
-
-void QuantumLanguageInterpreter::handleImport(QComputer *comp, ifstream *file) {
+void QuantumLanguageInterpreter::handleLink(ifstream *file) {
   string line;
   vector<string> splitString;
   
@@ -98,28 +89,66 @@ void QuantumLanguageInterpreter::handleImport(QComputer *comp, ifstream *file) {
         exit(1);
       }
       
-      handleImport(comp, &linkedFile);
+      handleLink(&linkedFile);
       continue;
     }
     
     if(splitString[0] == "gate") {
-      selfDefineGate(comp, splitString[1], file);
+      selfDefineGate(splitString[1], file);
       continue;
     }
   }
 }
+    
+void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, ifstream *file, vector<ApplicableGate> *gates) {
+  string line;
+  vector<string> splitString;
+  vector<string> loopLines;
+  
+  while(getline(*file, line)) {
+    trim(line);
+    if(line.empty()) continue;
+    if(line == "endloop")
+      break;
+    loopLines.push_back(line);
+  }
+  
+  for(int n = start; n <= end; n++) {
+    for(string line : loopLines) {
+      split(splitString, line, is_any_of(" "));
+      
+      for(int i = 1; i < splitString.size(); i++) {
+        replace_all(splitString[i], symbol, to_string(n));
+        splitString[i] = to_string((int) te_interp(splitString[i].c_str(), 0));
+      }
+      
+      handleLine(splitString, gates, file);
+    }
+  }
+}
+    
+void QuantumLanguageInterpreter::selfDefineGate(string gateName, ifstream *file) {
+  string line;
+  vector<string> splitString;
+  
+  vector<ApplicableGate> gatesForGateBeingDefined;
+  
+  while(getline(*file, line)) {
+    trim(line);
+    if(line.empty()) continue;
+    split(splitString, line, is_any_of(" "));
+    if(splitString[0] == "--") continue;
+    if(splitString[0] == "endgate") break;
+    
+    handleLine(splitString, &gatesForGateBeingDefined, file);
+  }
+  
+  userDefinedGates[gateName] = gatesForGateBeingDefined;
+}
+
 
 string QuantumLanguageInterpreter::execute() {
-  QComputer *comp = nullptr;
-  
   int numberOfMeasurements = 0;
-  
-  ifstream file (lookUpFolder + filename);
-  
-  if(!file) {
-    cerr << "Unable to open file " << filename << endl;
-    exit(1);
-  }
   
   string line;
   vector<string> splitString;
@@ -138,7 +167,7 @@ string QuantumLanguageInterpreter::execute() {
     
     // Handle self defined gates
     if(splitString[0] == "gate") {
-      selfDefineGate(comp, splitString[1], &file);
+      selfDefineGate(splitString[1], &file);
       continue;
     }
     
@@ -165,12 +194,12 @@ string QuantumLanguageInterpreter::execute() {
         exit(1);
       }
       
-      handleImport(comp, &linkedFile);
+      handleLink(&linkedFile);
       continue;
     }
     
     // Handle any other line
-    handleLine(comp, splitString, &gates);
+    handleLine(splitString, &gates, &file);
   }
   
   file.close();

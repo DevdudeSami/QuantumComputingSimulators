@@ -18,6 +18,7 @@
 		EE3A7EE021B6DD1400418E1B /* QComputer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */; };
 		EE50F48C218BDE0A00B9B10A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE50F48B218BDE0A00B9B10A /* main.cpp */; };
 		EE50F4C3218BDF6F00B9B10A /* libarmadillo.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */; };
+		EE5E9EF021F628E900078F0A /* tinyexpr.c in Sources */ = {isa = PBXBuildFile; fileRef = EE5E9EEE21F628E900078F0A /* tinyexpr.c */; };
 		EE927FB621AF801800CF41ED /* SparseTensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE927FB421AF801800CF41ED /* SparseTensor.cpp */; };
 		EEC5333721F1FB6800A949C8 /* QuantumLanguageInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEC5333521F1FB6800A949C8 /* QuantumLanguageInterpreter.cpp */; };
 /* End PBXBuildFile section */
@@ -58,7 +59,14 @@
 		EE50F48B218BDE0A00B9B10A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EE50F4BE218BDEB100B9B10A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		EE50F4C2218BDF6F00B9B10A /* libarmadillo.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libarmadillo.9.dylib; path = ../../../../../../../usr/local/lib/libarmadillo.9.dylib; sourceTree = "<group>"; };
-		EE5E9EE621F1FE3C00078F0A /* test.qli */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.qli; sourceTree = "<group>"; };
+		EE5E9EE621F1FE3C00078F0A /* shorCodeTest.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = shorCodeTest.qll; sourceTree = "<group>"; };
+		EE5E9EE821F61ECB00078F0A /* entangle.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = entangle.qll; sourceTree = "<group>"; };
+		EE5E9EE921F620F000078F0A /* bitFlipCode.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = bitFlipCode.qll; sourceTree = "<group>"; };
+		EE5E9EEA21F6212700078F0A /* phaseFlipCode.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = phaseFlipCode.qll; sourceTree = "<group>"; };
+		EE5E9EEB21F621F000078F0A /* shorCode.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = shorCode.qll; sourceTree = "<group>"; };
+		EE5E9EEC21F6266700078F0A /* main.qli */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.qli; sourceTree = "<group>"; };
+		EE5E9EEE21F628E900078F0A /* tinyexpr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tinyexpr.c; sourceTree = "<group>"; };
+		EE5E9EEF21F628E900078F0A /* tinyexpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyexpr.h; sourceTree = "<group>"; };
 		EE927FB421AF801800CF41ED /* SparseTensor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SparseTensor.cpp; sourceTree = "<group>"; };
 		EE927FB521AF801800CF41ED /* SparseTensor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SparseTensor.hpp; sourceTree = "<group>"; };
 		EEC5333521F1FB6800A949C8 /* QuantumLanguageInterpreter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QuantumLanguageInterpreter.cpp; sourceTree = "<group>"; };
@@ -97,8 +105,9 @@
 		EE50F48A218BDE0A00B9B10A /* SerialXcodeSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				EE5E9EED21F628B700078F0A /* tinyexpr */,
+				EE5E9EE721F61EA500078F0A /* QLITest */,
 				EE50F48B218BDE0A00B9B10A /* main.cpp */,
-				EE5E9EE621F1FE3C00078F0A /* test.qli */,
 				EE186545219511B800C29D9C /* DenseTensor.cpp */,
 				EE186544219511B800C29D9C /* DenseTensor.hpp */,
 				EE186547219511D600C29D9C /* StateVector.cpp */,
@@ -133,6 +142,28 @@
 				EE50F4BE218BDEB100B9B10A /* Accelerate.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE5E9EE721F61EA500078F0A /* QLITest */ = {
+			isa = PBXGroup;
+			children = (
+				EE5E9EE621F1FE3C00078F0A /* shorCodeTest.qll */,
+				EE5E9EE821F61ECB00078F0A /* entangle.qll */,
+				EE5E9EE921F620F000078F0A /* bitFlipCode.qll */,
+				EE5E9EEA21F6212700078F0A /* phaseFlipCode.qll */,
+				EE5E9EEB21F621F000078F0A /* shorCode.qll */,
+				EE5E9EEC21F6266700078F0A /* main.qli */,
+			);
+			path = QLITest;
+			sourceTree = "<group>";
+		};
+		EE5E9EED21F628B700078F0A /* tinyexpr */ = {
+			isa = PBXGroup;
+			children = (
+				EE5E9EEE21F628E900078F0A /* tinyexpr.c */,
+				EE5E9EEF21F628E900078F0A /* tinyexpr.h */,
+			);
+			path = tinyexpr;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +229,7 @@
 				EE27D34A21D7E94E00BB3761 /* Adders.cpp in Sources */,
 				EE27D34E21D8F42A00BB3761 /* QuantumErrorCorrection.cpp in Sources */,
 				EEC5333721F1FB6800A949C8 /* QuantumLanguageInterpreter.cpp in Sources */,
+				EE5E9EF021F628E900078F0A /* tinyexpr.c in Sources */,
 				EE3A7EE021B6DD1400418E1B /* QComputer.cpp in Sources */,
 				EE186549219511D600C29D9C /* StateVector.cpp in Sources */,
 				EE18654C219519BB00C29D9C /* Gates.cpp in Sources */,

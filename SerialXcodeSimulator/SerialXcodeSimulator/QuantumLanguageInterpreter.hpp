@@ -22,9 +22,18 @@ using namespace std;
 class QuantumLanguageInterpreter {
 private:
   string lookUpFolder;
-  string filename;
+  ifstream file;
+  QComputer *comp;
+  unordered_map<string, vector<ApplicableGate>> userDefinedGates;
+  vector<ApplicableGate> gates;
+  vector<QID> qubitsToReturn;
   
-  void handleImport(QComputer *comp, ifstream *file);
+  Tensor *gateFor(string g);
+  
+  void handleLink(ifstream *file);
+  void handleLine(vector<string> splitString, vector<ApplicableGate> *gates, ifstream *file);
+  void handleLoop(string symbol, int start, int end, ifstream *file, vector<ApplicableGate> *gates);
+  void selfDefineGate(string gateName, ifstream *file);
 public:
   QuantumLanguageInterpreter(string lookUpFolder, string filename);
   string execute();
