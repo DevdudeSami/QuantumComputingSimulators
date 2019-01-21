@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <fstream>
 #include "CircuitOptimiser.hpp"
+#include "Accumulator.hpp"
 #include <boost/algorithm/string.hpp>
 #include <unordered_map>
 

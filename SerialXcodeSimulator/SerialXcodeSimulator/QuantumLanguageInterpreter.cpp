@@ -34,6 +34,7 @@ string QuantumLanguageInterpreter::execute() {
   QComputer *comp;
   vector<ApplicableGate> gates;
   vector<QID> qubitsToReturn;
+  int numberOfMeasurements = 0;
   
   ifstream file (filename);
   
@@ -83,46 +84,57 @@ string QuantumLanguageInterpreter::execute() {
       continue;
     }
     
-    if(splitString[0] != "return") {
-      vector<QID> qubitIDs;
-      
-      if(splitString[1] == "all") {
-        qubitIDs = comp->allQubits();
-      } else {
-        for(int i = 1; i < splitString.size(); i++) {
-          if(splitString[i] == "--") break;
-          qubitIDs.push_back(stoi(splitString[i]));
-        }
-      }
-      
-      if(userDefinedGates.find(splitString[0]) != userDefinedGates.end()) {
-        vector<ApplicableGate> gatesForUserDefinedGate = userDefinedGates[splitString[0]];
-        vector<ApplicableGate> finalGates;
-        
-        for(ApplicableGate g : gatesForUserDefinedGate) {
-          vector<QID> qubitIDsPrime;
-          
-          for(QID q : g.second) {
-            qubitIDsPrime.push_back(qubitIDs[q]);
-          }
-          
-          gates.push_back(ApplicableGate(g.first, qubitIDsPrime));
-        }
-        
-      } else gates.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
-      
-    } else {
+    if(splitString[0] == "return") {
       if(splitString[1] == "all") {
         qubitsToReturn = comp->allQubits();
       }
       else for(int i = 1; i < splitString.size(); i++) qubitsToReturn.push_back(stoi(splitString[i]));
+      continue;
     }
+    
+    if(splitString[0] == "take") {
+      numberOfMeasurements = stoi(splitString[1]);
+      continue;
+    }
+    
+    /* Handle gate */
+    vector<QID> qubitIDs;
+    
+    if(splitString[1] == "all") {
+      qubitIDs = comp->allQubits();
+    } else {
+      for(int i = 1; i < splitString.size(); i++) {
+        if(splitString[i] == "--") break;
+        qubitIDs.push_back(stoi(splitString[i]));
+      }
+    }
+    
+    if(userDefinedGates.find(splitString[0]) != userDefinedGates.end()) {
+      vector<ApplicableGate> gatesForUserDefinedGate = userDefinedGates[splitString[0]];
+      vector<ApplicableGate> finalGates;
+      
+      for(ApplicableGate g : gatesForUserDefinedGate) {
+        vector<QID> qubitIDsPrime;
+        
+        for(QID q : g.second) {
+          qubitIDsPrime.push_back(qubitIDs[q]);
+        }
+        
+        gates.push_back(ApplicableGate(g.first, qubitIDsPrime));
+      }
+      
+    } else gates.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
+    /* END handle gate */
   }
   
   file.close();
   
   CircuitOptimiser co (comp, gates);
   co.executeCircuit();
+  
+  if(numberOfMeasurements != 0) {
+    cout << "Took " << numberOfMeasurements << " measurements: " << takeMeasurementsInString(*comp, numberOfMeasurements, nullptr) << endl;
+  }
   
   string m = comp->measure();
   string result;
