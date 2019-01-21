@@ -82,13 +82,13 @@ void QuantumLanguageInterpreter::handleLink(ifstream *file) {
     if(splitString[0] == "--") continue;
     
     // Handle link
-    if(splitString[0] == "link") {
+    if(splitString[0] == "link" || splitString[0] == "import") {
       ifstream linkedFile (lookUpFolder + splitString[1] + ".qll");
       if(!linkedFile) {
         cerr << "Unable to open file " << splitString[1] << ".qll" << endl;
         exit(1);
       }
-      
+
       handleLink(&linkedFile);
       continue;
     }
@@ -187,7 +187,7 @@ string QuantumLanguageInterpreter::execute() {
     }
     
     // Handle link
-    if(splitString[0] == "link") {
+    if(splitString[0] == "link" || splitString[0] == "import") {
       ifstream linkedFile (lookUpFolder + splitString[1] + ".qll");
       if(!linkedFile) {
         cerr << "Unable to open file " << splitString[1] << ".qll" << endl;
