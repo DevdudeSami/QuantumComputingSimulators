@@ -1,0 +1,7 @@
+init 9
+
+link shorCodeTest
+
+testShorCode all
+
+return all

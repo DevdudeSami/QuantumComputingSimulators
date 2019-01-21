@@ -28,38 +28,11 @@ Tensor *gateFor(string g) {
   else if(g == "TOFF") return new SparseTensor(TOFFGate());
   else if(g == "SWAP") return new SparseTensor(SWAPGate());
   
-  cerr << "Unrecognised gate." << endl;
+  cerr << "Unrecognised gate: " << g << endl;
   exit(1);
 }
 
-void selfDefineGate(QComputer *comp, string gateName, ifstream *file) {
-  string line;
-  vector<string> splitString;
-  
-  vector<ApplicableGate> gatesForGateBeingDefined;
-  
-  while(getline(*file, line)) {
-    split(splitString, line, is_any_of(" "));
-    if(splitString[0] == "endgate") break;
-    
-    vector<QID> qubitIDs;
-    
-    if(splitString[1] == "all") {
-      qubitIDs = comp->allQubits();
-    } else {
-      for(int i = 1; i < splitString.size(); i++) {
-        if(splitString[i] == "--") break;
-        qubitIDs.push_back(stoi(splitString[i]));
-      }
-    }
-    
-    gatesForGateBeingDefined.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
-  }
-  
-  userDefinedGates[gateName] = gatesForGateBeingDefined;
-}
-
-void handleLine(QComputer *comp, vector<string> splitString) {
+void handleLine(QComputer *comp, vector<string> splitString, vector<ApplicableGate> *gates) {
   vector<QID> qubitIDs;
   
   if(splitString[1] == "all") {
@@ -82,10 +55,58 @@ void handleLine(QComputer *comp, vector<string> splitString) {
         qubitIDsPrime.push_back(qubitIDs[q]);
       }
       
-      gates.push_back(ApplicableGate(g.first, qubitIDsPrime));
+      gates->push_back(ApplicableGate(g.first, qubitIDsPrime));
     }
     
-  } else gates.push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
+  } else gates->push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
+}
+
+void selfDefineGate(QComputer *comp, string gateName, ifstream *file) {
+  string line;
+  vector<string> splitString;
+  
+  vector<ApplicableGate> gatesForGateBeingDefined;
+  
+  while(getline(*file, line)) {
+    trim(line);
+    if(line.empty()) continue;
+    split(splitString, line, is_any_of(" "));
+    if(splitString[0] == "--") continue;
+    if(splitString[0] == "endgate") break;
+    
+    handleLine(comp, splitString, &gatesForGateBeingDefined);
+  }
+  
+  userDefinedGates[gateName] = gatesForGateBeingDefined;
+}
+
+void QuantumLanguageInterpreter::handleImport(QComputer *comp, ifstream *file) {
+  string line;
+  vector<string> splitString;
+  
+  while(getline(*file, line)) {
+    trim(line);
+    if(line.empty()) continue;
+    split(splitString, line, is_any_of(" "));
+    if(splitString[0] == "--") continue;
+    
+    // Handle link
+    if(splitString[0] == "link") {
+      ifstream linkedFile (lookUpFolder + splitString[1] + ".qll");
+      if(!linkedFile) {
+        cerr << "Unable to open file " << splitString[1] << ".qll" << endl;
+        exit(1);
+      }
+      
+      handleImport(comp, &linkedFile);
+      continue;
+    }
+    
+    if(splitString[0] == "gate") {
+      selfDefineGate(comp, splitString[1], file);
+      continue;
+    }
+  }
 }
 
 string QuantumLanguageInterpreter::execute() {
@@ -97,7 +118,7 @@ string QuantumLanguageInterpreter::execute() {
   
   if(!file) {
     cerr << "Unable to open file " << filename << endl;
-    exit(1);   // call system to stop
+    exit(1);
   }
   
   string line;
@@ -105,6 +126,7 @@ string QuantumLanguageInterpreter::execute() {
 
   while(getline(file, line)) {
     if(line.empty()) continue;
+    trim(line);
     split(splitString, line, is_any_of(" "));
     if(splitString[0] == "--") continue;
     
@@ -133,10 +155,22 @@ string QuantumLanguageInterpreter::execute() {
     if(splitString[0] == "take") {
       numberOfMeasurements = stoi(splitString[1]);
       continue;
-    }
+    }
+    
+    // Handle link
+    if(splitString[0] == "link") {
+      ifstream linkedFile (lookUpFolder + splitString[1] + ".qll");
+      if(!linkedFile) {
+        cerr << "Unable to open file " << splitString[1] << ".qll" << endl;
+        exit(1);
+      }
+      
+      handleImport(comp, &linkedFile);
+      continue;
+    }
     
     // Handle any other line
-    handleLine(comp, splitString);
+    handleLine(comp, splitString, &gates);
   }
   
   file.close();

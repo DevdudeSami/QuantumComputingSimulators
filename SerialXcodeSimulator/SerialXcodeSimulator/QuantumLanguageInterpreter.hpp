@@ -15,6 +15,7 @@
 #include "Accumulator.hpp"
 #include <boost/algorithm/string.hpp>
 #include <unordered_map>
+#include "tinyexpr/tinyexpr.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ class QuantumLanguageInterpreter {
 private:
   string lookUpFolder;
   string filename;
+  
+  void handleImport(QComputer *comp, ifstream *file);
 public:
   QuantumLanguageInterpreter(string lookUpFolder, string filename);
   string execute();

@@ -27,7 +27,7 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/SerialXcodeSimulator/SerialXcodeSimulator/", "test.qli");
+  QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/SerialXcodeSimulator/SerialXcodeSimulator/QLITest/", "main.qli");
   cout << qli.execute() << endl; 
   
   auto end = chrono::high_resolution_clock::now();
