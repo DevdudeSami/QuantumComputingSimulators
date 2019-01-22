@@ -15,7 +15,7 @@ QuantumLanguageInterpreter::QuantumLanguageInterpreter(string lookUpFolder, stri
   
   file = ifstream(lookUpFolder + filename);
   comp = nullptr;
-  gateBeingDefined = "GLOBAL";
+  gateBeingExecuted = "GLOBAL";
   
   if(!file) {
     cerr << "Unable to open file " << filename << endl;
@@ -47,17 +47,17 @@ string QuantumLanguageInterpreter::evalFromDefinedValues(string gate, string exp
 
 void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<ApplicableGate> *gates, ifstream *file) {
   if(splitString[0] == "loop") {
-    string start = evalFromDefinedValues(gateBeingDefined, splitString[2]);
-    string end = evalFromDefinedValues(gateBeingDefined, splitString[3]);
-    string step = splitString.size() > 4 ? evalFromDefinedValues(gateBeingDefined, splitString[4]) : "1";
-    
-    handleLoop(splitString[1], stoi(start), stoi(end), stoi(step), file, gates);
+    string start = evalFromDefinedValues(gateBeingExecuted, splitString[2]);
+    string end = evalFromDefinedValues(gateBeingExecuted, splitString[3]);
+    string step = splitString.size() > 4 ? evalFromDefinedValues(gateBeingExecuted, splitString[4]) : "1";
+  
+    handleLoop(splitString[1], stoi(start), stoi(end), stoi(step), file, gates, nullptr);
     return;
   }
   
   // Handle let
   if(splitString[0] == "let") {
-    handleLet(gateBeingDefined, splitString[1], splitString[2]);
+    handleLet(gateBeingExecuted, splitString[1], splitString[2]);
     return;
   }
   
@@ -68,23 +68,47 @@ void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<A
   } else {
     for(int i = 1; i < splitString.size(); i++) {
       if(splitString[i] == "--") break;
-      qubitIDs.push_back(stoi(evalFromDefinedValues(gateBeingDefined, splitString[i])));
+      qubitIDs.push_back(stoi(evalFromDefinedValues(gateBeingExecuted, splitString[i])));
     }
   }
   
+  // Handle user defined gate being called
   if(userDefinedGates.find(splitString[0]) != userDefinedGates.end()) {
-    vector<ApplicableGate> gatesForUserDefinedGate = userDefinedGates[splitString[0]];
-    vector<ApplicableGate> finalGates;
+    vector<string> linesForUserDefinedGate = userDefinedGates[splitString[0]];
+    userDefinedValues[splitString[0]]["argc"] = to_string(qubitIDs.size());
     
-    for(ApplicableGate g : gatesForUserDefinedGate) {
-      vector<QID> qubitIDsPrime;
+    gateBeingExecuted = splitString[0];
+    
+    for(int i = 0; i < linesForUserDefinedGate.size(); i++) {
+      string line = linesForUserDefinedGate[i];
       
-      for(QID q : g.second) {
-        qubitIDsPrime.push_back(qubitIDs[q]);
+      vector<string> splitString;
+      split(splitString, line, is_any_of(" "));
+      
+      // Handle loop in a user defined gate
+      if(splitString[0] == "loop") {
+        vector<string> loopLines;
+        i++;
+        while(true) {
+          line = linesForUserDefinedGate[i];
+          if(line == "endloop") break;
+          loopLines.push_back(line);
+          i++;
+        }
+        
+        string start = evalFromDefinedValues(gateBeingExecuted, splitString[2]);
+        string end = evalFromDefinedValues(gateBeingExecuted, splitString[3]);
+        string step = splitString.size() > 4 ? evalFromDefinedValues(gateBeingExecuted, splitString[4]) : "1";
+        
+        handleLoop(splitString[1], stoi(start), stoi(end), stoi(step), file, gates, &loopLines);
+        continue;
       }
       
-      gates->push_back(ApplicableGate(g.first, qubitIDsPrime));
+      // Handle other lines
+      handleLine(splitString, gates, file);
     }
+    
+    gateBeingExecuted = "GLOBAL";
     
   } else gates->push_back(ApplicableGate(gateFor(splitString[0]), qubitIDs));
 }
@@ -113,23 +137,27 @@ void QuantumLanguageInterpreter::handleLink(ifstream *file) {
     
     // Handle self defined gates
     if(splitString[0] == "gate") {
-      selfDefineGate(splitString[1], splitString[2], file);
+      selfDefineGate(splitString[1], file);
       continue;
     }
   }
 }
     
-void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, int step, ifstream *file, vector<ApplicableGate> *gates) {
+void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, int step, ifstream *file, vector<ApplicableGate> *gates, vector<string> *lines) {
   string line;
   vector<string> splitString;
   vector<string> loopLines;
   
-  while(getline(*file, line)) {
-    trim(line);
-    if(line.empty()) continue;
-    if(line == "endloop")
-      break;
-    loopLines.push_back(line);
+  if(lines != nullptr)
+    loopLines = *lines;
+  else {
+    while(getline(*file, line)) {
+      trim(line);
+      if(line.empty()) continue;
+      if(line == "endloop")
+        break;
+      loopLines.push_back(line);
+    }
   }
   
   for(int n = start; step >= 0 ? n <= end : n >= end; n += step) {
@@ -151,14 +179,12 @@ void QuantumLanguageInterpreter::handleLet(string gate, string symbol, string ex
   userDefinedValues[gate][symbol] = evalFromDefinedValues(gate, expr);
 }
     
-void QuantumLanguageInterpreter::selfDefineGate(string gateName, string argc, ifstream *file) {
-  gateBeingDefined = gateName;
-  userDefinedValues[gateName]["argc"] = argc;
+void QuantumLanguageInterpreter::selfDefineGate(string gateName, ifstream *file) {
   
   string line;
   vector<string> splitString;
   
-  vector<ApplicableGate> gatesForGateBeingDefined;
+  vector<string> linesForGateBeingDefined;
   
   while(getline(*file, line)) {
     trim(line);
@@ -167,12 +193,10 @@ void QuantumLanguageInterpreter::selfDefineGate(string gateName, string argc, if
     if(splitString[0] == "--") continue;
     if(splitString[0] == "endgate") break;
     
-    handleLine(splitString, &gatesForGateBeingDefined, file);
+    linesForGateBeingDefined.push_back(line);
   }
   
-  userDefinedGates[gateName] = gatesForGateBeingDefined;
-  
-  gateBeingDefined = "GLOBAL";
+  userDefinedGates[gateName] = linesForGateBeingDefined;
 }
 
 
@@ -196,7 +220,7 @@ string QuantumLanguageInterpreter::execute() {
     
     // Handle self defined gates
     if(splitString[0] == "gate") {
-      selfDefineGate(splitString[1], splitString[2], &file);
+      selfDefineGate(splitString[1], &file);
       continue;
     }
     

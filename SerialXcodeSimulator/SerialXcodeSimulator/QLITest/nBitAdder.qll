@@ -1,4 +1,4 @@
-gate sixBitAdd 14
+gate nBitAdd
 
   let N argc
 

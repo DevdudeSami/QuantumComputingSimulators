@@ -11,3 +11,11 @@ gate entangle5 5
     CNOT 0 n
   endloop
 endgate
+
+-- Entangle n qubits
+gate entangleAll
+  H 0
+  loop n 1 argc-1
+    CNOT 0 n
+  endloop
+endgate

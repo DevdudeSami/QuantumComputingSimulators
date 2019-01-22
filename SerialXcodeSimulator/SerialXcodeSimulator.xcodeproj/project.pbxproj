@@ -51,6 +51,7 @@
 		EE27D34921D7E94E00BB3761 /* Adders.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Adders.hpp; sourceTree = "<group>"; };
 		EE27D34C21D8F42A00BB3761 /* QuantumErrorCorrection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QuantumErrorCorrection.cpp; sourceTree = "<group>"; };
 		EE27D34D21D8F42A00BB3761 /* QuantumErrorCorrection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = QuantumErrorCorrection.hpp; sourceTree = "<group>"; };
+		EE2A628821F7869D00F0E0B2 /* main.qli */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.qli; sourceTree = "<group>"; };
 		EE3A7EDB21B610B700418E1B /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
 		EE3A7EDC21B610B700418E1B /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 		EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QComputer.cpp; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		EE5E9EE921F620F000078F0A /* bitFlipCode.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = bitFlipCode.qll; sourceTree = "<group>"; };
 		EE5E9EEA21F6212700078F0A /* phaseFlipCode.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = phaseFlipCode.qll; sourceTree = "<group>"; };
 		EE5E9EEB21F621F000078F0A /* shorCode.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = shorCode.qll; sourceTree = "<group>"; };
-		EE5E9EEC21F6266700078F0A /* main.qli */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.qli; sourceTree = "<group>"; };
 		EE5E9EEE21F628E900078F0A /* tinyexpr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tinyexpr.c; sourceTree = "<group>"; };
 		EE5E9EEF21F628E900078F0A /* tinyexpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyexpr.h; sourceTree = "<group>"; };
 		EE5E9EF121F643CB00078F0A /* nBitAdder.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = nBitAdder.qll; sourceTree = "<group>"; };
@@ -148,12 +148,12 @@
 		EE5E9EE721F61EA500078F0A /* QLITest */ = {
 			isa = PBXGroup;
 			children = (
+				EE2A628821F7869D00F0E0B2 /* main.qli */,
 				EE5E9EE621F1FE3C00078F0A /* shorCodeTest.qll */,
 				EE5E9EE821F61ECB00078F0A /* entangle.qll */,
 				EE5E9EE921F620F000078F0A /* bitFlipCode.qll */,
 				EE5E9EEA21F6212700078F0A /* phaseFlipCode.qll */,
 				EE5E9EEB21F621F000078F0A /* shorCode.qll */,
-				EE5E9EEC21F6266700078F0A /* main.qli */,
 				EE5E9EF121F643CB00078F0A /* nBitAdder.qll */,
 			);
 			path = QLITest;
