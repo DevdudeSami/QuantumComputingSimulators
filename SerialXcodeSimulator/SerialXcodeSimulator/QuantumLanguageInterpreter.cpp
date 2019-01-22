@@ -61,10 +61,6 @@ void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<A
     return;
   }
   
-  for(int i = 1; i < splitString.size(); i++) {
-    evalFromDefinedValues(gateBeingDefined, splitString[i]);
-  }
-  
   vector<QID> qubitIDs;
   
   if(splitString[1] == "all") {
@@ -72,7 +68,7 @@ void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<A
   } else {
     for(int i = 1; i < splitString.size(); i++) {
       if(splitString[i] == "--") break;
-      qubitIDs.push_back(stoi(splitString[i]));
+      qubitIDs.push_back(stoi(evalFromDefinedValues(gateBeingDefined, splitString[i])));
     }
   }
   
@@ -136,7 +132,7 @@ void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, i
     loopLines.push_back(line);
   }
   
-  for(int n = start; n <= end; n += step) {
+  for(int n = start; step >= 0 ? n <= end : n >= end; n += step) {
     for(string line : loopLines) {
       split(splitString, line, is_any_of(" "));
       

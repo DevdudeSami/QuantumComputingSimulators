@@ -1,11 +1,24 @@
-init 10
+init 14
 
-gate flipFiveOdd 10
-  loop n 1 argc-1 2
-    X n
-  endloop
-endgate
+link nbitAdder
 
-flipFiveOdd all
+let a0 1
+let a1 4
+let a2 6
+let a3 8
+let a4 10
+let a5 12
 
-return all
+let b0 0
+let b1 3
+let b2 5
+let b3 7
+let b3 9
+let b5 11
+
+X b5
+X a5
+
+sixBitAdd all
+
+return 13 11 9 7 5 3 0
