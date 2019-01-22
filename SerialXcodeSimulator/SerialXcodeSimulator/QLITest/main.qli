@@ -1,11 +1,11 @@
-init 5
+init 10
 
-gate flipAll 5
-  loop n 0 argc-1
+gate flipFiveOdd 10
+  loop n 1 argc-1 2
     X n
   endloop
 endgate
 
-flipAll all
+flipFiveOdd all
 
 return all

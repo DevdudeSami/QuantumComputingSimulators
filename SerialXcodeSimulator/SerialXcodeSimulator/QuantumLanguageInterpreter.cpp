@@ -49,8 +49,9 @@ void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<A
   if(splitString[0] == "loop") {
     string start = evalFromDefinedValues(gateBeingDefined, splitString[2]);
     string end = evalFromDefinedValues(gateBeingDefined, splitString[3]);
+    string step = splitString.size() > 4 ? evalFromDefinedValues(gateBeingDefined, splitString[4]) : "1";
     
-    handleLoop(splitString[1], stoi(start), stoi(end), file, gates);
+    handleLoop(splitString[1], stoi(start), stoi(end), stoi(step), file, gates);
     return;
   }
   
@@ -122,7 +123,7 @@ void QuantumLanguageInterpreter::handleLink(ifstream *file) {
   }
 }
     
-void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, ifstream *file, vector<ApplicableGate> *gates) {
+void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, int step, ifstream *file, vector<ApplicableGate> *gates) {
   string line;
   vector<string> splitString;
   vector<string> loopLines;
@@ -135,7 +136,7 @@ void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, i
     loopLines.push_back(line);
   }
   
-  for(int n = start; n <= end; n++) {
+  for(int n = start; n <= end; n += step) {
     for(string line : loopLines) {
       split(splitString, line, is_any_of(" "));
       

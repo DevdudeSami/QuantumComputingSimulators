@@ -35,7 +35,7 @@ private:
   string evalFromDefinedValues(string gate, string expr);
   void handleLink(ifstream *file);
   void handleLine(vector<string> splitString, vector<ApplicableGate> *gates, ifstream *file);
-  void handleLoop(string symbol, int start, int end, ifstream *file, vector<ApplicableGate> *gates);
+  void handleLoop(string symbol, int start, int end, int step, ifstream *file, vector<ApplicableGate> *gates);
   void handleLet(string gate, string symbol, string expr);
   void selfDefineGate(string gateName, string argc, ifstream *file);
 public:
