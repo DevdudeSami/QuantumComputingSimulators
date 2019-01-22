@@ -4,6 +4,7 @@ gate entangle 2
   CNOT 0 1
 endgate
 
+-- Entangle 5 qubits
 gate entangle5 5
   H 0
   loop n 1 4

@@ -25,15 +25,19 @@ private:
   ifstream file;
   QComputer *comp;
   unordered_map<string, vector<ApplicableGate>> userDefinedGates;
+  unordered_map<string, unordered_map<string, string>> userDefinedValues;
   vector<ApplicableGate> gates;
   vector<QID> qubitsToReturn;
+  string gateBeingDefined;
   
   Tensor *gateFor(string g);
   
+  string evalFromDefinedValues(string gate, string expr);
   void handleLink(ifstream *file);
   void handleLine(vector<string> splitString, vector<ApplicableGate> *gates, ifstream *file);
   void handleLoop(string symbol, int start, int end, ifstream *file, vector<ApplicableGate> *gates);
-  void selfDefineGate(string gateName, ifstream *file);
+  void handleLet(string gate, string symbol, string expr);
+  void selfDefineGate(string gateName, string argc, ifstream *file);
 public:
   QuantumLanguageInterpreter(string lookUpFolder, string filename);
   string execute();

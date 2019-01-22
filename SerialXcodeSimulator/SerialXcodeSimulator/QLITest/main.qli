@@ -1,8 +1,11 @@
-init 9
+init 5
 
-link shorCodeTest
+gate flipAll 5
+  loop n 0 argc-1
+    X n
+  endloop
+endgate
 
-X 1
-testShorCode all
+flipAll all
 
 return all

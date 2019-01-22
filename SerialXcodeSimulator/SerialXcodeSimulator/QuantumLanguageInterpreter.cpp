@@ -15,6 +15,7 @@ QuantumLanguageInterpreter::QuantumLanguageInterpreter(string lookUpFolder, stri
   
   file = ifstream(lookUpFolder + filename);
   comp = nullptr;
+  gateBeingDefined = "GLOBAL";
   
   if(!file) {
     cerr << "Unable to open file " << filename << endl;
@@ -36,13 +37,33 @@ Tensor* QuantumLanguageInterpreter::gateFor(string g) {
   cerr << "Unrecognised gate: " << g << endl;
   exit(1);
 }
+    
+string QuantumLanguageInterpreter::evalFromDefinedValues(string gate, string expr) {
+  for(auto entry : userDefinedValues[gate]) {
+    replace_all(expr, entry.first, entry.second);
+  }
+  return to_string((int) te_interp(expr.c_str(), 0));
+}
 
 void QuantumLanguageInterpreter::handleLine(vector<string> splitString, vector<ApplicableGate> *gates, ifstream *file) {
   if(splitString[0] == "loop") {
-    handleLoop(splitString[1], stoi(splitString[2]), stoi(splitString[3]), file, gates);
+    string start = evalFromDefinedValues(gateBeingDefined, splitString[2]);
+    string end = evalFromDefinedValues(gateBeingDefined, splitString[3]);
+    
+    handleLoop(splitString[1], stoi(start), stoi(end), file, gates);
     return;
   }
-    
+  
+  // Handle let
+  if(splitString[0] == "let") {
+    handleLet(gateBeingDefined, splitString[1], splitString[2]);
+    return;
+  }
+  
+  for(int i = 1; i < splitString.size(); i++) {
+    evalFromDefinedValues(gateBeingDefined, splitString[i]);
+  }
+  
   vector<QID> qubitIDs;
   
   if(splitString[1] == "all") {
@@ -93,8 +114,9 @@ void QuantumLanguageInterpreter::handleLink(ifstream *file) {
       continue;
     }
     
+    // Handle self defined gates
     if(splitString[0] == "gate") {
-      selfDefineGate(splitString[1], file);
+      selfDefineGate(splitString[1], splitString[2], file);
       continue;
     }
   }
@@ -127,7 +149,15 @@ void QuantumLanguageInterpreter::handleLoop(string symbol, int start, int end, i
   }
 }
     
-void QuantumLanguageInterpreter::selfDefineGate(string gateName, ifstream *file) {
+void QuantumLanguageInterpreter::handleLet(string gate, string symbol, string expr) {
+  
+  userDefinedValues[gate][symbol] = evalFromDefinedValues(gate, expr);
+}
+    
+void QuantumLanguageInterpreter::selfDefineGate(string gateName, string argc, ifstream *file) {
+  gateBeingDefined = gateName;
+  userDefinedValues[gateName]["argc"] = argc;
+  
   string line;
   vector<string> splitString;
   
@@ -144,6 +174,8 @@ void QuantumLanguageInterpreter::selfDefineGate(string gateName, ifstream *file)
   }
   
   userDefinedGates[gateName] = gatesForGateBeingDefined;
+  
+  gateBeingDefined = "GLOBAL";
 }
 
 
@@ -167,7 +199,7 @@ string QuantumLanguageInterpreter::execute() {
     
     // Handle self defined gates
     if(splitString[0] == "gate") {
-      selfDefineGate(splitString[1], &file);
+      selfDefineGate(splitString[1], splitString[2], &file);
       continue;
     }
     
