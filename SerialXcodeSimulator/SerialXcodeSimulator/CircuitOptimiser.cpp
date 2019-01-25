@@ -10,9 +10,9 @@
 
 
 CircuitOptimiser::CircuitOptimiser(QComputer* comp, vector<ApplicableGate> gates) : comp{comp}, gates{gates} {
-  for(QID i = 0; i < comp->numberOfQubits(); i++) {
-    stateVectorsQubitIDs.push_back({i});
-  }
+  for(StateVector stateVector : comp->stateVectors()) {
+    stateVectorsQubitIDs.push_back(stateVector.qubitIDs());
+  }  
 }
 
 CircuitOptimiser::CircuitOptimiser(uint n, vector<ApplicableGate> gates) : comp{new QComputer(n)}, gates{gates} {
