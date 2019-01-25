@@ -18,6 +18,16 @@ void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs) {
   }
 }
 
+void InverseQuantumFourierTransform(QComputer *comp, vector<QID> qIDs) { 
+  for(int i = qIDs.size() - 1; i >= 0; i--) {
+    for(int j = qIDs.size() - 1; j > i; j--) {
+      InverseCRmGate(j-i+1, comp, {qIDs[j], qIDs[i]});
+    }
+    
+    HGate(comp, {qIDs[i]});
+  }
+}
+
 vector<ApplicableGate> QuantumFourierTransformGates(vector<QID> qIDs) {
   vector<ApplicableGate> gates;
   
@@ -38,13 +48,13 @@ vector<ApplicableGate> InverseQuantumFourierTransformGates(vector<QID> qIDs) {
   vector<ApplicableGate> gates;
   
   for(int i = qIDs.size() - 1; i >= 0; i--) {
-    gates.push_back(HAGate({qIDs[i]}));
-    
-    for(int j = qIDs.size() - 1; j >= i - 1; j--) {
-      Tensor* crmGate = new SparseTensor(CRm(-(j-i+1)));
+    for(int j = qIDs.size() - 1; j > i; j--) {
+      Tensor* crmGate = new SparseTensor(InverseCRm((j-i+1)));
       
       gates.push_back(ApplicableGate(crmGate, {qIDs[j], qIDs[i]}));
     }
+    
+    gates.push_back(HAGate({qIDs[i]}));
   }
   
   return gates;

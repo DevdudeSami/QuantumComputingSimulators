@@ -34,6 +34,7 @@ SparseTensor TOFFGate();
 
 
 SparseTensor CRm(uint m);
+SparseTensor InverseCRm(uint m);
 
 SparseTensor CnNOTGate(uint n);
 SparseTensor CnZGate(uint n);
@@ -52,6 +53,7 @@ void CNOTGate(QComputer *comp, vector<QID> qIDs);
 void SWAPGate(QComputer *comp, vector<QID> qIDs);
 void TOFFGate(QComputer *comp, vector<QID> qIDs);
 void CRmGate(uint m, QComputer *comp, vector<QID> qIDs);
+void InverseCRmGate(uint m, QComputer *comp, vector<QID> qIDs);
 void QFTGate(QComputer *comp, vector<QID> qIDs);
 
 ApplicableGate XAGate(vector<QID> qIDs);

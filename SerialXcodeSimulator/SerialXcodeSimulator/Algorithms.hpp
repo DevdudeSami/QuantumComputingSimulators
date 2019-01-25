@@ -16,6 +16,7 @@
 using namespace std;
 
 void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
+void InverseQuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
 vector<ApplicableGate> QuantumFourierTransformGates(vector<QID> qIDs);
 vector<ApplicableGate> InverseQuantumFourierTransformGates(vector<QID> qIDs);
 void CircuitOptimisedQuantumFourierTransform(QComputer *comp, vector<QID> qIDs);

@@ -125,6 +125,15 @@ SparseTensor CRm(uint m) {
   return SparseTensor (4, 4, 4, keys, vals);
 }
 
+SparseTensor InverseCRm(uint m) {
+  cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, m));
+  omega = conj(omega);
+  
+  key keys[4] = {make_pair(0, 0), make_pair(1, 1), make_pair(2, 2), make_pair(3, 3)};
+  cxd vals[4] = {cxd(1), cxd(1), cxd(1), omega};
+  return SparseTensor (4, 4, 4, keys, vals);
+}
+
 SparseTensor QFT(uint n) {
   uint N = pow(2,n);
   cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, n));
@@ -184,6 +193,11 @@ void TOFFGate(QComputer *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, &TOFF
 
 void CRmGate(uint m, QComputer *comp, vector<QID> qIDs) {
   SparseTensor gate = CRm(m);
+  GateCircuit(comp, qIDs, &gate);
+}
+
+void InverseCRmGate(uint m, QComputer *comp, vector<QID> qIDs) {
+  SparseTensor gate = InverseCRm(m);
   GateCircuit(comp, qIDs, &gate);
 }
 
