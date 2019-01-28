@@ -24,4 +24,6 @@ void CircuitOptimisedInverseQuantumFourierTransform(QComputer *comp, vector<QID>
 
 string GroversSearch(uint n, vector<uint> markedStates, uint iters);
 
+void Teleport(QComputer *comp, QID source, QID ancillary, QID target);
+
 #endif /* Algorithms_hpp */

@@ -143,3 +143,22 @@ string GroversSearch(uint n, vector<uint> markedStates, uint iters) {
   
   return m.substr(1,n);
 }
+
+void Teleport(QComputer *comp, QID source, QID ancillary, QID target) {
+  
+  // Entangle target and ancillary
+  HGate(comp, {ancillary});
+  CNOTGate(comp, {ancillary, target});
+  
+  // Teleport
+  CNOTGate(comp, {source, ancillary});
+  HGate(comp, {source});
+  
+  string m = comp->measure();
+  
+  if(m[ancillary+1] == '1') XGate(comp, {target});
+  m = comp->measure();
+  if(m[source+1] == '1') ZGate(comp, {target});
+  
+}
+
