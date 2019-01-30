@@ -145,20 +145,46 @@ string GroversSearch(uint n, vector<uint> markedStates, uint iters) {
 }
 
 void Teleport(QComputer *comp, QID source, QID ancillary, QID target) {
+
   
+  // Algorithm from https://qcsimulator.github.io/?example=Quantum%20Teleportation
+  
+  vector<ApplicableGate> gates;
+  
+  gates.push_back(HAGate({source}));
+  gates.push_back(HAGate({target}));
+  
+  gates.push_back(CNOTAGate({target, ancillary}));
+  
+  gates.push_back(CNOTAGate({source, ancillary}));
+  
+  gates.push_back(HAGate({source}));
+  gates.push_back(CNOTAGate({ancillary, target}));
+  
+  gates.push_back(HAGate({target}));
+  
+  gates.push_back(CNOTAGate({source, target}));
+  
+  gates.push_back(HAGate({source}));
+  gates.push_back(HAGate({ancillary}));
+  
+  CircuitOptimiser co (comp, gates);
+  co.executeCircuit();
+    
   // Entangle target and ancillary
-  HGate(comp, {ancillary});
-  CNOTGate(comp, {ancillary, target});
+//  HGate(comp, {ancillary});
+//  CNOTGate(comp, {ancillary, target});
+//
+//  // Teleport
+//  CNOTGate(comp, {source, ancillary});
+//  HGate(comp, {source});
+
   
-  // Teleport
-  CNOTGate(comp, {source, ancillary});
-  HGate(comp, {source});
   
-  string m = comp->measure();
-  
-  if(m[ancillary+1] == '1') XGate(comp, {target});
-  m = comp->measure();
-  if(m[source+1] == '1') ZGate(comp, {target});
+//  string m = comp->measure();
+//  if(m[ancillary+1] == '1') XGate(comp, {target});
+//  m = comp->measure();
+//  if(m[source+1] == '1') ZGate(comp, {target});
   
 }
 
