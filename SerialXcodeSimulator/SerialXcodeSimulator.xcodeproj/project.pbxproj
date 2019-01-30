@@ -52,6 +52,7 @@
 		EE27D34C21D8F42A00BB3761 /* QuantumErrorCorrection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QuantumErrorCorrection.cpp; sourceTree = "<group>"; };
 		EE27D34D21D8F42A00BB3761 /* QuantumErrorCorrection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = QuantumErrorCorrection.hpp; sourceTree = "<group>"; };
 		EE2A628821F7869D00F0E0B2 /* main.qli */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.qli; sourceTree = "<group>"; };
+		EE30EF7522021A9200C0D67D /* teleport.qll */ = {isa = PBXFileReference; lastKnownFileType = text; path = teleport.qll; sourceTree = "<group>"; };
 		EE3A7EDB21B610B700418E1B /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
 		EE3A7EDC21B610B700418E1B /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 		EE3A7EDE21B6DD1400418E1B /* QComputer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QComputer.cpp; sourceTree = "<group>"; };
@@ -155,6 +156,7 @@
 				EE5E9EEA21F6212700078F0A /* phaseFlipCode.qll */,
 				EE5E9EEB21F621F000078F0A /* shorCode.qll */,
 				EE5E9EF121F643CB00078F0A /* nBitAdder.qll */,
+				EE30EF7522021A9200C0D67D /* teleport.qll */,
 			);
 			path = QLITest;
 			sourceTree = "<group>";
@@ -380,6 +382,9 @@
 					"-fopenmp",
 					"-lomp",
 					"-lmpi",
+					"-mfpmath=sse",
+					"-msse",
+					"-msse2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -409,6 +414,9 @@
 					"-fopenmp",
 					"-lomp",
 					"-lmpi",
+					"-mfpmath=sse",
+					"-msse",
+					"-msse2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
