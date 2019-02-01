@@ -61,6 +61,6 @@ ApplicableGate ZAGate(vector<QID> qIDs);
 ApplicableGate HAGate(vector<QID> qIDs);
 ApplicableGate CNOTAGate(vector<QID> qIDs);
 ApplicableGate TOFFAGate(vector<QID> qIDs);
-
+ApplicableGate SWAPAGate(vector<QID> qIDs);
 
 #endif /* Gates_hpp */

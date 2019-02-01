@@ -28,6 +28,12 @@ vector<double> StateVector::probabilities() {
   return result;
 }
 
+vector<cxd> StateVector::probabilityAmplitudes() {
+  vector<cxd> result;
+  amplitudes.enumerateElements([&result](int r, int c, cxd amp) { result.push_back(amp); } );
+  return result;
+}
+
 unsigned long StateVector::numberOfQubits() { return n; }
 
 vector<unsigned int> StateVector::qubitIDs() { return qIDs; }

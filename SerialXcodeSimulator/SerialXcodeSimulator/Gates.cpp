@@ -127,7 +127,7 @@ SparseTensor CRm(uint m) {
 
 SparseTensor InverseCRm(uint m) {
   cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, m));
-  omega = conj(omega);
+  omega = cxd(1)/omega;
   
   key keys[4] = {make_pair(0, 0), make_pair(1, 1), make_pair(2, 2), make_pair(3, 3)};
   cxd vals[4] = {cxd(1), cxd(1), cxd(1), omega};
@@ -225,5 +225,9 @@ ApplicableGate CNOTAGate(vector<QID> qIDs) {
 
 ApplicableGate TOFFAGate(vector<QID> qIDs) {
   return ApplicableGate(&TOFF, qIDs);
+}
+
+ApplicableGate SWAPAGate(vector<QID> qIDs) {
+  return ApplicableGate(&SWAP, qIDs);
 }
 

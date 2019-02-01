@@ -22,6 +22,7 @@ private:
 public:
   StateVector(SparseTensor amps, vector<unsigned int> ids);
   vector<double> probabilities();
+  vector<cxd> probabilityAmplitudes();
   unsigned long numberOfQubits();
   vector<unsigned int> qubitIDs();
   void applyGate(Tensor* t);
