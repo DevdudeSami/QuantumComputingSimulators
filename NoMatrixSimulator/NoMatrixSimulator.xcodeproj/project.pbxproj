@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EE30EF832209EB2800C0D67D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF822209EB2800C0D67D /* main.cpp */; };
+		EE30EF8B2209EDE200C0D67D /* QRegister.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF892209EDE200C0D67D /* QRegister.cpp */; };
+		EE30EF942209FDFC00C0D67D /* Accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF922209FDFC00C0D67D /* Accumulator.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,11 @@
 /* Begin PBXFileReference section */
 		EE30EF7F2209EB2800C0D67D /* NoMatrixSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NoMatrixSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE30EF822209EB2800C0D67D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		EE30EF892209EDE200C0D67D /* QRegister.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QRegister.cpp; sourceTree = "<group>"; };
+		EE30EF8A2209EDE200C0D67D /* QRegister.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = QRegister.hpp; sourceTree = "<group>"; };
+		EE30EF8D2209F43200C0D67D /* Gates.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Gates.hpp; sourceTree = "<group>"; };
+		EE30EF922209FDFC00C0D67D /* Accumulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Accumulator.cpp; sourceTree = "<group>"; };
+		EE30EF932209FDFC00C0D67D /* Accumulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Accumulator.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +65,11 @@
 			isa = PBXGroup;
 			children = (
 				EE30EF822209EB2800C0D67D /* main.cpp */,
+				EE30EF892209EDE200C0D67D /* QRegister.cpp */,
+				EE30EF8A2209EDE200C0D67D /* QRegister.hpp */,
+				EE30EF8D2209F43200C0D67D /* Gates.hpp */,
+				EE30EF922209FDFC00C0D67D /* Accumulator.cpp */,
+				EE30EF932209FDFC00C0D67D /* Accumulator.hpp */,
 			);
 			path = NoMatrixSimulator;
 			sourceTree = "<group>";
@@ -118,6 +130,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE30EF8B2209EDE200C0D67D /* QRegister.cpp in Sources */,
+				EE30EF942209FDFC00C0D67D /* Accumulator.cpp in Sources */,
 				EE30EF832209EB2800C0D67D /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,10 +272,6 @@
 					"-Xpreprocessor",
 					"-fopenmp",
 					"-lomp",
-					"-lmpi",
-					"-mfpmath=sse",
-					"-msse",
-					"-msse2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -289,10 +299,6 @@
 					"-Xpreprocessor",
 					"-fopenmp",
 					"-lomp",
-					"-lmpi",
-					"-mfpmath=sse",
-					"-msse",
-					"-msse2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
