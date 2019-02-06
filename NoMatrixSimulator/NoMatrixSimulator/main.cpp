@@ -18,11 +18,10 @@ int main(int argc, const char * argv[]) {
 
   QRegister reg (20);
   
-  reg.applySingleGate(0, X);
-  reg.applySingleGate(1, X);
-  reg.applySingleGate(2, X);
-  
-//  cout << takeMeasurementsInString(reg, 1000) << endl;
+  reg.applySingleGate(7, H);
+  reg.applyCnGate({7}, 17, X);
+
+//  cout << takeMeasurementsInString(reg, 100) << endl;
   
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

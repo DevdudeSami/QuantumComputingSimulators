@@ -30,6 +30,14 @@ int main(int argc, char const *argv[]) {
 //  QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/SerialXcodeSimulator/SerialXcodeSimulator/QLITest/", "main.qli");
 //  cout << qli.execute() << endl;
   
+  QComputer comp (27);
+  
+  comp.flipQubit(0);
+  comp.flipQubit(1);
+  comp.flipQubit(2);
+  
+  cout << comp.measure() << endl;
+  
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
   cout << "--- end time: " << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;

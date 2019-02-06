@@ -1,13 +1,13 @@
 //
-//  QRegister.hpp
+//  StateVector.hpp
 //  NoMatrixSimulator
 //
 //  Created by Youssef Moawad on 05/02/2019.
 //  Copyright © 2019 Youssef Moawad. All rights reserved.
 //
 
-#ifndef QRegister_hpp
-#define QRegister_hpp
+#ifndef StateVector_hpp
+#define StateVector_hpp
 
 #include <stdio.h>
 #include <complex>
@@ -16,28 +16,33 @@
 #include <omp.h>
 
 #include "Typedefs.hpp"
-#include "StateVector.hpp"
 
 using namespace std;
 
-class QRegister {
+class StateVector {
   
 private:
   uint n;
-  vector<StateVector> vectors;
+  cxd* amplitudes;
+  uint* qIDs;
 
-  list_index listIndexFromQID(QID qID);
-  
 public:
-  QRegister(uint n);
-
-  list_index combineTwoQubits(QID q1ID, QID q2ID);
+  StateVector(uint n, uint* qIDs);
+  
+  void setAmplitudes(cxd* newAmplitudes);
+  
+  double* probabilities();
+  
+  uint numberOfQubits();
+  uint* qubitIDs();
   
   void applySingleGate(QID qID, Gate gate);
   void applyCnGate(vector<QID> controls, QID qID, Gate gate);
   
   string measure();
+  
+  StateVector combineWith(StateVector v);
 };
 
 
-#endif /* QRegister_hpp */
+#endif /* StateVector_hpp */
