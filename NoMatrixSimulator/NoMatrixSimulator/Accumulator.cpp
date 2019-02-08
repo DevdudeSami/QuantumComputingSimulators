@@ -8,11 +8,11 @@
 
 #include "Accumulator.hpp"
 
-states_count takeMeasurements(QRegister comp, unsigned int n) {
+states_count takeMeasurements(QRegister reg, unsigned int n) {
   states_count results;
 
   for(int i = 0; i < n; i++) {
-    string measurement = comp.measure();
+    string measurement = reg.ketMeasure();
     if (results.find(measurement) == results.end()) results[measurement] = 1;
     else results[measurement]++;
   }
@@ -20,8 +20,8 @@ states_count takeMeasurements(QRegister comp, unsigned int n) {
   return results;
 }
 
-string takeMeasurementsInString(QRegister comp, unsigned int n) {
-  states_count measurements = takeMeasurements(comp, n);
+string takeMeasurementsInString(QRegister reg, unsigned int n) {
+  states_count measurements = takeMeasurements(reg, n);
   string results = "{";
 
   for (auto m: measurements) {

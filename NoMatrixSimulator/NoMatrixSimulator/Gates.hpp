@@ -10,12 +10,16 @@
 #define Gates_hpp
 
 #include <stdio.h>
+#include <complex>
+#include "Typedefs.hpp"
 
 using namespace std;
 
 typedef complex<double> cxd;
 
-cxd H[4] = {cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(-1/sqrt(2))};
-cxd X[4] = {0, 1, 1, 0};
+Gate H();
+Gate X();
+
+Gate Rm(uint m);
 
 #endif /* Gates_hpp */

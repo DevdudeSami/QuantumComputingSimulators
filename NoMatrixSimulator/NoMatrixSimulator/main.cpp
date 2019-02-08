@@ -10,19 +10,22 @@
 #include "QRegister.hpp"
 #include "Gates.hpp"
 #include "Accumulator.hpp"
+#include "Adders.hpp"
+#include "Algorithms.hpp"
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QRegister reg (20);
+//  QRegister reg (8);
   
-  reg.applySingleGate(7, H);
-  reg.applyCnGate({7}, 17, X);
+//  QuantumFourierTransform(&reg, reg.allQubits());
 
 //  cout << takeMeasurementsInString(reg, 100) << endl;
-  
+//
+  cout << NBitCuccaroAdder(11, "00000000001", "00000000001") << endl;
+
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
   cout << "--- end time: " << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;

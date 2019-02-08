@@ -11,6 +11,9 @@
 		EE30EF8B2209EDE200C0D67D /* QRegister.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF892209EDE200C0D67D /* QRegister.cpp */; };
 		EE30EF942209FDFC00C0D67D /* Accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF922209FDFC00C0D67D /* Accumulator.cpp */; };
 		EE30EF97220A52DC00C0D67D /* StateVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF95220A52DC00C0D67D /* StateVector.cpp */; };
+		EE30EF9E220AF86500C0D67D /* Adders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF9C220AF86500C0D67D /* Adders.cpp */; };
+		EE30EFA0220AFD1A00C0D67D /* Gates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF9F220AFD1A00C0D67D /* Gates.cpp */; };
+		EE30EFA3220C691E00C0D67D /* Algorithms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EFA1220C691E00C0D67D /* Algorithms.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +39,11 @@
 		EE30EF95220A52DC00C0D67D /* StateVector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StateVector.cpp; sourceTree = "<group>"; };
 		EE30EF96220A52DC00C0D67D /* StateVector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StateVector.hpp; sourceTree = "<group>"; };
 		EE30EF99220A55EF00C0D67D /* Typedefs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Typedefs.hpp; sourceTree = "<group>"; };
+		EE30EF9C220AF86500C0D67D /* Adders.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Adders.cpp; sourceTree = "<group>"; };
+		EE30EF9D220AF86500C0D67D /* Adders.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Adders.hpp; sourceTree = "<group>"; };
+		EE30EF9F220AFD1A00C0D67D /* Gates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Gates.cpp; sourceTree = "<group>"; };
+		EE30EFA1220C691E00C0D67D /* Algorithms.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Algorithms.cpp; sourceTree = "<group>"; };
+		EE30EFA2220C691E00C0D67D /* Algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Algorithms.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,12 +79,17 @@
 				EE30EF822209EB2800C0D67D /* main.cpp */,
 				EE30EF892209EDE200C0D67D /* QRegister.cpp */,
 				EE30EF8A2209EDE200C0D67D /* QRegister.hpp */,
+				EE30EF9F220AFD1A00C0D67D /* Gates.cpp */,
 				EE30EF8D2209F43200C0D67D /* Gates.hpp */,
 				EE30EF922209FDFC00C0D67D /* Accumulator.cpp */,
 				EE30EF932209FDFC00C0D67D /* Accumulator.hpp */,
 				EE30EF95220A52DC00C0D67D /* StateVector.cpp */,
 				EE30EF96220A52DC00C0D67D /* StateVector.hpp */,
 				EE30EF99220A55EF00C0D67D /* Typedefs.hpp */,
+				EE30EF9C220AF86500C0D67D /* Adders.cpp */,
+				EE30EF9D220AF86500C0D67D /* Adders.hpp */,
+				EE30EFA1220C691E00C0D67D /* Algorithms.cpp */,
+				EE30EFA2220C691E00C0D67D /* Algorithms.hpp */,
 			);
 			path = NoMatrixSimulator;
 			sourceTree = "<group>";
@@ -139,8 +152,11 @@
 			files = (
 				EE30EF97220A52DC00C0D67D /* StateVector.cpp in Sources */,
 				EE30EF8B2209EDE200C0D67D /* QRegister.cpp in Sources */,
+				EE30EFA0220AFD1A00C0D67D /* Gates.cpp in Sources */,
 				EE30EF942209FDFC00C0D67D /* Accumulator.cpp in Sources */,
 				EE30EF832209EB2800C0D67D /* main.cpp in Sources */,
+				EE30EF9E220AF86500C0D67D /* Adders.cpp in Sources */,
+				EE30EFA3220C691E00C0D67D /* Algorithms.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

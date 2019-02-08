@@ -17,8 +17,8 @@ using namespace std;
 
 typedef  map<string, unsigned int> states_count;
 
-states_count takeMeasurements(QRegister comp, unsigned int n);
-string takeMeasurementsInString(QRegister comp, unsigned int n);
+states_count takeMeasurements(QRegister reg, unsigned int n);
+string takeMeasurementsInString(QRegister reg, unsigned int n);
 
 #endif /* Accumulator_hpp */
 
