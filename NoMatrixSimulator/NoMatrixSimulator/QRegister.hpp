@@ -38,6 +38,7 @@ public:
 
   void applySingleGate(QID qID, Gate gate);
   void applyCnGate(vector<QID> controls, QID qID, Gate gate);
+  void applyMultiGate(vector<QID> qIDs, Gate gate);
   void flipQubit(QID qID);
 
   vector<QID> allQubits();

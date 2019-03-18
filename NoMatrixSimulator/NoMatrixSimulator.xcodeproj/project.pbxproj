@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE2B753A2215CECF0073A7CF /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE2B75392215CECF0073A7CF /* OpenCL.framework */; };
 		EE30EF832209EB2800C0D67D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF822209EB2800C0D67D /* main.cpp */; };
 		EE30EF8B2209EDE200C0D67D /* QRegister.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF892209EDE200C0D67D /* QRegister.cpp */; };
 		EE30EF942209FDFC00C0D67D /* Accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE30EF922209FDFC00C0D67D /* Accumulator.cpp */; };
@@ -29,6 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EE2B75392215CECF0073A7CF /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		EE30EF7F2209EB2800C0D67D /* NoMatrixSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NoMatrixSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE30EF822209EB2800C0D67D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EE30EF892209EDE200C0D67D /* QRegister.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QRegister.cpp; sourceTree = "<group>"; };
@@ -51,17 +53,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE2B753A2215CECF0073A7CF /* OpenCL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE2B75382215CECF0073A7CF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EE2B75392215CECF0073A7CF /* OpenCL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EE30EF762209EB2800C0D67D = {
 			isa = PBXGroup;
 			children = (
 				EE30EF812209EB2800C0D67D /* NoMatrixSimulator */,
 				EE30EF802209EB2800C0D67D /* Products */,
+				EE2B75382215CECF0073A7CF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -278,6 +290,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = (
 					/opt/local/include/libomp,
 					/usr/local/include,
@@ -305,6 +318,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = (
 					/opt/local/include/libomp,
 					/usr/local/include,

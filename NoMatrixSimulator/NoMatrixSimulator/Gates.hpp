@@ -20,6 +20,8 @@ typedef complex<double> cxd;
 Gate H();
 Gate X();
 
+Gate SWAP();
+
 Gate Rm(uint m);
 
 #endif /* Gates_hpp */

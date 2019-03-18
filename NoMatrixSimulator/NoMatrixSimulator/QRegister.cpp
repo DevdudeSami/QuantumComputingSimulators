@@ -32,6 +32,13 @@ void QRegister::applyCnGate(vector<QID> controls, QID qID, Gate gate) {
   vectors[combinedIndex].applyCnGate(controls, qID, gate);
 }
 
+void QRegister::applyMultiGate(vector<QID> qIDs, Gate gate) {
+  list_index combinedIndex = 0;
+  for(QID c : qIDs) combinedIndex = combineTwoQubits(qIDs[0], c);
+  
+  vectors[combinedIndex].applyMultiGate(qIDs, gate);
+}
+
 void QRegister::flipQubit(QID qID) {
   applySingleGate(qID, X());
 }

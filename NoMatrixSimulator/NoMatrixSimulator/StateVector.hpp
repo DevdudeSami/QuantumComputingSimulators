@@ -16,6 +16,7 @@
 #include <omp.h>
 
 #include "Typedefs.hpp"
+#include "Gates.hpp"
 
 using namespace std;
 
@@ -25,9 +26,14 @@ private:
   uint n;
   cxd* amplitudes;
   uint* qIDs;
-
+  
+  void swapAdjacentQubits(list_index q1Index);
+  void move(list_index srcIndex, list_index desIndex);
+  list_index makeAdjacent(vector<QID> qIDs);
+  
 public:
   StateVector(uint n, uint* qIDs);
+  
   
   void setAmplitudes(cxd* newAmplitudes);
   
@@ -37,6 +43,7 @@ public:
   uint* qubitIDs();
   
   void applySingleGate(QID qID, Gate gate);
+  void applyMultiGate(vector<QID> qIDs, Gate gate);
   void applyCnGate(vector<QID> controls, QID qID, Gate gate);
   
   string measure();

@@ -7,7 +7,9 @@
 //
 
 #include <iostream>
+
 #include "QRegister.hpp"
+
 #include "Gates.hpp"
 #include "Accumulator.hpp"
 #include "Adders.hpp"
@@ -17,14 +19,56 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
-
-//  QRegister reg (8);
   
+  QRegister reg (3);
 //  QuantumFourierTransform(&reg, reg.allQubits());
 
-//  cout << takeMeasurementsInString(reg, 100) << endl;
+  // rubbish op to combine everything
+  reg.applyCnGate({1,2}, 0, X());
+
+  reg.applySingleGate(0, X());
+
+  reg.applyMultiGate({0,1}, SWAP());
+//  reg.applyMultiGate({1,2}, SWAP());
+  reg.applyMultiGate({0,2}, SWAP());
+
+
+  cout << reg.ketMeasure() << endl;
+
+//  uint* qIDs = new uint[4];
+//  qIDs[0] = 0;
+//  qIDs[1] = 1;
+//  qIDs[2] = 2;
+//  qIDs[3] = 3;
+//  StateVector v (4,qIDs);
+//  v.applySingleGate(0, X());
+  
+//  v.makeAdjacent({1,0});
+  
+//  v.applyMultiGate({2,0}, SWAP());
+//  v.applyMultiGate({1,2}, SWAP());
+//  v.applyMultiGate({3,1}, SWAP());
+//  v.applyMultiGate({2,1}, SWAP());
+  
+//  cout << v.measure() << endl;
+  
+//  cout << NBitCuccaroAdder(10, "0000000001", "0000000001") << endl;
+////
+//  for(int i = 1; i < reg.numberOfQubits(); i++) {
+//    reg.combineTwoQubits(0, i);
+//  }
 //
-  cout << NBitCuccaroAdder(11, "00000000001", "00000000001") << endl;
+//  reg.applySingleGate(0, H());
+//
+//  #pragma omp parallel for
+//  for(int i = 1; i < reg.numberOfQubits(); i++) {
+//    reg.applyCnGate({0}, i, X());
+//  }
+  
+//  cout << reg.measure() << endl;
+  
+//  cout << takeMeasurementsInString(reg, 1000) << endl;
+  
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
