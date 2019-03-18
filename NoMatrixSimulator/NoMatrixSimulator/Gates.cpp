@@ -24,3 +24,20 @@ Gate Rm(uint m) {
   cxd* R = new cxd[4] {1, 0, 0, omega};
   return R;
 }
+
+Gate QFT(uint n) {
+  uint N = pow(2,n);
+  cxd omega = exp(2*M_PI*cxd(0,1)/pow(2, n));
+  
+  cxd* g = new cxd[N*N];
+  
+  #pragma omp parallel for
+  for(int i = 0; i < N; i++) {
+    #pragma omp parallel for
+    for(int j = 0; j < N; j++) {
+      g[i*N+j] = pow(omega, i*j)/sqrt(N);
+    }
+  }
+  
+  return g;
+}

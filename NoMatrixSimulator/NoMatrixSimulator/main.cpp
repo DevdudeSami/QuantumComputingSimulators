@@ -20,20 +20,21 @@ using namespace std;
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
   
-  QRegister reg (3);
+  QRegister reg (10);
+  reg.applyMultiGate(reg.allQubits(), QFT(10));
 //  QuantumFourierTransform(&reg, reg.allQubits());
 
   // rubbish op to combine everything
-  reg.applyCnGate({1,2}, 0, X());
+//  reg.applyCnGate({1,2}, 0, X());
+//
+//  reg.applySingleGate(0, X());
+//
+//  reg.applyMultiGate({0,1}, SWAP());
+////  reg.applyMultiGate({1,2}, SWAP());
+//  reg.applyMultiGate({0,2}, SWAP());
 
-  reg.applySingleGate(0, X());
 
-  reg.applyMultiGate({0,1}, SWAP());
-//  reg.applyMultiGate({1,2}, SWAP());
-  reg.applyMultiGate({0,2}, SWAP());
-
-
-  cout << reg.ketMeasure() << endl;
+//  cout << takeMeasurementsInString(reg, 1000) << endl;
 
 //  uint* qIDs = new uint[4];
 //  qIDs[0] = 0;

@@ -107,7 +107,7 @@ void StateVector::applyMultiGate(vector<QID> qIDs, Gate gate) {
   
   int N = pow(2,qIDs.size()); // size of gate
   
-//    #pragma omp parallel for
+//  #pragma omp parallel for
   for(int i = 0; i < pow(2,n-qIDs.size()); i++) {
     vector<int> states;
     vector<cxd> amps;
@@ -118,6 +118,7 @@ void StateVector::applyMultiGate(vector<QID> qIDs, Gate gate) {
       amps.push_back(amplitudes[state]);
     }
     
+//    #pragma omp parallel for
     for(int i = 0; i < N; i++) {
       cxd sum = 0;
       for(int j = 0; j < N; j++) {

@@ -24,4 +24,6 @@ Gate SWAP();
 
 Gate Rm(uint m);
 
+Gate QFT(uint n);
+
 #endif /* Gates_hpp */

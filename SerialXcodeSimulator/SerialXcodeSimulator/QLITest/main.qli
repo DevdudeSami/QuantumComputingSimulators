@@ -1,9 +1,32 @@
-init 3
+-- init 18
 
-link nbitAdder
-link teleport
+-- link shorCode
+-- link entangle
+
+
+-- X 0
+-- X 9
+-- CNOT 0 9
+
+-- shorEncode 0 1 2 3 4 5 6 7 8
+-- shorEncode 9 10 11 12 13 14 15 16 17
+
+
+-- Z 0
+-- X 0
+-- CNOT 0 4
+
+-- shorDecode 0 1 2 3 4 5 6 7 8
+-- shorDecode 9 10 11 12 13 14 15 16 17
+
+-- take 50
+
+
+init 5
 
 H 0
-teleport all
+loop n 1 4
+  CNOT 0 n
+endloop
 
 take 1000

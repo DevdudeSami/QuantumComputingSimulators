@@ -27,16 +27,39 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-//  QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/SerialXcodeSimulator/SerialXcodeSimulator/QLITest/", "main.qli");
-//  cout << qli.execute() << endl;
+  QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/SerialXcodeSimulator/SerialXcodeSimulator/QLITest/", "main.qli");
+  cout << qli.execute() << endl;
+
+//  cout << CircuitOptimisedNQubitCuccaroAdder(9, "000000001", "000000001") << endl;
   
-  QComputer comp (27);
   
-  comp.flipQubit(0);
-  comp.flipQubit(1);
-  comp.flipQubit(2);
+//  cout << GroversSearch(10, {2,5}, 2) << endl;
   
-  cout << comp.measure() << endl;
+//  QComputer comp (18);
+//
+//  comp.entangleQubits({0,9});
+//
+//  vector<ApplicableGate> firstEncode = ShorEncodeGates({0,1,2,3,4,5,6,7,8});
+//  vector<ApplicableGate> firstDecode = ShorDecodeGates({0,1,2,3,4,5,6,7,8});
+//  vector<ApplicableGate> secondEncode = ShorEncodeGates({9,10,11,12,13,14,15,16,17});
+//  vector<ApplicableGate> secondDecode = ShorDecodeGates({9,10,11,12,13,14,15,16,17});
+//
+//
+//  vector<ApplicableGate> gates;
+//
+//  gates.insert(gates.end(), firstEncode.begin(), firstEncode.end());
+//  gates.insert(gates.end(), secondEncode.begin(), secondEncode.end());
+//
+//  gates.push_back(HAGate({0}));
+//  gates.push_back(ZAGate({9}));
+//
+//  gates.insert(gates.end(), firstDecode.begin(), firstDecode.end());
+//  gates.insert(gates.end(), secondDecode.begin(), secondDecode.end());
+//
+//  CircuitOptimiser co (&comp, gates);
+//  co.executeCircuit();
+//
+//  cout << takeMeasurementsInString(comp, 10, nullptr) << endl;
   
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
