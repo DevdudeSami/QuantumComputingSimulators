@@ -10,11 +10,13 @@
 
 cxd _H[4] = {cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(1/sqrt(2)), cxd(-1/sqrt(2))};
 cxd _X[4] = {0, 1, 1, 0};
+cxd _Z[4] = {1, 0, 0, -1};
 
 cxd _SWAP[16] = {1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1};
 
 Gate H() { return _H; }
 Gate X() { return _X; }
+Gate Z() { return _Z; }
 
 Gate SWAP() { return _SWAP; }
 

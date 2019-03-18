@@ -33,6 +33,7 @@ public:
   QRegister(uint n);
 
   list_index combineTwoQubits(QID q1ID, QID q2ID);
+  void combineAllQubits();
 
   uint numberOfQubits();
 

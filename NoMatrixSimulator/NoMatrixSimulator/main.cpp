@@ -20,8 +20,10 @@ using namespace std;
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
   
-  QRegister reg (10);
-  reg.applyMultiGate(reg.allQubits(), QFT(10));
+  cout << GroversSearch(15, {2,5,8}, 180) << endl;
+  
+//  QRegister reg (10);
+//  reg.applyMultiGate(reg.allQubits(), QFT(10));
 //  QuantumFourierTransform(&reg, reg.allQubits());
 
   // rubbish op to combine everything
@@ -53,7 +55,7 @@ int main(int argc, const char * argv[]) {
   
 //  cout << v.measure() << endl;
   
-//  cout << NBitCuccaroAdder(10, "0000000001", "0000000001") << endl;
+//  cout << NBitCuccaroAdder(7, "0000001", "0000001") << endl;
 ////
 //  for(int i = 1; i < reg.numberOfQubits(); i++) {
 //    reg.combineTwoQubits(0, i);

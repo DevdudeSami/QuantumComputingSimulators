@@ -19,6 +19,7 @@ typedef complex<double> cxd;
 
 Gate H();
 Gate X();
+Gate Z();
 
 Gate SWAP();
 

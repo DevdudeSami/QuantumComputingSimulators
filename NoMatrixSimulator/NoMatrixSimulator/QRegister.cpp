@@ -57,6 +57,11 @@ list_index QRegister::combineTwoQubits(QID q1ID, QID q2ID) {
   return indexOfCombinedState;
 }
 
+void QRegister::combineAllQubits() {
+  for(int i = 1; i < n; i++)
+    combineTwoQubits(i-1, i);
+}
+
 list_index QRegister::listIndexFromQID(QID qID) {
   for(list_index i = 0; i < vectors.size(); i++) {
     QID* qubitIDs = vectors[i].qubitIDs();

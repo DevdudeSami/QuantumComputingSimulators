@@ -21,4 +21,6 @@ using namespace std;
 void QuantumFourierTransform(QRegister *reg, vector<QID> qIDs);
 void InverseQuantumFourierTransform(QRegister *reg, vector<QID> qIDs);
 
+string GroversSearch(uint n, vector<uint> markedStates, uint iters);
+
 #endif /* Algorithms_hpp */

@@ -84,7 +84,7 @@ uint* StateVector::qubitIDs() { return qIDs; }
 void StateVector::applySingleGate(QID qID, Gate gate) {
   list_index qIndex = distance(qIDs, find(qIDs, qIDs+n, qID));
 
-//  #pragma omp parallel for
+  #pragma omp parallel for
   for(int i = 0; i < pow(2,n-1); i++) {
     int zero_state = nthCleared(i, qIndex);
     int one_state = zero_state | (1 << qIndex);
