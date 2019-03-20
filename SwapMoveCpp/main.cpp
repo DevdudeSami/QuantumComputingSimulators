@@ -23,7 +23,7 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
   
-  NBitCuccaroAdder(8, "11111111", "11111111");
+  cout << GroversSearch(10, {2,5,8}, 32) << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

@@ -26,8 +26,7 @@ string NBitCuccaroAdder(uint n, string A, string B);
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  // Ripple Carry Adder testing
-  NBitCuccaroAdder(8, "11111111", "11111111");
+  cout << GroversSearch(10, {2,5,8}, 2) << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

@@ -25,4 +25,8 @@ void UMACircuit(QComputer *comp, vector<QID> qIDs);
 string SixQubitRippleCarryAdder(string A, string B);
 string AltSixQubitRippleCarryAdder(string A, string B);
 
+void QuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
+
+string GroversSearch(uint n, vector<uint> markedStates, uint iters);
+
 #endif /* Algorithms_hpp */

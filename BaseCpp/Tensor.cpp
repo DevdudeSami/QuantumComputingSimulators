@@ -3,7 +3,6 @@
 #include <time.h>
 #include <assert.h> 
 #include <omp.h>
-#include <OpenCL/opencl.h>
 
 using namespace std;
 

@@ -19,4 +19,6 @@ void InverseQuantumFourierTransform(QComputer *comp, vector<QID> qIDs);
 vector<ApplicableGate> QuantumFourierTransformGates(vector<QID> qIDs);
 vector<ApplicableGate> InverseQuantumFourierTransformGates(vector<QID> qIDs);
 
+string GroversSearch(uint n, vector<uint> markedStates, uint iters);
+
 #endif /* Algorithms_hpp */

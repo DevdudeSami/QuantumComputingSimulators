@@ -59,3 +59,69 @@ vector<ApplicableGate> InverseQuantumFourierTransformGates(vector<QID> qIDs) {
   
   return gates;
 }
+
+
+/*** Grover's Search Algorithm ***/
+
+void GroversOracle(QComputer *reg, vector<uint> markedStates) {
+  
+  Tensor* CnNOT = new SparseTensor(CnNOTGate(pow(2, reg->numberOfQubits())));
+
+  for(auto s: markedStates) {
+    XGate(reg, {s});
+  }
+  
+  // construct vector of controls
+  vector<QID> allQs = reg->allQubits();
+  vector<QID> controls(allQs.begin(), allQs.end()-1);
+  
+  reg->applyMultiGate(reg->allQubits(), CnNOT);
+  
+  for(auto s: markedStates) {
+    XGate(reg, {s});
+  }
+}
+
+void GroversDiffusion(QComputer *reg) {
+  for(uint i = 0; i < reg->numberOfQubits()-1; i++) {
+    HGate(reg, {i});
+    XGate(reg, {i});
+  }
+  
+  Tensor* CnZ = new SparseTensor(CnZGate(pow(2, reg->numberOfQubits()-1)));
+
+  vector<QID> allQs = reg->allQubits();
+  vector<QID> cnzIDs (allQs.begin(), allQs.end()-1);
+  
+  reg->applyMultiGate(cnzIDs, CnZ);
+  
+  for(uint i = 0; i < reg->numberOfQubits()-1; i++) {
+    XGate(reg, {i});
+    HGate(reg, {i});
+  }
+  
+}
+
+string GroversSearch(uint n, vector<uint> markedStates, uint iters) {
+  
+  QComputer reg(n+1);
+  
+  // The last qubit must be flipped
+  XGate(&reg, {n});
+  
+  // H all qubits
+  for(uint i = 0; i < n+1; i++) {
+    HGate(&reg, {i});
+  }
+  
+  for(int i = 0; i < iters; i++) {
+    GroversOracle(&reg, markedStates);
+    GroversDiffusion(&reg);
+  }
+  
+  string m = reg.measure();
+  
+  return m.substr(1,n);
+}
+
+
