@@ -17,7 +17,7 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  CircuitOptimisedNQubitCuccaroAdder(6, "111111", "111111");
+  CircuitOptimisedNQubitCuccaroAdder(8, "11111111", "11111111");
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

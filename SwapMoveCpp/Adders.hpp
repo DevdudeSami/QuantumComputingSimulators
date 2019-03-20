@@ -26,4 +26,6 @@ void UMACircuit(QComputer *comp, vector<QID> qIDs);
 string SixQubitRippleCarryAdder(string A, string B);
 string AltSixQubitRippleCarryAdder(string A, string B);
 
+string NBitCuccaroAdder(uint n, string A, string B);
+
 #endif /* Adders_hpp */
