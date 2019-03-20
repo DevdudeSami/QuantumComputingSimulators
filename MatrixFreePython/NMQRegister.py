@@ -76,7 +76,7 @@ class NMQRegister:
 
 		result = random.choices(population=states, weights=probs, k=1)[0]  
 
-		return result, "|" + result + ">"
+		return "|" + str(list(reversed(result))) + ">"
 
 
 H = [1/sqrt(2)+0j, 1/sqrt(2)+0j, 1/sqrt(2)+0j, -1/sqrt(2)+0j]
@@ -84,8 +84,8 @@ X = [0j, 1+0j, 1+0j, 0j]
 
 myReg = NMQRegister(10)
 # myReg.applySingleGate(8, X)
-# myReg.applySingleGate(7, X)
-myReg.applyCnGate([7,8],2,X)
+myReg.applySingleGate(7, X)
+myReg.applyCnGate([7],8,X)
 # myReg.applySingleGate(1, H)
 # myReg.applySingleGate(2, H)
 
