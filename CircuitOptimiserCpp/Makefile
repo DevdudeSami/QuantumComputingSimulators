@@ -36,7 +36,7 @@ endif
 
 # list dependencies 
 # DEPS=gzstream.c
-DEPS=$(wildcard *.c)
+DEPS=
 # replace .c file ending and replace it with .o. change dir to $(BUILDIR)
 DEPS_OBJECTS=$(patsubst %.c,$(BUILDIR)/%.o,$(DEPS))
 
@@ -51,7 +51,7 @@ OBJECTS=$(patsubst %.cpp,$(BUILDIR)/%.o,$(SOURCES))
 ifdef PRODUCT_NAME
 EXECUTABLE=$(PRODUCT_NAME)
 else
-EXECUTABLE=MBS
+EXECUTABLE=MBS-ParallelBase
 endif
 
 .PHONY: all run clean COPY_ASSETS

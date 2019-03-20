@@ -8,16 +8,7 @@
 
 #include <iostream>
 #include <time.h>
-//#include <omp.h>
-#include <mpi.h>
 
-#include "DenseTensor.hpp"
-#include "Gates.hpp"
-#include "StateVector.hpp"
-#include "SparseTensor.hpp"
-#include "Accumulator.hpp"
-#include "QComputer.hpp"
-#include "Algorithms.hpp"
 #include "Adders.hpp"
 #include "QuantumErrorCorrection.hpp"
 
@@ -25,6 +16,8 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
+
+  cout << CircuitOptimisedNQubitCuccaroAdder(6, "111111", "111111") << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
