@@ -8,7 +8,7 @@ def nth_cleared(n, t):
 
 	return (n & mask) | ((n & not_mask) << 1)
 
-class NMQRegister:
+class MFQRegister:
 
 	def __init__(self, n):
 		self.n = n
@@ -76,18 +76,7 @@ class NMQRegister:
 
 		result = random.choices(population=states, weights=probs, k=1)[0]  
 
-		return "|" + str(list(reversed(result))) + ">"
-
+		return "".join(list(reversed(result)))
 
 H = [1/sqrt(2)+0j, 1/sqrt(2)+0j, 1/sqrt(2)+0j, -1/sqrt(2)+0j]
 X = [0j, 1+0j, 1+0j, 0j]
-
-myReg = NMQRegister(10)
-# myReg.applySingleGate(8, X)
-myReg.applySingleGate(7, X)
-myReg.applyCnGate([7],8,X)
-# myReg.applySingleGate(1, H)
-# myReg.applySingleGate(2, H)
-
-print(myReg.measure())
-
