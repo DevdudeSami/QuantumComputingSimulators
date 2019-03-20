@@ -51,7 +51,7 @@ OBJECTS=$(patsubst %.cpp,$(BUILDIR)/%.o,$(SOURCES))
 ifdef PRODUCT_NAME
 EXECUTABLE=$(PRODUCT_NAME)
 else
-EXECUTABLE=MBS-Base
+EXECUTABLE=product
 endif
 
 .PHONY: all run clean COPY_ASSETS
