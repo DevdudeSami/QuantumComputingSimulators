@@ -11,10 +11,31 @@
 
 #include <stdio.h>
 #include "Tensor.hpp"
+#include "StateVector.hpp"
 
-Tensor I();
-Tensor H();
+typedef uint QID;
 
-Tensor SWAP();
+Tensor IGate();
+Tensor XGate();
+Tensor YGate();
+Tensor ZGate();
+Tensor HGate();
+
+Tensor CNOTGate();
+Tensor SWAPGate();
+
+Tensor TOFFGate();
+
+void GateCircuit(StateVector *comp, vector<QID> qIDs, Tensor t);
+
+void IGate(StateVector *comp, vector<QID> qIDs);
+void XGate(StateVector *comp, vector<QID> qIDs);
+void YGate(StateVector *comp, vector<QID> qIDs);
+void ZGate(StateVector *comp, vector<QID> qIDs);
+void HGate(StateVector *comp, vector<QID> qIDs);
+void CNOTGate(StateVector *comp, vector<QID> qIDs);
+void SWAPGate(StateVector *comp, vector<QID> qIDs);
+void TOFFGate(StateVector *comp, vector<QID> qIDs);
+
 
 #endif /* Gates_hpp */

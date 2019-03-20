@@ -9,29 +9,57 @@
 #include "Gates.hpp"
 
 /************* Q Gates ***************/
-Tensor I() {
-  Tensor t (2,2);
-  t.setElementAt(0,0,1);
-  t.setElementAt(1,1,1);
-  return t;
-}
+const Tensor I ({{cxd(1),cxd(0)},{0,1}});
 
-Tensor H() {
-  Tensor t (2,2);
-  t.setElementAt(0,0,1);
-  t.setElementAt(0,1,1);
-  t.setElementAt(1,0,1);
-  t.setElementAt(1,1,-1);
-  t = t.multiplyBy(1/sqrt(2));
-  return t;
-}
+const Tensor X ({{cxd(0),1},{1,0}});
 
-Tensor SWAP() {
-  Row row1 = {1,0,0,0};
-  Row row2 = {0,0,1,0};
-  Row row3 = {0,1,0,0};
-  Row row4 = {0,0,0,1};
-  
-  return Tensor({row1, row2, row3, row4});
-}
+const Tensor Y ({{cxd(0),cxd(0,-1)},{cxd(0,1),0}});
+
+const Tensor Z ({{cxd(1),cxd(0)},{0,-1}});
+
+const Tensor H ({{cxd(1/sqrt(2)), cxd(1/sqrt(2))}, {cxd(1/sqrt(2)), cxd(-1/sqrt(2))}});
+
+const Tensor CNOT ({{1,0,0,0},{0,1,0,0},{0,0,0,cxd(1)},{0,0,1,0}});
+
+const Tensor SWAP ({{1,0,0,0},{0,0,1,0},{0,0,1,0},{0,0,0,cxd(1)}});
+
+const Tensor TOFF ({
+  {1,0,0,0,0,0,0,0},
+  {0,1,0,0,0,0,0,0},
+  {0,0,1,0,0,0,0,0},
+  {0,0,0,1,0,0,0,0},
+  {0,0,0,0,1,0,0,0},
+  {0,0,0,0,0,1,0,0},
+  {0,0,0,0,0,0,0,1},
+  {0,0,0,0,0,0,cxd(1),0}
+});
+
+Tensor IGate() { return Tensor(I); }
+Tensor XGate() { return Tensor(X); }
+Tensor YGate() { return Tensor(Y); }
+Tensor ZGate() { return Tensor(Z); }
+Tensor HGate() { return Tensor(H); }
+Tensor CNOTGate() { return Tensor(CNOT); }
+Tensor SWAPGate() { return Tensor(SWAP); }
+Tensor TOFFGate() { return Tensor(TOFF); }
+
 /************* END Q Gates ***************/
+
+void GateCircuit(StateVector *comp, vector<QID> qIDs, Tensor t) {
+  assert(t.colCount() == t.rowCount());
+  int n = (int)log2(t.colCount());
+  assert(qIDs.size() == n);
+  assert(comp->numberOfQubits() >= n);
+  
+  comp->applyNGate(t, qIDs);
+}
+
+void IGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, I); }
+void XGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, X); }
+void YGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, Y); }
+void ZGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, Z); }
+void HGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, H); }
+void CNOTGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, CNOT); }
+void SWAPGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, SWAP); }
+void TOFFGate(StateVector *comp, vector<QID> qIDs) { GateCircuit(comp, qIDs, TOFF); }
+

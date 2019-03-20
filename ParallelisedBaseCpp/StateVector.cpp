@@ -22,6 +22,21 @@ StateVector::StateVector(Tensor amps, vector<int> ids) : n(ids.size()), amplitud
   
 }
 
+StateVector::StateVector(uint n) : n(n), amplitudes(Tensor({cxd(1)})) {
+  for(uint i = 0; i < n; i++) {
+    qIDs.push_back(i);
+  }
+
+  vector<cxd> amps = {0};
+  for(uint i = 1; i < pow(2,n); i++) {
+    amps.push_back(0);
+  }
+
+  this->amplitudes = Tensor(amps);
+}
+
+uint StateVector::numberOfQubits() { return n; }
+
 vector<double> StateVector::probabilities() {
   vector<double> result;
   amplitudes.enumerateElements([&result](int r, int c, cxd amp) { result.push_back(norm(amp)); } );
@@ -30,6 +45,26 @@ vector<double> StateVector::probabilities() {
 
 void StateVector::applyGate(Tensor t) {
   amplitudes = t.multiplyBy(amplitudes.transpose()).transpose();
+}
+
+void StateVector::applyNGate(Tensor t, vector<unsigned int> qIDs) {
+  vector<pair<int, int>> swapsDone;
+  vector<int> qIndicesToSwapInto;
+  
+  // Swap into the first qIDs.size() qubits
+  for(int i = 0; i < qIDs.size(); i++) {
+    qIndicesToSwapInto.push_back(i);
+    swapsDone.push_back(make_pair(qIDs[i], this->qIDs[i]));
+    swap(qIDs[i], this->qIDs[i]);
+  }
+  
+  Tensor op = prepareOperator(t, qIndicesToSwapInto);
+  applyGate(op);
+  
+  // Swap back in reverse order
+  for(int i = qIDs.size() - 1; i >= 0; i--) {
+    swap(swapsDone[i].first, swapsDone[i].second);
+  }
 }
 
 string StateVector::measure() {
@@ -59,15 +94,15 @@ Tensor StateVector::prepareOperator(Tensor t, vector<int> indices) {
   
   if(indices[0] == 0) {
     op = t;
-    for(int i = indices.size(); i < n; i++) op = op.kronWith(I());
+    for(int i = indices.size(); i < n; i++) op = op.kronWith(IGate());
     return op;
   }
   
-  op = I();
+  op = IGate();
   for(int i = 1; i < indices.size(); i++) {
     if(i == indices[0]) op = op.kronWith(t);
     else if(find(indices.begin(), indices.end(), i) != indices.end()) {}
-    else op = op.kronWith(I());
+    else op = op.kronWith(IGate());
   }
   
   return op;
@@ -92,15 +127,15 @@ void StateVector::swap(uint q1ID, uint q2ID) {
   
   int i = q1PositionInVector;
   while(i < q1PositionInVector + steps) {
-    Tensor op = prepareOperator(SWAP(), {i, i+1});
-    applyGate(op);
+    Tensor op = prepareOperator(SWAPGate(), {i, i+1});
+    applyNGate(op, {static_cast<unsigned int>(qIDs[i]), static_cast<unsigned int>(qIDs[i+1])});
     i++;
   }
   
   i = q2PositionInVector - 1;
   while(i > q2PositionInVector - steps) {
-    Tensor op = prepareOperator(SWAP(), {i-1, i});
-    applyGate(op);
+    Tensor op = prepareOperator(SWAPGate(), {i-1, i});
+    applyNGate(op, {static_cast<unsigned int>(qIDs[i-1]), static_cast<unsigned int>(qIDs[i])});
     i--;
   }
 }

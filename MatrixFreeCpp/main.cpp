@@ -20,9 +20,11 @@ using namespace std;
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
+  NBitCuccaroAdder(6, "111111", "111111");
+
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
-  cout << "--- end time: " << (chrono::duration <double, milli> (diff).count())/1000 << " s" << endl;
+  cout << (chrono::duration <double, milli> (diff).count())/1000;
   
   return 0;
 }

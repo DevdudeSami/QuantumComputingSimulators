@@ -21,8 +21,11 @@ private:
   vector<int> qIDs;
 public:
   StateVector(Tensor amps, vector<int> ids);
+  StateVector(uint n);
   vector<double> probabilities();
+  uint numberOfQubits();
   void applyGate(Tensor t);
+  void applyNGate(Tensor t, vector<unsigned int> qIDs);
   string measure();
   StateVector combineWith(StateVector v);
   Tensor prepareOperator(Tensor t, vector<int> indices);
