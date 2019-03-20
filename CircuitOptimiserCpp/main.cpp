@@ -20,15 +20,11 @@
 #include "Algorithms.hpp"
 #include "Adders.hpp"
 #include "QuantumErrorCorrection.hpp"
-#include "QuantumLanguageInterpreter.hpp"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
-
- QuantumLanguageInterpreter qli ("/Users/youssefmoawad/Documents/University/Year 4/Project/CircuitOptimiserCpp/QLITest/", "main.qli");
- cout << qli.execute() << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
