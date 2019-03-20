@@ -1,0 +1,9 @@
+init 3
+
+link nbitAdder
+link teleport
+
+H 0
+teleport all
+
+take 1000
