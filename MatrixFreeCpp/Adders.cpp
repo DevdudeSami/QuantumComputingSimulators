@@ -63,8 +63,9 @@ void NBitCuccaroAdderCircuit(uint n, QRegister *reg, vector<QID> qIDs) {
   
 }
 
-string NBitCuccaroAdder(uint n, string A, string B) {
-  assert(A.size() == n);
+string NBitCuccaroAdder(string A, string B) {
+  auto n = A.size();
+
   assert(B.size() == n);
   
   uint N = 2*n+2;

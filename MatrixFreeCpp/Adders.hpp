@@ -18,6 +18,6 @@
 
 using namespace std;
 
-string NBitCuccaroAdder(uint n, string A, string B);
+string NBitCuccaroAdder(string A, string B);
 
 #endif /* Adders_hpp */

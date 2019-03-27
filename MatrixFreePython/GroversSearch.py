@@ -51,6 +51,6 @@ def GroversSearch(n, markedStates, iters):
 
 start_time = time.time()
 
-GroversSearch(10, [2,5,8], 32)
+GroversSearch(10, [2,5,8], 25)
 
 print("%s" % (time.time() - start_time), end="")

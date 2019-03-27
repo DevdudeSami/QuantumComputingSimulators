@@ -54,7 +54,8 @@ vector<string> qubitStatesCombinations(unsigned int n) {
   
   for(int i = 0; i < n-1; i++)
     results = product(results, vector<string>({"0","1"}));
-  
+
+
   return results;
 }
 

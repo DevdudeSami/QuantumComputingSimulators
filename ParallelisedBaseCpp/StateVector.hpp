@@ -1,6 +1,6 @@
 //
 //  StateVector.hpp
-//  SerialXcodeSimulator
+//  MatrixBasedSimulator
 //
 //  Created by Youssef Moawad on 09/11/2018.
 //  Copyright © 2018 Youssef Moawad. All rights reserved.

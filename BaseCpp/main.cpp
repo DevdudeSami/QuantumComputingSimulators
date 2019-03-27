@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  SerialXcodeSimulator
+//  MatrixBasedSimulator
 //
 //  Created by Youssef Moawad on 02/11/2018.
 //  Copyright © 2018 Youssef Moawad. All rights reserved.
@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <time.h>
-//#include <omp.h>
 #include <mpi.h>
 
 #include "Tensor.hpp"

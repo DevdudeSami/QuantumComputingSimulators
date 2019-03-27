@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  SerialXcodeSimulator
+//  MatrixBasedSimulator
 //
 //  Created by Youssef Moawad on 02/11/2018.
 //  Copyright © 2018 Youssef Moawad. All rights reserved.
@@ -11,13 +11,13 @@
 
 #include "Adders.hpp"
 #include "QuantumErrorCorrection.hpp"
+#include "Algorithms.hpp"
+#include "Accumulator.hpp"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
-
-  GroversSearch(10, {2,5,8}, 32);
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

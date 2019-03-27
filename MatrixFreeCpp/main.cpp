@@ -20,8 +20,6 @@ using namespace std;
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  GroversSearch(10, {2,5,8}, 32);
-
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;
   cout << (chrono::duration <double, milli> (diff).count())/1000;
