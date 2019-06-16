@@ -1,0 +1,7 @@
+-- Enter your circuit here
+
+init 10
+
+X 0
+
+return all

@@ -21,6 +21,8 @@ Gate H();
 Gate X();
 Gate Z();
 
+Gate CNOT();
+Gate TOFF();
 Gate SWAP();
 
 Gate Rm(uint m);

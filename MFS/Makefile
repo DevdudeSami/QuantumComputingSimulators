@@ -36,7 +36,7 @@ endif
 
 # list dependencies 
 # DEPS=gzstream.c
-DEPS=
+DEPS=$(wildcard *.c)
 # replace .c file ending and replace it with .o. change dir to $(BUILDIR)
 DEPS_OBJECTS=$(patsubst %.c,$(BUILDIR)/%.o,$(DEPS))
 

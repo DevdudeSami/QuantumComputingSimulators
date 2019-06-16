@@ -20,7 +20,7 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   auto start = chrono::high_resolution_clock::now();
 
-  QuantumLanguageInterpreter qli ("QLI_LOOKUP_DIRECTORY", "main.qli");
+  QuantumLanguageInterpreter qli (argv[1], "nBitAdderTest.qli");
   cout << qli.execute() << endl;
 
   auto end = chrono::high_resolution_clock::now();

@@ -14,11 +14,15 @@
 #include "Accumulator.hpp"
 #include "Adders.hpp"
 #include "Algorithms.hpp"
+#include "QuantumLanguageInterpreter.hpp"
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
   auto start = chrono::high_resolution_clock::now();
+
+  QuantumLanguageInterpreter qli (argv[1], "nBitAdderTest.qli");
+  cout << qli.execute() << endl;
 
   auto end = chrono::high_resolution_clock::now();
   auto diff = end - start;

@@ -17,5 +17,6 @@ typedef uint QID;
 typedef uint list_index;
 typedef complex<double> cxd;
 typedef cxd* Gate;
+typedef pair<Gate, vector<QID>> ApplicableGate;
 
 #endif /* Typedefs_hpp */
